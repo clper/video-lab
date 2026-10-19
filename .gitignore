@@ -1,0 +1,33 @@
+# Render outputs
+renders/
+media/
+build/
+*.mp4
+*.wav
+*.png
+*.ass
+*.srt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.manim/
+
+# Node
+node_modules/
+
+# Blender
+*.blend1
+*.blend2
+
+# OS
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Tools (large binaries)
+tools/bin/*.exe

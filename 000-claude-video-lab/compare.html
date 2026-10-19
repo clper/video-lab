@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三种做法对比</title>
+<style>
+  :root { --bg: #15110e; --fg: #fff4e0; --muted: #b8a890; --amber: #f5a524; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: "Microsoft YaHei", system-ui, sans-serif; }
+  header { padding: 16px 24px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  h1 { font-size: 20px; margin: 0; }
+  button { background: var(--amber); color: #15110e; border: 0; border-radius: 6px; padding: 8px 18px; font-size: 15px; font-weight: bold; cursor: pointer; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; padding: 0 24px 24px; }
+  figure { margin: 0; text-align: center; }
+  video { display: block; margin: 0 auto; width: auto; max-width: 100%; max-height: calc(100vh - 150px); aspect-ratio: 9 / 16; background: #000; border-radius: 8px; }
+  figcaption { margin-top: 8px; font-size: 15px; }
+  figcaption small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>蜂巢为什么是六边形 · 三种不用 AI 视频模型的做法</h1>
+  <button id="play">同步播放</button>
+  <button id="restart">从头开始</button>
+</header>
+<div class="grid">
+  <figure>
+    <video src="out/hexagon_1_cards.mp4" controls preload="auto"></video>
+    <figcaption>① 图文卡片 + FFmpeg<small>Pillow 画静态卡片，念到关键词换下一张</small></figcaption>
+  </figure>
+  <figure>
+    <video src="out/hexagon_2_hyperframes.mp4" controls preload="auto"></video>
+    <figcaption>② HyperFrames<small>HTML + GSAP 写动画，Chrome 逐帧渲染</small></figcaption>
+  </figure>
+  <figure>
+    <video src="out/hexagon_3_manim.mp4" controls preload="auto"></video>
+    <figcaption>③ Manim<small>Python 数学动画库，几何变形</small></figcaption>
+  </figure>
+</div>
+<script>
+  const videos = [...document.querySelectorAll("video")];
+  // 只放第一个的声音，免得三路配音叠在一起
+  videos.forEach((v, i) => { v.muted = i > 0; });
+  document.getElementById("play").onclick = () => {
+    const playing = !videos[0].paused;
+    videos.forEach(v => playing ? v.pause() : v.play());
+  };
+  document.getElementById("restart").onclick = () => {
+    videos.forEach(v => { v.currentTime = 0; v.play(); });
+  };
+</script>
+</body>
+</html>

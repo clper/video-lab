@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>0.1 + 0.2 为什么不等于 0.3</title>
+    <style>
+      /* 显式声明字体，保证渲染确定性（缺失字体会让排版在成片里走样） */
+      @font-face { font-family: "Microsoft YaHei"; src: local("Microsoft YaHei"); }
+      @font-face { font-family: "PingFang SC"; src: local("PingFang SC"); }
+      @font-face { font-family: "Cascadia Mono"; src: local("Cascadia Mono"); }
+      @font-face { font-family: "Consolas"; src: local("Consolas"); }
+
+      :root {
+        --bg: #05060a;
+        --ink: #f8fafc;
+        --dim: rgba(248, 250, 252, 0.58);
+        --faint: rgba(248, 250, 252, 0.24);
+        --mint: #6ee7b7;
+        --blue: #60a5fa;
+        --pink: #f472b6;
+        --pad: 88px;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1080px; height: 1920px; overflow: hidden; background: var(--bg);
+        font-family: "Microsoft YaHei", "PingFang SC", Inter, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+
+      /* ---------- 常驻背景 ---------- */
+      .bg-grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+        background-size: 120px 120px;
+      }
+      .glow { position: absolute; border-radius: 50%; filter: blur(18px); }
+      .g1 {
+        width: 1500px; height: 1500px; left: -520px; top: -420px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.5), transparent 62%);
+      }
+      .g2 {
+        width: 1300px; height: 1300px; left: 360px; top: 900px;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.32), transparent 62%);
+      }
+
+      /* ---------- 场景 ---------- */
+      .scene {
+        position: absolute; inset: 0; padding: 0 var(--pad);
+        display: flex; flex-direction: column; justify-content: center;
+      }
+
+      /* ---------- 排版 ---------- */
+      .kicker {
+        font-size: 32px; letter-spacing: 0.34em; font-weight: 700;
+        color: var(--mint); text-transform: uppercase;
+      }
+      .h1 {
+        font-size: 132px; line-height: 1.03; font-weight: 800;
+        letter-spacing: -0.038em; color: var(--ink);
+      }
+      .h2 {
+        font-size: 92px; line-height: 1.14; font-weight: 800;
+        letter-spacing: -0.032em; color: var(--ink);
+      }
+      .h3 {
+        font-size: 64px; line-height: 1.24; font-weight: 700;
+        letter-spacing: -0.024em; color: var(--ink);
+      }
+      .body { font-size: 44px; line-height: 1.6; color: var(--dim); }
+      .mono {
+        font-family: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+        font-variant-numeric: tabular-nums;
+      }
+      .em { color: var(--mint); }
+      .blue { color: var(--blue); }
+      .pink { color: var(--pink); }
+      .dim { color: var(--dim); }
+
+      /* ---------- 底部 HUD ---------- */
+      .hud { position: absolute; left: var(--pad); right: var(--pad); bottom: 96px; }
+      .hud .track {
+        height: 6px; border-radius: 99px; overflow: hidden;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .hud .fill {
+        height: 100%; width: 0%; border-radius: 99px;
+        background: linear-gradient(90deg, var(--mint), var(--blue));
+      }
+      .hud .meta {
+        display: flex; justify-content: space-between; margin-top: 20px;
+        font-size: 24px; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.62);
+      }
+
+      /* ---------- 场景 1 ---------- */
+      .s1 .expr { margin-top: 30px; }
+      .s1 .caret { color: var(--mint); }
+
+      /* ---------- 场景 2 ---------- */
+      .answer-wrap { position: relative; margin-top: 28px; }
+      #answer { position: relative; }
+      #precise {
+        font-size: 78px; font-weight: 700; letter-spacing: -0.01em;
+        color: var(--ink); margin-top: 18px;
+      }
+      #precise .tail { color: var(--pink); }
+      .note { margin-top: 54px; }
+
+      /* ---------- 场景 3 ---------- */
+      .s3 .h2 { margin-top: 26px; }
+      .not-bug { font-size: 132px; letter-spacing: -0.038em; }
+
+      /* ---------- 场景 4 ---------- */
+      .bin {
+        font-size: 40px; line-height: 1.5; letter-spacing: 0.02em;
+        color: var(--blue); margin-top: 34px; word-break: break-all;
+      }
+      .loop-tag {
+        display: inline-block; margin-top: 26px; padding: 12px 26px;
+        border: 2px solid rgba(96, 165, 250, 0.45); border-radius: 99px;
+        font-size: 28px; letter-spacing: 0.16em; color: var(--blue);
+      }
+
+      /* ---------- 场景 5 ---------- */
+      .bits {
+        display: flex; flex-wrap: wrap; gap: 9px; margin-top: 40px;
+        max-width: 904px;
+      }
+      .bit {
+        width: 24px; height: 34px; border-radius: 5px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+        font-size: 19px; color: rgba(248, 250, 252, 0.62);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .bit.on { color: #04110c; background: var(--mint); font-weight: 700; }
+      .bit.cut { background: rgba(244, 114, 182, 0.12); color: rgba(244, 114, 182, 0.82); }
+
+      /* ---------- 场景 7 ---------- */
+      .eq {
+        display: flex; align-items: center; gap: 26px; margin-top: 44px;
+        font-size: 72px; font-weight: 800; color: var(--ink);
+      }
+      .eps {
+        padding: 10px 24px; border-radius: 14px; font-size: 46px;
+        background: rgba(244, 114, 182, 0.14); color: var(--pink);
+      }
+
+      /* ---------- 场景 9 ---------- */
+      .s9 { justify-content: flex-end; padding-bottom: 300px; }
+      .sig { font-size: 34px; letter-spacing: 0.3em; color: rgba(248, 250, 252, 0.55); }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="44"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- 常驻背景 -->
+      <div id="bg-grid" class="bg-grid clip" data-start="0" data-duration="44" data-track-index="0"></div>
+      <div id="glow-a" class="glow g1 clip" data-start="0" data-duration="44" data-track-index="0"></div>
+      <div id="glow-b" class="glow g2 clip" data-start="0" data-duration="44" data-track-index="0"></div>
+
+      <!-- S1 · 0-4.2 钩子 -->
+      <div id="scene-1" class="scene s1 clip" data-start="0" data-duration="4.2" data-track-index="1">
+        <div class="kicker s1-kicker">IEEE 754 · 双精度</div>
+        <div class="h1 mono expr s1-a">0.1 <span class="dim">+</span> 0.2</div>
+        <div class="h1 mono expr s1-b dim">= <span class="caret">▌</span></div>
+      </div>
+
+      <!-- S2 · 4.2-9.4 反差 -->
+      <div id="scene-2" class="scene s2 clip" data-start="4.2" data-duration="5.2" data-track-index="2">
+        <div class="kicker">直觉给的答案</div>
+        <div class="answer-wrap">
+          <div class="h1 mono" id="answer">0.3</div>
+          <div class="mono" id="precise">
+            0.300000000000000<span class="tail">04</span>
+          </div>
+        </div>
+        <div class="body note s2-note">计算机给出的结果，从第 17 位开始不一样</div>
+      </div>
+
+      <!-- S3 · 9.4-12.4 定调 -->
+      <div id="scene-3" class="scene s3 clip" data-start="9.4" data-duration="3" data-track-index="3">
+        <div class="kicker">先说结论</div>
+        <div class="h2 not-bug s3-main">这不是 bug</div>
+      </div>
+
+      <!-- S4 · 12.4-19.4 二进制无限循环 -->
+      <div id="scene-4" class="scene s4 clip" data-start="12.4" data-duration="7" data-track-index="4">
+        <div class="kicker s4-k1">十进制 · 0.1 就是 1/10</div>
+        <div class="h2 mono s4-a" style="margin-top: 24px">0.1 = 1 / 10</div>
+        <div class="kicker s4-k2" style="margin-top: 76px">二进制 · 1/10 是无限循环</div>
+        <div class="bin mono s4-b">0.000110011001100110011001100110011001100110011001100110011...</div>
+        <div class="loop-tag s4-c">0011 永远循环下去</div>
+      </div>
+
+      <!-- S5 · 19.4-26.4 52 位截断 -->
+      <div id="scene-5" class="scene s5 clip" data-start="19.4" data-duration="7" data-track-index="5">
+        <div class="kicker">IEEE 754 双精度</div>
+        <div class="h3 s5-t" style="margin-top: 22px">尾数只有 <span class="em">52 位</span></div>
+        <div class="bits" id="bits"></div>
+        <div class="body s5-note" style="margin-top: 40px">
+          装不下的部分被<span class="pink">截断</span>，并做一次舍入
+        </div>
+      </div>
+
+      <!-- S6 · 26.4-31.4 近似值 -->
+      <div id="scene-6" class="scene s6 clip" data-start="26.4" data-duration="5" data-track-index="6">
+        <div class="kicker">所以你存下的</div>
+        <div class="h2 s6-a" style="margin-top: 24px">0.1 不是 0.1</div>
+        <div class="h2 s6-b" style="margin-top: 12px">是一个<span class="em">近似值</span></div>
+      </div>
+
+      <!-- S7 · 31.4-36.4 误差相加 -->
+      <div id="scene-7" class="scene s7 clip" data-start="31.4" data-duration="5" data-track-index="7">
+        <div class="kicker">两个近似值相加</div>
+        <div class="h2 s7-a" style="margin-top: 24px">误差也相加</div>
+        <div class="eq s7-b">
+          <span>0.1</span><span class="dim">+</span><span>0.2</span>
+          <span class="dim">=</span>
+          <span class="eps mono">+2ε</span>
+        </div>
+      </div>
+
+      <!-- S8 · 36.4-41.4 落点 -->
+      <div id="scene-8" class="scene s8 clip" data-start="36.4" data-duration="5" data-track-index="8">
+        <div class="kicker s8-k">它没有算错</div>
+        <div class="h2 s8-a" style="margin-top: 24px">计算机只是用</div>
+        <div class="h2 s8-b"><span class="em">有限的位</span>表示无限</div>
+      </div>
+
+      <!-- S9 · 41.4-44 落款 -->
+      <div id="scene-9" class="scene s9 clip" data-start="41.4" data-duration="2.6" data-track-index="9">
+        <div class="sig s9-a">DOUBLE PRECISION · 001</div>
+      </div>
+
+      <!-- 常驻进度条 -->
+      <div id="hud" class="hud clip" data-start="0" data-duration="44" data-track-index="10">
+        <div class="track"><div class="fill" id="progress"></div></div>
+        <div class="meta mono">
+          <span>0.1 + 0.2</span>
+          <span>IEEE 754</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="./vendor/gsap.min.js"></script>
+    <script>
+      // 52 位尾数：0.1 的尾数前 52 位
+      const MANTISSA = "1001100110011001100110011001100110011001100110011001";
+      const bitsEl = document.getElementById("bits");
+      MANTISSA.split("").forEach((b) => {
+        const span = document.createElement("span");
+        span.className = "bit" + (b === "1" ? " on" : "");
+        span.textContent = b;
+        bitsEl.appendChild(span);
+      });
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ---------- S1 · 0-4.2 ----------
+      tl.from(".s1-kicker", { opacity: 0, y: 24, duration: 0.6, ease: "power3.out" }, 0.15)
+        .from(".s1-a", { opacity: 0, y: 44, duration: 0.7, ease: "power3.out" }, 0.45)
+        .from(".s1-b", { opacity: 0, y: 44, duration: 0.7, ease: "power3.out" }, 0.9)
+        .to(".s1-b .caret", { opacity: 0, duration: 0.42, repeat: 3, yoyo: true, ease: "none" }, 1.6)
+        .to(".s1", { opacity: 0, duration: 0.35, ease: "power1.in" }, 3.85);
+
+      // ---------- S2 · 4.2-9.4 ----------
+      tl.from("#answer", { opacity: 0, y: 50, duration: 0.7, ease: "power3.out" }, 4.35)
+        .to("#answer", { opacity: 0.22, scale: 0.62, transformOrigin: "left center", duration: 0.75, ease: "power2.inOut" }, 6.3)
+        .from("#precise", { opacity: 0, y: 34, duration: 0.8, ease: "power3.out" }, 6.75)
+        .from(".s2-note", { opacity: 0, y: 24, duration: 0.7, ease: "power3.out" }, 7.45)
+        .from("#precise .tail", { color: "#f8fafc", duration: 0.5, ease: "none" }, 7.2)
+        .to(".s2", { opacity: 0, duration: 0.35, ease: "power1.in" }, 9.05);
+
+      // ---------- S3 · 9.4-12.4 ----------
+      tl.from(".s3-main", { opacity: 0, y: 70, duration: 0.85, ease: "power4.out" }, 9.6)
+        .from(".s3 .kicker", { opacity: 0, y: 20, duration: 0.55, ease: "power2.out" }, 9.45)
+        .to(".s3", { opacity: 0, duration: 0.35, ease: "power1.in" }, 12.05);
+
+      // ---------- S4 · 12.4-19.4 ----------
+      tl.from(".s4-k1", { opacity: 0, y: 20, duration: 0.55, ease: "power2.out" }, 12.55)
+        .from(".s4-a", { opacity: 0, y: 40, duration: 0.7, ease: "power3.out" }, 12.85)
+        .from(".s4-k2", { opacity: 0, y: 20, duration: 0.55, ease: "power2.out" }, 14.5)
+        .from(".s4-b", { opacity: 0, y: 26, duration: 0.9, ease: "power3.out" }, 15.0)
+        .from(".s4-c", { opacity: 0, scale: 0.9, duration: 0.6, ease: "back.out(1.7)" }, 16.6)
+        .to(".s4", { opacity: 0, duration: 0.35, ease: "power1.in" }, 19.05);
+
+      // ---------- S5 · 19.4-26.4 ----------
+      tl.from(".s5-t", { opacity: 0, y: 34, duration: 0.65, ease: "power3.out" }, 19.55)
+        .from(".bit", { opacity: 0, y: 18, scale: 0.85, duration: 0.3, ease: "power2.out", stagger: 0.035 }, 20.3)
+        .to(".bit", { opacity: 0.32, duration: 0.5, ease: "none" }, 23.4)
+        .to(".bit.on", { backgroundColor: "rgba(244,114,182,0.16)", color: "rgba(244,114,182,0.55)", duration: 0.55, ease: "power2.inOut" }, 23.4)
+        .from(".s5-note", { opacity: 0, y: 22, duration: 0.6, ease: "power3.out" }, 24.4)
+        .to(".s5", { opacity: 0, duration: 0.35, ease: "power1.in" }, 26.05);
+
+      // ---------- S6 · 26.4-31.4 ----------
+      tl.from(".s6 .kicker", { opacity: 0, y: 20, duration: 0.55, ease: "power2.out" }, 26.55)
+        .from(".s6-a", { opacity: 0, y: 42, duration: 0.7, ease: "power3.out" }, 26.85)
+        .from(".s6-b", { opacity: 0, y: 42, duration: 0.7, ease: "power3.out" }, 27.5)
+        .to(".s6", { opacity: 0, duration: 0.35, ease: "power1.in" }, 31.05);
+
+      // ---------- S7 · 31.4-36.4 ----------
+      tl.from(".s7 .kicker", { opacity: 0, y: 20, duration: 0.55, ease: "power2.out" }, 31.55)
+        .from(".s7-a", { opacity: 0, y: 42, duration: 0.7, ease: "power3.out" }, 31.85)
+        .from(".s7-b", { opacity: 0, y: 30, duration: 0.6, ease: "power3.out" }, 32.7)
+        .from(".eps", { opacity: 0, scale: 0.6, duration: 0.5, ease: "back.out(2)" }, 33.5)
+        .to(".s7", { opacity: 0, duration: 0.35, ease: "power1.in" }, 36.05);
+
+      // ---------- S8 · 36.4-41.4 ----------
+      tl.from(".s8-k", { opacity: 0, y: 20, duration: 0.55, ease: "power2.out" }, 36.55)
+        .from(".s8-a", { opacity: 0, y: 42, duration: 0.7, ease: "power3.out" }, 36.85)
+        .from(".s8-b", { opacity: 0, y: 42, duration: 0.7, ease: "power3.out" }, 37.9)
+        .to(".s8", { opacity: 0, duration: 0.35, ease: "power1.in" }, 41.05);
+
+      // ---------- S9 · 41.4-44 ----------
+      tl.from(".s9-a", { opacity: 0, y: 18, duration: 0.7, ease: "power2.out" }, 41.6);
+
+      // ---------- 常驻 ----------
+      tl.to("#progress", { width: "100%", duration: 44, ease: "none" }, 0)
+        .to(".g1", { x: 180, y: 120, duration: 44, ease: "none" }, 0)
+        .to(".g2", { x: -160, y: -140, duration: 44, ease: "none" }, 0);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
