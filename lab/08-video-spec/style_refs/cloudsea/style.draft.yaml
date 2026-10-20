@@ -1,0 +1,19 @@
+name: cloudsea
+source: lab\07-shader-raymarch\renders\cloudsea.mp4
+note: style_extract.py 自动生成的草稿：请看 sheet.png / palette.png 修正后另存为正式风格文件
+palette:
+  bg: '#96787a'
+  bg2: '#b29491'
+  ink: '#f1e9d9'
+  dim: '#b29491'
+  accent1: '#b29491'
+  accent2: '#c5aa9f'
+  accent3: '#d3bcab'
+motion:
+  enter: fade_up
+  duration: 0.6
+  stagger: 0.15
+  easing: smooth
+texture:
+  vignette: 0.15
+  grain: 6

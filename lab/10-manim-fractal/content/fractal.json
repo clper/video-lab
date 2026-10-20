@@ -1,0 +1,38 @@
+{
+  "id": "fractal-limit",
+  "title": "分形：有限面积，无限边界",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+5%",
+  "scenes": [
+    {
+      "id": "hook",
+      "narration": "一个三角形，能有多复杂？",
+      "headline": "一个三角形，能有多复杂？"
+    },
+    {
+      "id": "sierpinski",
+      "narration": "谢尔宾斯基三角形：每次挖掉中心的三角形，无限重复。",
+      "headline": "谢尔宾斯基三角形"
+    },
+    {
+      "id": "koch",
+      "narration": "科赫雪花：每条边中间凸起一个小三角形，无限细分。",
+      "headline": "科赫雪花"
+    },
+    {
+      "id": "dimension",
+      "narration": "它的维数不是整数：约 1.58 维，介于一维线和二维面之间。",
+      "headline": "1.58 维"
+    },
+    {
+      "id": "nature",
+      "narration": "自然界到处都是分形：海岸线、雪花、蕨类植物、甚至你的肺。",
+      "headline": "自然界中的分形"
+    },
+    {
+      "id": "outro",
+      "narration": "有限的面积，无限的边界，这就是分形的魔法。",
+      "headline": "有限面积，无限边界"
+    }
+  ]
+}

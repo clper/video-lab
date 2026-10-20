@@ -1,0 +1,54 @@
+# 原则：克隆下来就能直接用。
+#   入库：源码、稿子、配音、时间轴、字幕、所有渲染好的成片和分镜片段、测试输出，
+#         克隆后不用重新配音、不用重渲染（尤其是要显卡的着色器镜头）就能看、能重新拼接成片。
+#   忽略：只忽略「和机器绑定的环境」「工具自己的缓存碎片」「用完即删的过渡文件」，这些都能一条命令重建。
+# 克隆后的准备步骤见 README「克隆后直接使用」。
+# 注意：.gitignore 不支持行尾注释，注释必须单独一行。
+
+# ---------- 环境（和机器绑定，按锁文件重建） ----------
+# uv sync 按 uv.lock 重建
+.venv/
+# npm ci 按 package-lock.json 重建
+node_modules/
+# 原开发机的 ffmpeg 二进制；其他机器用 PATH 上的 ffmpeg
+tools/bin/*.exe
+
+# ---------- Python / 工具缓存 ----------
+__pycache__/
+*.py[cod]
+.manim/
+# HyperFrames 的检查记录和渲染历史，不是成果
+.hyperframes/
+
+# ---------- Manim 的 media 目录：只留成品，丢碎片 ----------
+# media 下默认忽略（文字缓存、图片缓存、无声拼接过渡文件、日志、拼接清单……）
+**/media/*
+# 渲染好的分镜片段要入库：003 和视频工程（videokit）靠它们直接拼成片，指纹文件 .hash 让增量构建能复用
+!**/media/clips/
+# Manim 渲染出的成品视频要入库（如 reference/000 的 Hexagon.mp4、videos/003 的 Physics.mp4）
+!**/media/videos/
+# 但 Manim 的碎片、低清预览、调参静帧不要
+**/media/videos/**/partial_movie_files/
+**/media/videos/**/960p15/
+**/media/clips/*_preview/
+**/media/clips/**/*_still_*.png
+
+# ---------- 配音的分段过渡文件（下游不用；整条 narration.wav 和 timeline.json 入库） ----------
+**/build/*/segments/
+
+# ---------- 临时看图、调试截帧 ----------
+# vlab-preview 生成的抽帧拼图
+*_preview.png
+# 调试截帧，如 000 里 2_hyperframes/tmp、3_manim/tmp
+tmp/
+lab/*/renders/concat_list.txt
+
+# ---------- Blender 自动备份 ----------
+*.blend1
+*.blend2
+
+# ---------- 系统 / IDE ----------
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/

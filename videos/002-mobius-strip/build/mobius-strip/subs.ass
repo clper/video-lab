@@ -1,0 +1,42 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Microsoft YaHei,64,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,70,70,500,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:01.85,Default,,0,0,0,,一张普通的纸条
+Dialogue: 0,0:00:01.85,0:00:02.76,Default,,0,0,0,,有几个面？
+Dialogue: 0,0:00:03.97,0:00:05.11,Default,,0,0,0,,显然两个
+Dialogue: 0,0:00:05.11,0:00:06.62,Default,,0,0,0,,正面和反面
+Dialogue: 0,0:00:06.62,0:00:08.06,Default,,0,0,0,,把它粘成一个环
+Dialogue: 0,0:00:08.06,0:00:09.16,Default,,0,0,0,,还是两个面
+Dialogue: 0,0:00:09.16,0:00:10.16,Default,,0,0,0,,里面和外面
+Dialogue: 0,0:00:11.39,0:00:12.27,Default,,0,0,0,,但如果
+Dialogue: 0,0:00:12.27,0:00:14.29,Default,,0,0,0,,先把纸条扭转一百八十度
+Dialogue: 0,0:00:14.29,0:00:15.25,Default,,0,0,0,,再粘合
+Dialogue: 0,0:00:16.45,0:00:17.72,Default,,0,0,0,,奇迹发生了
+Dialogue: 0,0:00:17.72,0:00:18.72,Default,,0,0,0,,这个环
+Dialogue: 0,0:00:18.72,0:00:19.76,Default,,0,0,0,,只有一个面
+Dialogue: 0,0:00:20.96,0:00:23.17,Default,,0,0,0,,一只蚂蚁从任意一点出发
+Dialogue: 0,0:00:23.17,0:00:24.26,Default,,0,0,0,,不跨越边缘
+Dialogue: 0,0:00:24.26,0:00:25.73,Default,,0,0,0,,就能爬遍整个表面
+Dialogue: 0,0:00:26.94,0:00:28.18,Default,,0,0,0,,更神奇的是
+Dialogue: 0,0:00:28.18,0:00:29.58,Default,,0,0,0,,沿中线剪开
+Dialogue: 0,0:00:29.58,0:00:31.26,Default,,0,0,0,,它不会变成两个环
+Dialogue: 0,0:00:31.26,0:00:32.72,Default,,0,0,0,,而是一个更大的环
+Dialogue: 0,0:00:33.92,0:00:35.52,Default,,0,0,0,,再沿中线剪一次
+Dialogue: 0,0:00:35.52,0:00:37.51,Default,,0,0,0,,这次变成两个套在一起的环
+Dialogue: 0,0:00:38.72,0:00:40.94,Default,,0,0,0,,这个特性被用在传送带和打印
+Dialogue: 0,0:00:40.94,0:00:41.93,Default,,0,0,0,,机色带上
+Dialogue: 0,0:00:41.93,0:00:43.27,Default,,0,0,0,,让磨损均匀分布
+Dialogue: 0,0:00:43.27,0:00:44.37,Default,,0,0,0,,寿命翻倍
+Dialogue: 0,0:00:45.59,0:00:47.48,Default,,0,0,0,,这就是拓扑学的魔法
+Dialogue: 0,0:00:47.48,0:00:48.85,Default,,0,0,0,,改变连接方式
+Dialogue: 0,0:00:48.85,0:00:50.15,Default,,0,0,0,,就能改变本质

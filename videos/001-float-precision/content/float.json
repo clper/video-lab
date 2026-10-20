@@ -1,0 +1,53 @@
+{
+  "id": "float-precision",
+  "title": "0.1 + 0.2 为什么不等于 0.3",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+10%",
+  "scenes": [
+    {
+      "id": "hook",
+      "narration": "0.1 加 0.2 等于多少？",
+      "headline": "0.1 + 0.2 = ?"
+    },
+    {
+      "id": "answer",
+      "narration": "直觉告诉你 0.3，但计算机说 0.30000000000000004。",
+      "headline": "0.30000000000000004"
+    },
+    {
+      "id": "not_bug",
+      "narration": "这不是 bug。",
+      "headline": "这不是 bug"
+    },
+    {
+      "id": "binary",
+      "narration": "0.1 在二进制里是无限循环小数：0.0001100110011……",
+      "headline": "0.0001100110011…"
+    },
+    {
+      "id": "mantissa",
+      "narration": "双精度浮点数只有 52 位尾数，存不下无限循环，只能截断。",
+      "headline": "52 位尾数，存不下无限"
+    },
+    {
+      "id": "not_exact",
+      "narration": "所以 0.1 在计算机里，从来就不是精确的 0.1。",
+      "headline": "0.1 不是 0.1"
+    },
+    {
+      "id": "error_add",
+      "narration": "两个近似值相加，误差也跟着相加。",
+      "headline": "误差也相加"
+    },
+    {
+      "id": "finite",
+      "narration": "有限的位，表示不了无限的数。",
+      "headline": "有限 vs 无限"
+    },
+    {
+      "id": "outro",
+      "narration": "这就是 IEEE 754 双精度浮点数的真相。",
+      "headline": "IEEE 754 · DOUBLE PRECISION"
+    }
+  ]
+}

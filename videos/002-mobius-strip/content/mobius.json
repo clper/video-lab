@@ -1,0 +1,53 @@
+{
+  "id": "mobius-strip",
+  "title": "莫比乌斯环：只有一个面的奇迹",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+8%",
+  "scenes": [
+    {
+      "id": "hook",
+      "narration": "一张普通的纸条，有几个面？",
+      "headline": "一张纸条，几个面？"
+    },
+    {
+      "id": "normal",
+      "narration": "显然两个：正面和反面。把它粘成一个环，还是两个面，里面和外面。",
+      "headline": "普通环：两个面"
+    },
+    {
+      "id": "twist",
+      "narration": "但如果，先把纸条扭转一百八十度，再粘合。",
+      "headline": "扭转 180°"
+    },
+    {
+      "id": "mobius",
+      "narration": "奇迹发生了：这个环，只有一个面。",
+      "headline": "莫比乌斯环：一个面"
+    },
+    {
+      "id": "ant",
+      "narration": "一只蚂蚁从任意一点出发，不跨越边缘，就能爬遍整个表面。",
+      "headline": "蚂蚁可以爬遍整个面"
+    },
+    {
+      "id": "cut",
+      "narration": "更神奇的是：沿中线剪开，它不会变成两个环，而是一个更大的环。",
+      "headline": "剪开：一个更大的环"
+    },
+    {
+      "id": "cut2",
+      "narration": "再沿中线剪一次，这次变成两个套在一起的环。",
+      "headline": "再剪：两个套在一起的环"
+    },
+    {
+      "id": "application",
+      "narration": "这个特性被用在传送带和打印机色带上，让磨损均匀分布，寿命翻倍。",
+      "headline": "应用：磨损均匀，寿命翻倍"
+    },
+    {
+      "id": "outro",
+      "narration": "这就是拓扑学的魔法：改变连接方式，就能改变本质。",
+      "headline": "拓扑学的魔法"
+    }
+  ]
+}

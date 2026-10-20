@@ -1,0 +1,17 @@
+# 暮色剪影插画（参考：lab/06-landscape/renders/landscape.mp4）
+# 由 style_extract.py 的草稿修正而来：草稿把和背景同色的深紫当成了强调色，
+# 这里把参考里最亮、最饱和的珊瑚粉 / 日落金提亮作强调色，文字用奶油粉保证可读。
+name: landscape
+source: lab/06-landscape/renders/landscape.mp4
+palette:
+  bg: "#1c142f"        # 草稿：最暗的大面积色（夜空）
+  bg2: "#3b2647"       # 草稿：次暗色，背景从上到下的渐变
+  ink: "#fbe7e4"       # 修正：草稿的 #e19da8 偏粉、对比不足，提亮成奶油粉
+  dim: "#b79ac0"       # 修正：草稿 #967096 在深底上太暗，提亮
+  accent1: "#ff9f8a"   # 修正：参考里的珊瑚粉（太阳光晕）提亮
+  accent2: "#9b8cff"   # 修正：参考里的薰衣草紫偏蓝一点，当"蓝光"用
+  accent3: "#ffd38a"   # 修正：日落金
+font: {family: Microsoft YaHei, title_size: 58, body_size: 40}
+layout: {title_y: 5.6, content_y: 1.2}
+motion: {enter: fade_up, duration: 0.7, stagger: 0.18, easing: smooth}   # 参考镜头缓慢横移，运动量很低 → 慢
+texture: {vignette: 0.35, grain: 4}                                       # 参考有暗角和胶片颗粒

@@ -1,0 +1,20 @@
+{
+  "id": "spec-demo",
+  "title": "天空为什么是蓝的",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+8%",
+  "scenes": [
+    {
+      "id": "intro",
+      "narration": "天空为什么是蓝的？答案藏在一个四次方里。"
+    },
+    {
+      "id": "compare",
+      "narration": "蓝光的波长短，红光的波长长；按四次方算，蓝光被散射的强度，差不多是红光的六倍。"
+    },
+    {
+      "id": "points",
+      "narration": "记住三点：分子比波长小得多，波长越短散射越强，所以满天都是散射开的蓝光。"
+    }
+  ]
+}

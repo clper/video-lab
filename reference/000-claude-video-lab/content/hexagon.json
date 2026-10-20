@@ -1,0 +1,57 @@
+{
+  "id": "hexagon",
+  "title": "蜂巢为什么是六边形",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+12%",
+  "scenes": [
+    {
+      "id": "hook",
+      "narration": "蜂巢为什么偏偏是六边形？",
+      "headline": "蜂巢为什么是六边形？"
+    },
+    {
+      "id": "tiling",
+      "narration": "只用同一种正多边形，把平面铺满、不留缝隙，只有三种选择：三角形、正方形，和正六边形。",
+      "headline": "能铺满平面的正多边形，只有 3 种"
+    },
+    {
+      "id": "question",
+      "narration": "假如每个格子的面积都一样，谁需要的边最短？",
+      "headline": "面积一样，谁的边最短？"
+    },
+    {
+      "id": "perimeter",
+      "narration": "面积都取1，三角形的周长约4.56，正方形是4，而正六边形只要3.72。",
+      "headline": "面积 = 1 时的周长",
+      "data": [
+        {"label": "三角形", "value": 4.56},
+        {"label": "正方形", "value": 4.00},
+        {"label": "正六边形", "value": 3.72}
+      ]
+    },
+    {
+      "id": "wax",
+      "narration": "边越短，蜂蜡就越省：比正方形少用约7%，比三角形少用约18%。",
+      "headline": "边越短，越省蜂蜡",
+      "data": [
+        {"label": "比正方形", "value": "-7%"},
+        {"label": "比三角形", "value": "-18%"}
+      ]
+    },
+    {
+      "id": "proof",
+      "narration": "1999年，数学家托马斯·黑尔斯证明了：把平面分成面积相等的格子，正六边形的总周长最短。",
+      "headline": "1999 年，蜂巢猜想被证明",
+      "data": {
+        "year": "1999",
+        "person": "托马斯·黑尔斯（Thomas Hales）",
+        "claim": "等面积分割平面，正六边形的总周长最短"
+      }
+    },
+    {
+      "id": "outro",
+      "narration": "用最少的蜂蜡，围出最大的空间，这就是六边形的秘密。",
+      "headline": "最少的蜂蜡，最大的空间"
+    }
+  ]
+}

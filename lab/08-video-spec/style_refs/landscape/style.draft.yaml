@@ -1,0 +1,19 @@
+name: landscape
+source: lab\06-landscape\renders\landscape.mp4
+note: style_extract.py 自动生成的草稿：请看 sheet.png / palette.png 修正后另存为正式风格文件
+palette:
+  bg: '#1c142f'
+  bg2: '#3b2647'
+  ink: '#e19da8'
+  dim: '#967096'
+  accent1: '#3b2647'
+  accent2: '#543861'
+  accent3: '#bc6777'
+motion:
+  enter: fade_up
+  duration: 0.6
+  stagger: 0.15
+  easing: smooth
+texture:
+  vignette: 0.15
+  grain: 0

@@ -1,0 +1,38 @@
+[project]
+name = "video-lab"
+version = "0.1.0"
+description = "用代码画科普视频：公共代码在 vlab/ 包里，uv sync 后以可编辑模式安装"
+requires-python = ">=3.11"
+dependencies = [
+    "edge-tts==7.3.1",
+    "manim>=0.22.0",
+    "moderngl>=5.13.0",
+    "pillow>=13.0.0",
+    "pyyaml>=6.0.3",
+]
+
+# 公共工具注册成命令，任意目录都用同一套写法：uv run vlab-xxx
+[project.scripts]
+vlab-tts = "vlab.pipeline.tts:cli"              # 稿子 → 配音 + 词级时间轴 + 字幕
+vlab-finalize = "vlab.pipeline.finalize:cli"    # 无声画面 + 配音 + 字幕 → 成片
+vlab-preview = "vlab.tools.preview:main"        # 视频 → 抽帧拼图（看图检查）
+vlab-check = "vlab.tools.check_env:main"        # 环境自检
+vlab-build = "vlab.videokit.build:main"         # 视频工程 project.yaml → 成片（增量渲染）
+vlab-style = "vlab.videokit.style_extract:main" # 参考视频 → 风格分析 + 草稿风格文件
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["vlab"]
+
+# 仓库路径含中文括号【】：Python 3.11 在中文 Windows 上按 GBK 读 .pth（UTF-8 模式也一样），
+# 可编辑安装写进 .pth 的仓库路径会被读坏，import vlab 失败。这里另装一个纯 ASCII 的 .pth，
+# 运行时由 sys.prefix（.venv）推出仓库根目录。Python 3.13+ 起 .pth 按 UTF-8 读，就不需要这个了。
+[tool.hatch.build.targets.wheel.force-include]
+"vlab/_vlab_root.pth" = "_vlab_root.pth"
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true

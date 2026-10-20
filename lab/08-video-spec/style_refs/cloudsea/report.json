@@ -1,0 +1,64 @@
+{
+  "video": "lab\\07-shader-raymarch\\renders\\cloudsea.mp4",
+  "duration": 10.0,
+  "size": [
+    1080,
+    1920
+  ],
+  "shots": 1,
+  "avg_shot_sec": 10.0,
+  "brightness": 0.709,
+  "contrast": 0.127,
+  "saturation": 0.185,
+  "motion": 0.024,
+  "palette": [
+    {
+      "hex": "#b29491",
+      "share": 0.225,
+      "lum": 0.606,
+      "sat": 0.182
+    },
+    {
+      "hex": "#c5aa9f",
+      "share": 0.185,
+      "lum": 0.687,
+      "sat": 0.193
+    },
+    {
+      "hex": "#d3bcab",
+      "share": 0.148,
+      "lum": 0.753,
+      "sat": 0.19
+    },
+    {
+      "hex": "#96787a",
+      "share": 0.112,
+      "lum": 0.496,
+      "sat": 0.203
+    },
+    {
+      "hex": "#ddcbb7",
+      "share": 0.105,
+      "lum": 0.804,
+      "sat": 0.175
+    },
+    {
+      "hex": "#e4d6c2",
+      "share": 0.09,
+      "lum": 0.845,
+      "sat": 0.151
+    },
+    {
+      "hex": "#ebe0cd",
+      "share": 0.083,
+      "lum": 0.881,
+      "sat": 0.126
+    },
+    {
+      "hex": "#f1e9d9",
+      "share": 0.053,
+      "lum": 0.915,
+      "sat": 0.101
+    }
+  ]
+}

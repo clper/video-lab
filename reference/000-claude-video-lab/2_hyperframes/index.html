@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>蜂巢为什么是六边形</title>
+    <!-- 由 build.py 根据 timeline.json 生成，不要手改 -->
+    <script src="assets/gsap.min.js"></script>
+    <style>
+:root { --bg: #15110E; --amber: #F5A524; --cream: #FFF4E0; --muted: #B8A890; }
+@font-face { font-family: "Microsoft YaHei"; src: local("Microsoft YaHei"), local("MicrosoftYaHei"); font-weight: 400; }
+@font-face { font-family: "Microsoft YaHei"; src: local("Microsoft YaHei Bold"), local("MicrosoftYaHei-Bold"); font-weight: 700; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--bg);
+  font-family: "Microsoft YaHei", sans-serif; color: var(--cream); }
+.defs { position: absolute; width: 0; height: 0; }
+
+/* 背景 */
+#bg, .scene, .scene-inner { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.bg-pattern { position: absolute; inset: 0; overflow: hidden;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 45%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 45%, #000 20%, transparent 100%); }
+.bg-hex { position: absolute; left: 0; top: 0; }
+.bg-hex polygon { fill: none; stroke: rgba(245, 165, 36, 0.07); stroke-width: 2; }
+.bg-glow { position: absolute; inset: 0;
+  background: radial-gradient(ellipse 75% 42% at 50% 46%, rgba(245, 165, 36, 0.13), rgba(245, 165, 36, 0) 72%); }
+
+/* 标题区 y 240–440，图形区 y 520–1260 */
+.headline { position: absolute; left: 80px; top: 240px; width: 920px; height: 200px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; font-weight: 700; line-height: 1.22; color: var(--cream); }
+.headline > div { flex: none; }  /* 两行标题会超出 200px，不让 flex 把下面的短横压没 */
+.hl-accent { width: 72px; height: 8px; margin-top: 20px; border-radius: 4px; background: var(--amber); }
+.stage { position: absolute; left: 80px; top: 520px; width: 920px; height: 740px; }
+.stage-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+/* 蜂巢 */
+.cell-bg { fill: #221A12; }
+.cell-wall { fill: none; stroke: var(--amber); stroke-width: 6; stroke-linejoin: round; }
+.glow { position: absolute; left: 60px; top: -30px; width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 165, 36, 0.38), rgba(245, 165, 36, 0) 68%); }
+
+/* 密铺面板 */
+.panel { position: absolute; border-radius: 28px; overflow: hidden; background: rgba(255, 244, 224, 0.035);
+  border: 2px solid rgba(255, 244, 224, 0.12); box-shadow: 0 0 0 rgba(245, 165, 36, 0); }
+.panel svg { position: absolute; left: -2px; top: -2px; }
+.panel polygon { fill: var(--c); fill-opacity: 0.2; stroke: var(--c); stroke-width: 3; stroke-linejoin: round; }
+.panel-q { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 130px; font-weight: 700; color: rgba(184, 168, 144, 0.55); }
+.panel-label { position: absolute; height: 62px; line-height: 62px; text-align: center; font-size: 46px; font-weight: 700; }
+
+/* 等面积 */
+.q-shape { fill-opacity: 0; stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.q-label { font-size: 40px; font-weight: 700; fill: var(--muted); text-anchor: middle; }
+.q-mark { position: absolute; left: 0; top: 0; width: 920px; height: 300px; line-height: 300px; text-align: center;
+  font-size: 250px; font-weight: 700; color: var(--amber); }
+
+/* 条形图 */
+.bar-row { position: absolute; left: 0; width: 920px; height: 160px; }
+.bar-head { position: absolute; left: 0; top: 0; height: 60px; display: flex; align-items: center; gap: 16px;
+  font-size: 46px; font-weight: 700; }
+.bar-track { position: absolute; left: 0; top: 72px; width: 900px; height: 88px; border-radius: 44px;
+  background: rgba(255, 244, 224, 0.06); }
+.bar { position: absolute; left: 0; top: 72px; height: 88px; border-radius: 44px; overflow: hidden;
+  box-shadow: 0 0 0 rgba(245, 165, 36, 0); }
+.bar-val { position: absolute; right: 30px; top: 0; line-height: 88px; font-size: 54px; font-weight: 700; color: #15110E; }
+
+/* 数据卡 */
+.wax { fill: var(--amber); fill-opacity: 0; stroke: var(--amber); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round; }
+.stat-card { position: absolute; left: 0; width: 920px; padding: 0 56px; display: flex; align-items: center;
+  justify-content: space-between; border-radius: 32px; background: rgba(255, 244, 224, 0.045);
+  border: 2px solid rgba(255, 244, 224, 0.1); }
+.stat-label { display: flex; align-items: center; gap: 18px; font-size: 52px; font-weight: 700; color: var(--cream); }
+.stat-num { font-size: 168px; line-height: 1; font-weight: 700; color: var(--amber); }
+
+/* 年份 / 人物 / 结论 */
+.fact-year { position: absolute; left: 0; top: 0; width: 920px; height: 230px; line-height: 230px; text-align: center;
+  font-size: 210px; font-weight: 700; color: var(--amber); letter-spacing: 6px; }
+.fact-person { position: absolute; left: 0; top: 250px; width: 920px; text-align: center; }
+.fact-name { font-size: 66px; font-weight: 700; color: var(--cream); line-height: 1.3; }
+.fact-sub { font-size: 38px; color: var(--muted); letter-spacing: 2px; line-height: 1.4; }
+.claim { position: absolute; left: 0; top: 460px; width: 920px; height: 260px; padding: 0 40px 0 56px; display: flex;
+  align-items: center; justify-content: space-between; border-radius: 32px; background: rgba(245, 165, 36, 0.08);
+  border: 2px solid rgba(245, 165, 36, 0.35); }
+.claim-text { font-weight: 700; line-height: 1.45; color: var(--cream); }
+.claim-hl { color: var(--amber); }
+.check { flex: none; }
+.check circle, .check polyline { fill: none; stroke: var(--amber); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* 字幕区 y ≈ 1300–1480 */
+.cue { position: absolute; left: 0; top: 1290px; width: 1080px; height: 200px; display: flex; align-items: center;
+  justify-content: center; }
+.cue-line { font-size: 64px; font-weight: 700; color: #FFFFFF; white-space: nowrap; max-width: 980px; letter-spacing: 1px;
+  text-shadow: 3px 0 0 #0D0A08, -3px 0 0 #0D0A08, 0 3px 0 #0D0A08, 0 -3px 0 #0D0A08, 2px 2px 0 #0D0A08,
+    -2px 2px 0 #0D0A08, 2px -2px 0 #0D0A08, -2px -2px 0 #0D0A08, 0 6px 16px rgba(0, 0, 0, 0.7); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="49.576" data-fps="30" data-width="1080" data-height="1920">
+    <svg class="defs" width="0" height="0" aria-hidden="true"><defs>
+      <linearGradient id="honey" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC94A"/><stop offset="1" stop-color="#E5890A"/></linearGradient>
+    </defs></svg>
+
+    <div id="bg" class="clip" data-start="0" data-duration="49.576" data-track-index="0" data-layout-ignore>
+      <div class="bg-pattern">
+        <svg id="bg-hex" class="bg-hex" width="1080" height="2240" viewBox="0 0 1080 2240">
+          <defs><pattern id="hexgrid" width="110.85" height="192.00" patternUnits="userSpaceOnUse"><polygon points="0.0,-64.0 55.4,-32.0 55.4,32.0 0.0,64.0 -55.4,32.0 -55.4,-32.0"/><polygon points="110.9,-64.0 166.3,-32.0 166.3,32.0 110.9,64.0 55.4,32.0 55.4,-32.0"/><polygon points="55.4,32.0 110.9,64.0 110.9,128.0 55.4,160.0 -0.0,128.0 0.0,64.0"/><polygon points="0.0,128.0 55.4,160.0 55.4,224.0 0.0,256.0 -55.4,224.0 -55.4,160.0"/><polygon points="110.9,128.0 166.3,160.0 166.3,224.0 110.9,256.0 55.4,224.0 55.4,160.0"/></pattern></defs>
+          <rect width="1080" height="2240" fill="url(#hexgrid)"/>
+        </svg>
+      </div>
+      <div class="bg-glow"></div>
+    </div>
+
+    <section id="sc-hook" class="clip scene" data-start="0" data-duration="3.36" data-track-index="1">
+      <div class="scene-inner" id="sc-hook-inner">
+        <div class="headline" id="sc-hook-title" style="font-size:80px"><div>蜂巢为什么是六边形？</div><div class="hl-accent" id="sc-hook-accent"></div></div>
+        <div class="stage" id="sc-hook-stage"><svg class="stage-svg" width="920" height="740" viewBox="0 0 920 740"><defs><clipPath id="sc-hook-k0"><polygon points="460.0,294.9 525.1,332.4 525.1,407.6 460.0,445.1 394.9,407.6 394.9,332.4"/></clipPath><clipPath id="sc-hook-k2"><polygon points="605.5,294.9 670.5,332.4 670.5,407.6 605.5,445.1 540.4,407.6 540.4,332.4"/></clipPath><clipPath id="sc-hook-k5"><polygon points="314.5,294.9 379.6,332.4 379.6,407.6 314.5,445.1 249.5,407.6 249.5,332.4"/></clipPath><clipPath id="sc-hook-k7"><polygon points="460.0,42.9 525.1,80.4 525.1,155.6 460.0,193.1 394.9,155.6 394.9,80.4"/></clipPath><clipPath id="sc-hook-k10"><polygon points="751.0,294.9 816.0,332.4 816.0,407.6 751.0,445.1 685.9,407.6 685.9,332.4"/></clipPath><clipPath id="sc-hook-k13"><polygon points="460.0,546.9 525.1,584.4 525.1,659.6 460.0,697.1 394.9,659.6 394.9,584.4"/></clipPath><clipPath id="sc-hook-k15"><polygon points="241.8,420.9 306.8,458.4 306.8,533.6 241.8,571.1 176.7,533.6 176.7,458.4"/></clipPath><clipPath id="sc-hook-k18"><polygon points="314.5,42.9 379.6,80.4 379.6,155.6 314.5,193.1 249.5,155.6 249.5,80.4"/></clipPath></defs><g id="sc-hook-c0"><polygon class="cell-bg" points="460.0,291.9 527.7,330.9 527.7,409.1 460.0,448.1 392.3,409.1 392.3,330.9"/><g clip-path="url(#sc-hook-k0)"><g id="sc-hook-h0"><rect x="381.9" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="381.9" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="460.0,291.9 527.7,330.9 527.7,409.1 460.0,448.1 392.3,409.1 392.3,330.9"/></g><g id="sc-hook-c1"><polygon class="cell-bg" points="532.7,165.9 600.4,204.9 600.4,283.1 532.7,322.1 465.1,283.1 465.1,204.9"/><polygon class="cell-wall" points="532.7,165.9 600.4,204.9 600.4,283.1 532.7,322.1 465.1,283.1 465.1,204.9"/></g><g id="sc-hook-c2"><polygon class="cell-bg" points="605.5,291.9 673.1,330.9 673.1,409.1 605.5,448.1 537.8,409.1 537.8,330.9"/><g clip-path="url(#sc-hook-k2)"><g id="sc-hook-h2"><rect x="527.4" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="527.4" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="605.5,291.9 673.1,330.9 673.1,409.1 605.5,448.1 537.8,409.1 537.8,330.9"/></g><g id="sc-hook-c3"><polygon class="cell-bg" points="532.7,417.9 600.4,456.9 600.4,535.1 532.7,574.1 465.1,535.1 465.1,456.9"/><polygon class="cell-wall" points="532.7,417.9 600.4,456.9 600.4,535.1 532.7,574.1 465.1,535.1 465.1,456.9"/></g><g id="sc-hook-c4"><polygon class="cell-bg" points="387.3,417.9 454.9,456.9 454.9,535.1 387.3,574.1 319.6,535.1 319.6,456.9"/><polygon class="cell-wall" points="387.3,417.9 454.9,456.9 454.9,535.1 387.3,574.1 319.6,535.1 319.6,456.9"/></g><g id="sc-hook-c5"><polygon class="cell-bg" points="314.5,291.9 382.2,330.9 382.2,409.1 314.5,448.1 246.9,409.1 246.9,330.9"/><g clip-path="url(#sc-hook-k5)"><g id="sc-hook-h5"><rect x="236.4" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="236.4" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="314.5,291.9 382.2,330.9 382.2,409.1 314.5,448.1 246.9,409.1 246.9,330.9"/></g><g id="sc-hook-c6"><polygon class="cell-bg" points="387.3,165.9 454.9,204.9 454.9,283.1 387.3,322.1 319.6,283.1 319.6,204.9"/><polygon class="cell-wall" points="387.3,165.9 454.9,204.9 454.9,283.1 387.3,322.1 319.6,283.1 319.6,204.9"/></g><g id="sc-hook-c7"><polygon class="cell-bg" points="460.0,39.9 527.7,78.9 527.7,157.1 460.0,196.1 392.3,157.1 392.3,78.9"/><g clip-path="url(#sc-hook-k7)"><g id="sc-hook-h7"><rect x="381.9" y="39.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="381.9" y="39.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="460.0,39.9 527.7,78.9 527.7,157.1 460.0,196.1 392.3,157.1 392.3,78.9"/></g><g id="sc-hook-c8"><polygon class="cell-bg" points="605.5,39.9 673.1,78.9 673.1,157.1 605.5,196.1 537.8,157.1 537.8,78.9"/><polygon class="cell-wall" points="605.5,39.9 673.1,78.9 673.1,157.1 605.5,196.1 537.8,157.1 537.8,78.9"/></g><g id="sc-hook-c9"><polygon class="cell-bg" points="678.2,165.9 745.9,204.9 745.9,283.1 678.2,322.1 610.6,283.1 610.6,204.9"/><polygon class="cell-wall" points="678.2,165.9 745.9,204.9 745.9,283.1 678.2,322.1 610.6,283.1 610.6,204.9"/></g><g id="sc-hook-c10"><polygon class="cell-bg" points="751.0,291.9 818.6,330.9 818.6,409.1 751.0,448.1 683.3,409.1 683.3,330.9"/><g clip-path="url(#sc-hook-k10)"><g id="sc-hook-h10"><rect x="672.9" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="672.9" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="751.0,291.9 818.6,330.9 818.6,409.1 751.0,448.1 683.3,409.1 683.3,330.9"/></g><g id="sc-hook-c11"><polygon class="cell-bg" points="678.2,417.9 745.9,456.9 745.9,535.1 678.2,574.1 610.6,535.1 610.6,456.9"/><polygon class="cell-wall" points="678.2,417.9 745.9,456.9 745.9,535.1 678.2,574.1 610.6,535.1 610.6,456.9"/></g><g id="sc-hook-c12"><polygon class="cell-bg" points="605.5,543.9 673.1,582.9 673.1,661.1 605.5,700.1 537.8,661.1 537.8,582.9"/><polygon class="cell-wall" points="605.5,543.9 673.1,582.9 673.1,661.1 605.5,700.1 537.8,661.1 537.8,582.9"/></g><g id="sc-hook-c13"><polygon class="cell-bg" points="460.0,543.9 527.7,582.9 527.7,661.1 460.0,700.1 392.3,661.1 392.3,582.9"/><g clip-path="url(#sc-hook-k13)"><g id="sc-hook-h13"><rect x="381.9" y="543.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="381.9" y="543.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="460.0,543.9 527.7,582.9 527.7,661.1 460.0,700.1 392.3,661.1 392.3,582.9"/></g><g id="sc-hook-c14"><polygon class="cell-bg" points="314.5,543.9 382.2,582.9 382.2,661.1 314.5,700.1 246.9,661.1 246.9,582.9"/><polygon class="cell-wall" points="314.5,543.9 382.2,582.9 382.2,661.1 314.5,700.1 246.9,661.1 246.9,582.9"/></g><g id="sc-hook-c15"><polygon class="cell-bg" points="241.8,417.9 309.4,456.9 309.4,535.1 241.8,574.1 174.1,535.1 174.1,456.9"/><g clip-path="url(#sc-hook-k15)"><g id="sc-hook-h15"><rect x="163.6" y="417.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="163.6" y="417.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="241.8,417.9 309.4,456.9 309.4,535.1 241.8,574.1 174.1,535.1 174.1,456.9"/></g><g id="sc-hook-c16"><polygon class="cell-bg" points="169.0,291.9 236.7,330.9 236.7,409.1 169.0,448.1 101.4,409.1 101.4,330.9"/><polygon class="cell-wall" points="169.0,291.9 236.7,330.9 236.7,409.1 169.0,448.1 101.4,409.1 101.4,330.9"/></g><g id="sc-hook-c17"><polygon class="cell-bg" points="241.8,165.9 309.4,204.9 309.4,283.1 241.8,322.1 174.1,283.1 174.1,204.9"/><polygon class="cell-wall" points="241.8,165.9 309.4,204.9 309.4,283.1 241.8,322.1 174.1,283.1 174.1,204.9"/></g><g id="sc-hook-c18"><polygon class="cell-bg" points="314.5,39.9 382.2,78.9 382.2,157.1 314.5,196.1 246.9,157.1 246.9,78.9"/><g clip-path="url(#sc-hook-k18)"><g id="sc-hook-h18"><rect x="236.4" y="39.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="236.4" y="39.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="314.5,39.9 382.2,78.9 382.2,157.1 314.5,196.1 246.9,157.1 246.9,78.9"/></g></svg></div>
+      </div>
+    </section>
+    <section id="sc-tiling" class="clip scene" data-start="3.36" data-duration="9.6" data-track-index="1">
+      <div class="scene-inner" id="sc-tiling-inner">
+        <div class="headline" id="sc-tiling-title" style="font-size:76px"><div>能铺满平面的正多边形，<br>只有 3 种</div><div class="hl-accent" id="sc-tiling-accent"></div></div>
+        <div class="stage" id="sc-tiling-stage"><div class="panel" id="sc-tiling-p0" style="left:0px; top:108px; width:280px; height:440px; --c:#6C8CFF"><svg width="280" height="440" viewBox="0 0 280 440"><polygon points="140.0,183.6 182.0,256.4 98.0,256.4"/><polygon points="56.0,183.6 140.0,183.6 98.0,256.4"/><polygon points="140.0,183.6 224.0,183.6 182.0,256.4"/><polygon points="98.0,256.4 182.0,256.4 140.0,329.1"/><polygon points="98.0,110.9 140.0,183.6 56.0,183.6"/><polygon points="182.0,110.9 224.0,183.6 140.0,183.6"/><polygon points="98.0,110.9 182.0,110.9 140.0,183.6"/><polygon points="56.0,183.6 98.0,256.4 14.0,256.4"/><polygon points="224.0,183.6 266.0,256.4 182.0,256.4"/><polygon points="98.0,256.4 140.0,329.1 56.0,329.1"/><polygon points="182.0,256.4 224.0,329.1 140.0,329.1"/><polygon points="14.0,256.4 98.0,256.4 56.0,329.1"/><polygon points="182.0,256.4 266.0,256.4 224.0,329.1"/><polygon points="14.0,110.9 98.0,110.9 56.0,183.6"/><polygon points="182.0,110.9 266.0,110.9 224.0,183.6"/><polygon points="-28.0,183.6 56.0,183.6 14.0,256.4"/><polygon points="224.0,183.6 308.0,183.6 266.0,256.4"/><polygon points="140.0,38.1 182.0,110.9 98.0,110.9"/><polygon points="14.0,110.9 56.0,183.6 -28.0,183.6"/><polygon points="266.0,110.9 308.0,183.6 224.0,183.6"/><polygon points="56.0,329.1 140.0,329.1 98.0,401.9"/><polygon points="140.0,329.1 224.0,329.1 182.0,401.9"/><polygon points="14.0,256.4 56.0,329.1 -28.0,329.1"/><polygon points="266.0,256.4 308.0,329.1 224.0,329.1"/><polygon points="140.0,329.1 182.0,401.9 98.0,401.9"/><polygon points="56.0,38.1 98.0,110.9 14.0,110.9"/><polygon points="224.0,38.1 266.0,110.9 182.0,110.9"/><polygon points="56.0,38.1 140.0,38.1 98.0,110.9"/><polygon points="140.0,38.1 224.0,38.1 182.0,110.9"/><polygon points="-28.0,183.6 14.0,256.4 -70.0,256.4"/><polygon points="308.0,183.6 350.0,256.4 266.0,256.4"/><polygon points="-70.0,256.4 14.0,256.4 -28.0,329.1"/><polygon points="266.0,256.4 350.0,256.4 308.0,329.1"/><polygon points="56.0,329.1 98.0,401.9 14.0,401.9"/><polygon points="224.0,329.1 266.0,401.9 182.0,401.9"/><polygon points="-28.0,329.1 56.0,329.1 14.0,401.9"/><polygon points="224.0,329.1 308.0,329.1 266.0,401.9"/><polygon points="-70.0,110.9 14.0,110.9 -28.0,183.6"/><polygon points="266.0,110.9 350.0,110.9 308.0,183.6"/><polygon points="-28.0,38.1 56.0,38.1 14.0,110.9"/><polygon points="224.0,38.1 308.0,38.1 266.0,110.9"/><polygon points="98.0,401.9 182.0,401.9 140.0,474.6"/><polygon points="98.0,-34.6 140.0,38.1 56.0,38.1"/><polygon points="182.0,-34.6 224.0,38.1 140.0,38.1"/><polygon points="-28.0,38.1 14.0,110.9 -70.0,110.9"/><polygon points="308.0,38.1 350.0,110.9 266.0,110.9"/><polygon points="14.0,401.9 98.0,401.9 56.0,474.6"/><polygon points="182.0,401.9 266.0,401.9 224.0,474.6"/><polygon points="-28.0,329.1 14.0,401.9 -70.0,401.9"/><polygon points="308.0,329.1 350.0,401.9 266.0,401.9"/><polygon points="98.0,-34.6 182.0,-34.6 140.0,38.1"/><polygon points="98.0,401.9 140.0,474.6 56.0,474.6"/><polygon points="182.0,401.9 224.0,474.6 140.0,474.6"/><polygon points="14.0,-34.6 56.0,38.1 -28.0,38.1"/><polygon points="266.0,-34.6 308.0,38.1 224.0,38.1"/><polygon points="14.0,-34.6 98.0,-34.6 56.0,38.1"/><polygon points="182.0,-34.6 266.0,-34.6 224.0,38.1"/><polygon points="14.0,401.9 56.0,474.6 -28.0,474.6"/><polygon points="266.0,401.9 308.0,474.6 224.0,474.6"/><polygon points="-70.0,401.9 14.0,401.9 -28.0,474.6"/><polygon points="266.0,401.9 350.0,401.9 308.0,474.6"/><polygon points="-70.0,-34.6 14.0,-34.6 -28.0,38.1"/><polygon points="266.0,-34.6 350.0,-34.6 308.0,38.1"/></svg><div class="panel-q" id="sc-tiling-q0">?</div></div><div class="panel-label" id="sc-tiling-l0" style="left:0px; top:570px; width:280px; color:#6C8CFF">三角形</div><div class="panel" id="sc-tiling-p1" style="left:320px; top:108px; width:280px; height:440px; --c:#34C3A0"><svg width="280" height="440" viewBox="0 0 280 440"><polygon points="102.0,182.0 178.0,182.0 178.0,258.0 102.0,258.0"/><polygon points="102.0,106.0 178.0,106.0 178.0,182.0 102.0,182.0"/><polygon points="26.0,182.0 102.0,182.0 102.0,258.0 26.0,258.0"/><polygon points="178.0,182.0 254.0,182.0 254.0,258.0 178.0,258.0"/><polygon points="102.0,258.0 178.0,258.0 178.0,334.0 102.0,334.0"/><polygon points="26.0,106.0 102.0,106.0 102.0,182.0 26.0,182.0"/><polygon points="178.0,106.0 254.0,106.0 254.0,182.0 178.0,182.0"/><polygon points="26.0,258.0 102.0,258.0 102.0,334.0 26.0,334.0"/><polygon points="178.0,258.0 254.0,258.0 254.0,334.0 178.0,334.0"/><polygon points="102.0,30.0 178.0,30.0 178.0,106.0 102.0,106.0"/><polygon points="-50.0,182.0 26.0,182.0 26.0,258.0 -50.0,258.0"/><polygon points="254.0,182.0 330.0,182.0 330.0,258.0 254.0,258.0"/><polygon points="102.0,334.0 178.0,334.0 178.0,410.0 102.0,410.0"/><polygon points="26.0,30.0 102.0,30.0 102.0,106.0 26.0,106.0"/><polygon points="178.0,30.0 254.0,30.0 254.0,106.0 178.0,106.0"/><polygon points="-50.0,106.0 26.0,106.0 26.0,182.0 -50.0,182.0"/><polygon points="254.0,106.0 330.0,106.0 330.0,182.0 254.0,182.0"/><polygon points="-50.0,258.0 26.0,258.0 26.0,334.0 -50.0,334.0"/><polygon points="254.0,258.0 330.0,258.0 330.0,334.0 254.0,334.0"/><polygon points="26.0,334.0 102.0,334.0 102.0,410.0 26.0,410.0"/><polygon points="178.0,334.0 254.0,334.0 254.0,410.0 178.0,410.0"/><polygon points="-50.0,30.0 26.0,30.0 26.0,106.0 -50.0,106.0"/><polygon points="254.0,30.0 330.0,30.0 330.0,106.0 254.0,106.0"/><polygon points="-50.0,334.0 26.0,334.0 26.0,410.0 -50.0,410.0"/><polygon points="254.0,334.0 330.0,334.0 330.0,410.0 254.0,410.0"/><polygon points="102.0,-46.0 178.0,-46.0 178.0,30.0 102.0,30.0"/><polygon points="102.0,410.0 178.0,410.0 178.0,486.0 102.0,486.0"/><polygon points="26.0,-46.0 102.0,-46.0 102.0,30.0 26.0,30.0"/><polygon points="178.0,-46.0 254.0,-46.0 254.0,30.0 178.0,30.0"/><polygon points="26.0,410.0 102.0,410.0 102.0,486.0 26.0,486.0"/><polygon points="178.0,410.0 254.0,410.0 254.0,486.0 178.0,486.0"/><polygon points="-50.0,-46.0 26.0,-46.0 26.0,30.0 -50.0,30.0"/><polygon points="254.0,-46.0 330.0,-46.0 330.0,30.0 254.0,30.0"/><polygon points="-50.0,410.0 26.0,410.0 26.0,486.0 -50.0,486.0"/><polygon points="254.0,410.0 330.0,410.0 330.0,486.0 254.0,486.0"/></svg><div class="panel-q" id="sc-tiling-q1">?</div></div><div class="panel-label" id="sc-tiling-l1" style="left:320px; top:570px; width:280px; color:#34C3A0">正方形</div><div class="panel" id="sc-tiling-p2" style="left:640px; top:108px; width:280px; height:440px; --c:#F5A524"><svg width="280" height="440" viewBox="0 0 280 440"><polygon points="140.0,174.0 179.8,197.0 179.8,243.0 140.0,266.0 100.2,243.0 100.2,197.0"/><polygon points="100.2,105.0 140.0,128.0 140.0,174.0 100.2,197.0 60.3,174.0 60.3,128.0"/><polygon points="60.3,174.0 100.2,197.0 100.2,243.0 60.3,266.0 20.5,243.0 20.5,197.0"/><polygon points="219.7,174.0 259.5,197.0 259.5,243.0 219.7,266.0 179.8,243.0 179.8,197.0"/><polygon points="100.2,243.0 140.0,266.0 140.0,312.0 100.2,335.0 60.3,312.0 60.3,266.0"/><polygon points="179.8,105.0 219.7,128.0 219.7,174.0 179.8,197.0 140.0,174.0 140.0,128.0"/><polygon points="179.8,243.0 219.7,266.0 219.7,312.0 179.8,335.0 140.0,312.0 140.0,266.0"/><polygon points="140.0,36.0 179.8,59.0 179.8,105.0 140.0,128.0 100.2,105.0 100.2,59.0"/><polygon points="20.5,105.0 60.3,128.0 60.3,174.0 20.5,197.0 -19.3,174.0 -19.3,128.0"/><polygon points="20.5,243.0 60.3,266.0 60.3,312.0 20.5,335.0 -19.3,312.0 -19.3,266.0"/><polygon points="140.0,312.0 179.8,335.0 179.8,381.0 140.0,404.0 100.2,381.0 100.2,335.0"/><polygon points="259.5,105.0 299.3,128.0 299.3,174.0 259.5,197.0 219.7,174.0 219.7,128.0"/><polygon points="259.5,243.0 299.3,266.0 299.3,312.0 259.5,335.0 219.7,312.0 219.7,266.0"/><polygon points="299.3,174.0 339.2,197.0 339.2,243.0 299.3,266.0 259.5,243.0 259.5,197.0"/><polygon points="60.3,36.0 100.2,59.0 100.2,105.0 60.3,128.0 20.5,105.0 20.5,59.0"/><polygon points="219.7,36.0 259.5,59.0 259.5,105.0 219.7,128.0 179.8,105.0 179.8,59.0"/><polygon points="-19.3,174.0 20.5,197.0 20.5,243.0 -19.3,266.0 -59.2,243.0 -59.2,197.0"/><polygon points="60.3,312.0 100.2,335.0 100.2,381.0 60.3,404.0 20.5,381.0 20.5,335.0"/><polygon points="219.7,312.0 259.5,335.0 259.5,381.0 219.7,404.0 179.8,381.0 179.8,335.0"/><polygon points="299.3,36.0 339.2,59.0 339.2,105.0 299.3,128.0 259.5,105.0 259.5,59.0"/><polygon points="299.3,312.0 339.2,335.0 339.2,381.0 299.3,404.0 259.5,381.0 259.5,335.0"/><polygon points="100.2,-33.0 140.0,-10.0 140.0,36.0 100.2,59.0 60.3,36.0 60.3,-10.0"/><polygon points="-19.3,36.0 20.5,59.0 20.5,105.0 -19.3,128.0 -59.2,105.0 -59.2,59.0"/><polygon points="-19.3,312.0 20.5,335.0 20.5,381.0 -19.3,404.0 -59.2,381.0 -59.2,335.0"/><polygon points="100.2,381.0 140.0,404.0 140.0,450.0 100.2,473.0 60.3,450.0 60.3,404.0"/><polygon points="179.8,-33.0 219.7,-10.0 219.7,36.0 179.8,59.0 140.0,36.0 140.0,-10.0"/><polygon points="179.8,381.0 219.7,404.0 219.7,450.0 179.8,473.0 140.0,450.0 140.0,404.0"/><polygon points="20.5,-33.0 60.3,-10.0 60.3,36.0 20.5,59.0 -19.3,36.0 -19.3,-10.0"/><polygon points="20.5,381.0 60.3,404.0 60.3,450.0 20.5,473.0 -19.3,450.0 -19.3,404.0"/><polygon points="259.5,-33.0 299.3,-10.0 299.3,36.0 259.5,59.0 219.7,36.0 219.7,-10.0"/><polygon points="259.5,381.0 299.3,404.0 299.3,450.0 259.5,473.0 219.7,450.0 219.7,404.0"/></svg><div class="panel-q" id="sc-tiling-q2">?</div></div><div class="panel-label" id="sc-tiling-l2" style="left:640px; top:570px; width:280px; color:#F5A524">正六边形</div></div>
+      </div>
+    </section>
+    <section id="sc-question" class="clip scene" data-start="12.96" data-duration="4.608" data-track-index="1">
+      <div class="scene-inner" id="sc-question-inner">
+        <div class="headline" id="sc-question-title" style="font-size:80px"><div>面积一样，谁的边最短？</div><div class="hl-accent" id="sc-question-accent"></div></div>
+        <div class="stage" id="sc-question-stage"><div class="q-mark" id="sc-question-mark">?</div><svg class="stage-svg" width="920" height="740" viewBox="0 0 920 740"><g id="sc-question-g"><polygon class="q-shape" id="sc-question-s0" points="175.9,193.8 327.9,457.0 24.0,457.0" style="fill:#6C8CFF; stroke:#6C8CFF" stroke-dasharray="911.8 923.8"/><text class="q-label" id="sc-question-t0" x="175.9" y="523">面积 = 1</text><polygon class="q-shape" id="sc-question-s1" points="587.9,257.0 587.9,457.0 387.9,457.0 387.9,257.0" style="fill:#34C3A0; stroke:#34C3A0" stroke-dasharray="800.0 812.0"/><text class="q-label" id="sc-question-t1" x="487.9" y="523">面积 = 1</text><polygon class="q-shape" id="sc-question-s2" points="896.0,349.5 834.0,457.0 709.9,457.0 647.9,349.5 709.9,242.1 834.0,242.1" style="fill:#F5A524; stroke:#F5A524" stroke-dasharray="744.5 756.5"/><text class="q-label" id="sc-question-t2" x="772.0" y="523">面积 = 1</text></g></svg></div>
+      </div>
+    </section>
+    <section id="sc-perimeter" class="clip scene" data-start="17.568" data-duration="8.088" data-track-index="1">
+      <div class="scene-inner" id="sc-perimeter-inner">
+        <div class="headline" id="sc-perimeter-title" style="font-size:80px"><div>面积 = 1 时的周长</div><div class="hl-accent" id="sc-perimeter-accent"></div></div>
+        <div class="stage" id="sc-perimeter-stage"><div class="bar-row" style="top:60px"><div class="bar-head" id="sc-perimeter-h0" style="color:#6C8CFF"><svg class="icon" width="56" height="56" viewBox="0 0 100 100"><polygon points="50.0,12.0 89.8,81.0 10.2,81.0" fill="#6C8CFF" fill-opacity="0.25" stroke="#6C8CFF" stroke-width="7" stroke-linejoin="round"/></svg><span>三角形</span></div><div class="bar-track" id="sc-perimeter-t0"></div><div class="bar" id="sc-perimeter-b0" style="width:900px; background:#6C8CFF"><span class="bar-val" data-layout-allow-overflow>4.56</span></div></div><div class="bar-row" style="top:290px"><div class="bar-head" id="sc-perimeter-h1" style="color:#34C3A0"><svg class="icon" width="56" height="56" viewBox="0 0 100 100"><polygon points="85.4,14.6 85.4,85.4 14.6,85.4 14.6,14.6" fill="#34C3A0" fill-opacity="0.25" stroke="#34C3A0" stroke-width="7" stroke-linejoin="round"/></svg><span>正方形</span></div><div class="bar-track" id="sc-perimeter-t1"></div><div class="bar" id="sc-perimeter-b1" style="width:789px; background:#34C3A0"><span class="bar-val" data-layout-allow-overflow>4.00</span></div></div><div class="bar-row" style="top:520px"><div class="bar-head" id="sc-perimeter-h2" style="color:#F5A524"><svg class="icon" width="56" height="56" viewBox="0 0 100 100"><polygon points="97.0,50.0 73.5,90.7 26.5,90.7 3.0,50.0 26.5,9.3 73.5,9.3" fill="#F5A524" fill-opacity="0.25" stroke="#F5A524" stroke-width="7" stroke-linejoin="round"/></svg><span>正六边形</span></div><div class="bar-track" id="sc-perimeter-t2"></div><div class="bar" id="sc-perimeter-b2" style="width:734px; background:#F5A524"><span class="bar-val" data-layout-allow-overflow>3.72</span></div></div></div>
+      </div>
+    </section>
+    <section id="sc-wax" class="clip scene" data-start="25.656" data-duration="8.04" data-track-index="1">
+      <div class="scene-inner" id="sc-wax-inner">
+        <div class="headline" id="sc-wax-title" style="font-size:80px"><div>边越短，越省蜂蜡</div><div class="hl-accent" id="sc-wax-accent"></div></div>
+        <div class="stage" id="sc-wax-stage"><svg class="stage-svg" width="920" height="224" viewBox="0 0 920 224"><polygon class="wax" id="sc-wax-wax" points="524.0,112.0 492.0,167.4 428.0,167.4 396.0,112.0 428.0,56.6 492.0,56.6" stroke-dasharray="384.0 404.0"/></svg><div class="stat-card" id="sc-wax-c0" style="top:224px; height:240px"><div class="stat-label"><svg class="icon" width="64" height="64" viewBox="0 0 100 100"><polygon points="85.4,14.6 85.4,85.4 14.6,85.4 14.6,14.6" fill="#34C3A0" fill-opacity="0.25" stroke="#34C3A0" stroke-width="7" stroke-linejoin="round"/></svg><span>比正方形</span></div><div class="stat-num" id="sc-wax-n0">−7%</div></div><div class="stat-card" id="sc-wax-c1" style="top:500px; height:240px"><div class="stat-label"><svg class="icon" width="64" height="64" viewBox="0 0 100 100"><polygon points="50.0,12.0 89.8,81.0 10.2,81.0" fill="#6C8CFF" fill-opacity="0.25" stroke="#6C8CFF" stroke-width="7" stroke-linejoin="round"/></svg><span>比三角形</span></div><div class="stat-num" id="sc-wax-n1">−18%</div></div></div>
+      </div>
+    </section>
+    <section id="sc-proof" class="clip scene" data-start="33.696" data-duration="8.832" data-track-index="1">
+      <div class="scene-inner" id="sc-proof-inner">
+        <div class="headline" id="sc-proof-title" style="font-size:76px"><div>1999 年，蜂巢猜想被证明</div><div class="hl-accent" id="sc-proof-accent"></div></div>
+        <div class="stage" id="sc-proof-stage"><div class="fact-year" id="sc-proof-year">1999</div><div class="fact-person" id="sc-proof-person"><div class="fact-name">托马斯·黑尔斯</div><div class="fact-sub">Thomas Hales</div></div><div class="claim" id="sc-proof-claim"><div class="claim-text" style="font-size:58px"><div id="sc-proof-l0" class="">等面积分割平面，</div><div id="sc-proof-l1" class="claim-hl">正六边形的总周长最短</div></div><svg class="check" width="110" height="110" viewBox="0 0 110 110"><circle id="sc-proof-ring" cx="55" cy="55" r="46" stroke-dasharray="289.0 305.0"/><polyline id="sc-proof-tick" points="30,57 46,73 79,37" stroke-dasharray="71.5 87.5"/></svg></div></div>
+      </div>
+    </section>
+    <section id="sc-outro" class="clip scene" data-start="42.528" data-duration="7.048" data-track-index="1">
+      <div class="scene-inner" id="sc-outro-inner">
+        <div class="headline" id="sc-outro-title" style="font-size:80px"><div>最少的蜂蜡，最大的空间</div><div class="hl-accent" id="sc-outro-accent"></div></div>
+        <div class="stage" id="sc-outro-stage"><div class="glow" id="sc-outro-glow"></div><svg class="stage-svg" width="920" height="740" viewBox="0 0 920 740"><defs><clipPath id="sc-outro-k0"><polygon points="460.0,294.9 525.1,332.4 525.1,407.6 460.0,445.1 394.9,407.6 394.9,332.4"/></clipPath><clipPath id="sc-outro-k1"><polygon points="532.7,168.9 597.8,206.4 597.8,281.6 532.7,319.1 467.7,281.6 467.7,206.4"/></clipPath><clipPath id="sc-outro-k2"><polygon points="605.5,294.9 670.5,332.4 670.5,407.6 605.5,445.1 540.4,407.6 540.4,332.4"/></clipPath><clipPath id="sc-outro-k3"><polygon points="532.7,420.9 597.8,458.4 597.8,533.6 532.7,571.1 467.7,533.6 467.7,458.4"/></clipPath><clipPath id="sc-outro-k4"><polygon points="387.3,420.9 452.3,458.4 452.3,533.6 387.3,571.1 322.2,533.6 322.2,458.4"/></clipPath><clipPath id="sc-outro-k5"><polygon points="314.5,294.9 379.6,332.4 379.6,407.6 314.5,445.1 249.5,407.6 249.5,332.4"/></clipPath><clipPath id="sc-outro-k6"><polygon points="387.3,168.9 452.3,206.4 452.3,281.6 387.3,319.1 322.2,281.6 322.2,206.4"/></clipPath><clipPath id="sc-outro-k7"><polygon points="460.0,42.9 525.1,80.4 525.1,155.6 460.0,193.1 394.9,155.6 394.9,80.4"/></clipPath><clipPath id="sc-outro-k8"><polygon points="605.5,42.9 670.5,80.4 670.5,155.6 605.5,193.1 540.4,155.6 540.4,80.4"/></clipPath><clipPath id="sc-outro-k9"><polygon points="678.2,168.9 743.3,206.4 743.3,281.6 678.2,319.1 613.2,281.6 613.2,206.4"/></clipPath><clipPath id="sc-outro-k10"><polygon points="751.0,294.9 816.0,332.4 816.0,407.6 751.0,445.1 685.9,407.6 685.9,332.4"/></clipPath><clipPath id="sc-outro-k11"><polygon points="678.2,420.9 743.3,458.4 743.3,533.6 678.2,571.1 613.2,533.6 613.2,458.4"/></clipPath><clipPath id="sc-outro-k12"><polygon points="605.5,546.9 670.5,584.4 670.5,659.6 605.5,697.1 540.4,659.6 540.4,584.4"/></clipPath><clipPath id="sc-outro-k13"><polygon points="460.0,546.9 525.1,584.4 525.1,659.6 460.0,697.1 394.9,659.6 394.9,584.4"/></clipPath><clipPath id="sc-outro-k14"><polygon points="314.5,546.9 379.6,584.4 379.6,659.6 314.5,697.1 249.5,659.6 249.5,584.4"/></clipPath><clipPath id="sc-outro-k15"><polygon points="241.8,420.9 306.8,458.4 306.8,533.6 241.8,571.1 176.7,533.6 176.7,458.4"/></clipPath><clipPath id="sc-outro-k16"><polygon points="169.0,294.9 234.1,332.4 234.1,407.6 169.0,445.1 104.0,407.6 104.0,332.4"/></clipPath><clipPath id="sc-outro-k17"><polygon points="241.8,168.9 306.8,206.4 306.8,281.6 241.8,319.1 176.7,281.6 176.7,206.4"/></clipPath><clipPath id="sc-outro-k18"><polygon points="314.5,42.9 379.6,80.4 379.6,155.6 314.5,193.1 249.5,155.6 249.5,80.4"/></clipPath></defs><g id="sc-outro-c0"><polygon class="cell-bg" points="460.0,291.9 527.7,330.9 527.7,409.1 460.0,448.1 392.3,409.1 392.3,330.9"/><g clip-path="url(#sc-outro-k0)"><g id="sc-outro-h0"><rect x="381.9" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="381.9" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="460.0,291.9 527.7,330.9 527.7,409.1 460.0,448.1 392.3,409.1 392.3,330.9"/></g><g id="sc-outro-c1"><polygon class="cell-bg" points="532.7,165.9 600.4,204.9 600.4,283.1 532.7,322.1 465.1,283.1 465.1,204.9"/><g clip-path="url(#sc-outro-k1)"><g id="sc-outro-h1"><rect x="454.6" y="165.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="454.6" y="165.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="532.7,165.9 600.4,204.9 600.4,283.1 532.7,322.1 465.1,283.1 465.1,204.9"/></g><g id="sc-outro-c2"><polygon class="cell-bg" points="605.5,291.9 673.1,330.9 673.1,409.1 605.5,448.1 537.8,409.1 537.8,330.9"/><g clip-path="url(#sc-outro-k2)"><g id="sc-outro-h2"><rect x="527.4" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="527.4" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="605.5,291.9 673.1,330.9 673.1,409.1 605.5,448.1 537.8,409.1 537.8,330.9"/></g><g id="sc-outro-c3"><polygon class="cell-bg" points="532.7,417.9 600.4,456.9 600.4,535.1 532.7,574.1 465.1,535.1 465.1,456.9"/><g clip-path="url(#sc-outro-k3)"><g id="sc-outro-h3"><rect x="454.6" y="417.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="454.6" y="417.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="532.7,417.9 600.4,456.9 600.4,535.1 532.7,574.1 465.1,535.1 465.1,456.9"/></g><g id="sc-outro-c4"><polygon class="cell-bg" points="387.3,417.9 454.9,456.9 454.9,535.1 387.3,574.1 319.6,535.1 319.6,456.9"/><g clip-path="url(#sc-outro-k4)"><g id="sc-outro-h4"><rect x="309.1" y="417.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="309.1" y="417.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="387.3,417.9 454.9,456.9 454.9,535.1 387.3,574.1 319.6,535.1 319.6,456.9"/></g><g id="sc-outro-c5"><polygon class="cell-bg" points="314.5,291.9 382.2,330.9 382.2,409.1 314.5,448.1 246.9,409.1 246.9,330.9"/><g clip-path="url(#sc-outro-k5)"><g id="sc-outro-h5"><rect x="236.4" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="236.4" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="314.5,291.9 382.2,330.9 382.2,409.1 314.5,448.1 246.9,409.1 246.9,330.9"/></g><g id="sc-outro-c6"><polygon class="cell-bg" points="387.3,165.9 454.9,204.9 454.9,283.1 387.3,322.1 319.6,283.1 319.6,204.9"/><g clip-path="url(#sc-outro-k6)"><g id="sc-outro-h6"><rect x="309.1" y="165.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="309.1" y="165.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="387.3,165.9 454.9,204.9 454.9,283.1 387.3,322.1 319.6,283.1 319.6,204.9"/></g><g id="sc-outro-c7"><polygon class="cell-bg" points="460.0,39.9 527.7,78.9 527.7,157.1 460.0,196.1 392.3,157.1 392.3,78.9"/><g clip-path="url(#sc-outro-k7)"><g id="sc-outro-h7"><rect x="381.9" y="39.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="381.9" y="39.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="460.0,39.9 527.7,78.9 527.7,157.1 460.0,196.1 392.3,157.1 392.3,78.9"/></g><g id="sc-outro-c8"><polygon class="cell-bg" points="605.5,39.9 673.1,78.9 673.1,157.1 605.5,196.1 537.8,157.1 537.8,78.9"/><g clip-path="url(#sc-outro-k8)"><g id="sc-outro-h8"><rect x="527.4" y="39.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="527.4" y="39.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="605.5,39.9 673.1,78.9 673.1,157.1 605.5,196.1 537.8,157.1 537.8,78.9"/></g><g id="sc-outro-c9"><polygon class="cell-bg" points="678.2,165.9 745.9,204.9 745.9,283.1 678.2,322.1 610.6,283.1 610.6,204.9"/><g clip-path="url(#sc-outro-k9)"><g id="sc-outro-h9"><rect x="600.1" y="165.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="600.1" y="165.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="678.2,165.9 745.9,204.9 745.9,283.1 678.2,322.1 610.6,283.1 610.6,204.9"/></g><g id="sc-outro-c10"><polygon class="cell-bg" points="751.0,291.9 818.6,330.9 818.6,409.1 751.0,448.1 683.3,409.1 683.3,330.9"/><g clip-path="url(#sc-outro-k10)"><g id="sc-outro-h10"><rect x="672.9" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="672.9" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="751.0,291.9 818.6,330.9 818.6,409.1 751.0,448.1 683.3,409.1 683.3,330.9"/></g><g id="sc-outro-c11"><polygon class="cell-bg" points="678.2,417.9 745.9,456.9 745.9,535.1 678.2,574.1 610.6,535.1 610.6,456.9"/><g clip-path="url(#sc-outro-k11)"><g id="sc-outro-h11"><rect x="600.1" y="417.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="600.1" y="417.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="678.2,417.9 745.9,456.9 745.9,535.1 678.2,574.1 610.6,535.1 610.6,456.9"/></g><g id="sc-outro-c12"><polygon class="cell-bg" points="605.5,543.9 673.1,582.9 673.1,661.1 605.5,700.1 537.8,661.1 537.8,582.9"/><g clip-path="url(#sc-outro-k12)"><g id="sc-outro-h12"><rect x="527.4" y="543.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="527.4" y="543.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="605.5,543.9 673.1,582.9 673.1,661.1 605.5,700.1 537.8,661.1 537.8,582.9"/></g><g id="sc-outro-c13"><polygon class="cell-bg" points="460.0,543.9 527.7,582.9 527.7,661.1 460.0,700.1 392.3,661.1 392.3,582.9"/><g clip-path="url(#sc-outro-k13)"><g id="sc-outro-h13"><rect x="381.9" y="543.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="381.9" y="543.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="460.0,543.9 527.7,582.9 527.7,661.1 460.0,700.1 392.3,661.1 392.3,582.9"/></g><g id="sc-outro-c14"><polygon class="cell-bg" points="314.5,543.9 382.2,582.9 382.2,661.1 314.5,700.1 246.9,661.1 246.9,582.9"/><g clip-path="url(#sc-outro-k14)"><g id="sc-outro-h14"><rect x="236.4" y="543.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="236.4" y="543.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="314.5,543.9 382.2,582.9 382.2,661.1 314.5,700.1 246.9,661.1 246.9,582.9"/></g><g id="sc-outro-c15"><polygon class="cell-bg" points="241.8,417.9 309.4,456.9 309.4,535.1 241.8,574.1 174.1,535.1 174.1,456.9"/><g clip-path="url(#sc-outro-k15)"><g id="sc-outro-h15"><rect x="163.6" y="417.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="163.6" y="417.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="241.8,417.9 309.4,456.9 309.4,535.1 241.8,574.1 174.1,535.1 174.1,456.9"/></g><g id="sc-outro-c16"><polygon class="cell-bg" points="169.0,291.9 236.7,330.9 236.7,409.1 169.0,448.1 101.4,409.1 101.4,330.9"/><g clip-path="url(#sc-outro-k16)"><g id="sc-outro-h16"><rect x="90.9" y="291.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="90.9" y="291.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="169.0,291.9 236.7,330.9 236.7,409.1 169.0,448.1 101.4,409.1 101.4,330.9"/></g><g id="sc-outro-c17"><polygon class="cell-bg" points="241.8,165.9 309.4,204.9 309.4,283.1 241.8,322.1 174.1,283.1 174.1,204.9"/><g clip-path="url(#sc-outro-k17)"><g id="sc-outro-h17"><rect x="163.6" y="165.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="163.6" y="165.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="241.8,165.9 309.4,204.9 309.4,283.1 241.8,322.1 174.1,283.1 174.1,204.9"/></g><g id="sc-outro-c18"><polygon class="cell-bg" points="314.5,39.9 382.2,78.9 382.2,157.1 314.5,196.1 246.9,157.1 246.9,78.9"/><g clip-path="url(#sc-outro-k18)"><g id="sc-outro-h18"><rect x="236.4" y="39.9" width="156.2" height="156.2" fill="url(#honey)"/><rect x="236.4" y="39.9" width="156.2" height="7" fill="#FFE3A0" opacity="0.85"/></g></g><polygon class="cell-wall" points="314.5,39.9 382.2,78.9 382.2,157.1 314.5,196.1 246.9,157.1 246.9,78.9"/></g></svg></div>
+      </div>
+    </section>
+    <div id="cue0" class="clip cue" data-start="0.345" data-duration="2.163" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl0"><span id="w0-0">蜂巢</span><span id="w0-1">为什么</span><span id="w0-2">偏偏</span><span id="w0-3">是</span><span id="w0-4">六边形</span>？</div></div>
+    <div id="cue1" class="clip cue" data-start="3.705" data-duration="1.752" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl1"><span id="w1-0">只</span><span id="w1-1">用</span><span id="w1-2">同</span><span id="w1-3">一种</span><span id="w1-4">正多边形</span></div></div>
+    <div id="cue2" class="clip cue" data-start="5.457" data-duration="2.288" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl2"><span id="w2-0">把</span><span id="w2-1">平面</span><span id="w2-2">铺</span><span id="w2-3">满</span>、<span id="w2-4">不</span><span id="w2-5">留</span><span id="w2-6">缝隙</span></div></div>
+    <div id="cue3" class="clip cue" data-start="7.745" data-duration="1.239" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl3"><span id="w3-0">只有</span><span id="w3-1">三种</span><span id="w3-2">选择</span></div></div>
+    <div id="cue4" class="clip cue" data-start="8.984" data-duration="1.841" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl4"><span id="w4-0">三角形</span>、<span id="w4-1">正方形</span></div></div>
+    <div id="cue5" class="clip cue" data-start="10.825" data-duration="1.293" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl5"><span id="w5-0">和</span><span id="w5-1">正</span><span id="w5-2">六边形</span></div></div>
+    <div id="cue6" class="clip cue" data-start="13.305" data-duration="1.997" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl6"><span id="w6-0">假如</span><span id="w6-1">每个</span><span id="w6-2">格子</span><span id="w6-3">的</span><span id="w6-4">面积</span><span id="w6-5">都</span><span id="w6-6">一样</span></div></div>
+    <div id="cue7" class="clip cue" data-start="15.302" data-duration="1.439" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl7"><span id="w7-0">谁</span><span id="w7-1">需要</span><span id="w7-2">的</span><span id="w7-3">边</span><span id="w7-4">最</span><span id="w7-5">短</span>？</div></div>
+    <div id="cue8" class="clip cue" data-start="17.913" data-duration="1.294" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl8"><span id="w8-0">面积</span><span id="w8-1">都</span><span id="w8-2">取</span><span id="w8-3">1</span></div></div>
+    <div id="cue9" class="clip cue" data-start="19.207" data-duration="2.099" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl9"><span id="w9-0">三角形</span><span id="w9-1">的</span><span id="w9-2">周长</span><span id="w9-3">约</span><span id="w9-4">4.56</span></div></div>
+    <div id="cue10" class="clip cue" data-start="21.306" data-duration="1.238" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl10"><span id="w10-0">正方形</span><span id="w10-1">是</span><span id="w10-2">4</span></div></div>
+    <div id="cue11" class="clip cue" data-start="22.544" data-duration="2.276" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl11"><span id="w11-0">而</span><span id="w11-1">正</span><span id="w11-2">六边形</span><span id="w11-3">只要</span><span id="w11-4">3.72</span></div></div>
+    <div id="cue12" class="clip cue" data-start="26.001" data-duration="0.747" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl12"><span id="w12-0">边</span><span id="w12-1">越</span><span id="w12-2">短</span></div></div>
+    <div id="cue13" class="clip cue" data-start="26.748" data-duration="1.15" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl13"><span id="w13-0">蜂蜡</span><span id="w13-1">就</span><span id="w13-2">越</span><span id="w13-3">省</span></div></div>
+    <div id="cue14" class="clip cue" data-start="27.898" data-duration="2.478" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl14"><span id="w14-0">比</span><span id="w14-1">正方形</span><span id="w14-2">少</span><span id="w14-3">用</span><span id="w14-4">约</span><span id="w14-5">7%</span></div></div>
+    <div id="cue15" class="clip cue" data-start="30.376" data-duration="2.509" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl15"><span id="w15-0">比</span><span id="w15-1">三角形</span><span id="w15-2">少</span><span id="w15-3">用</span><span id="w15-4">约</span><span id="w15-5">18%</span></div></div>
+    <div id="cue16" class="clip cue" data-start="34.041" data-duration="1.116" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl16"><span id="w16-0">1999</span><span id="w16-1">年</span></div></div>
+    <div id="cue17" class="clip cue" data-start="35.157" data-duration="2.366" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl17"><span id="w17-0">数学家</span><span id="w17-1">托马斯</span><span id="w17-2">·黑尔斯</span><span id="w17-3">证明</span><span id="w17-4">了</span></div></div>
+    <div id="cue18" class="clip cue" data-start="37.523" data-duration="2.098" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl18"><span id="w18-0">把</span><span id="w18-1">平面</span><span id="w18-2">分成</span><span id="w18-3">面积</span><span id="w18-4">相等</span><span id="w18-5">的</span><span id="w18-6">格子</span></div></div>
+    <div id="cue19" class="clip cue" data-start="39.621" data-duration="2.086" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl19"><span id="w19-0">正</span><span id="w19-1">六边形</span><span id="w19-2">的</span><span id="w19-3">总</span><span id="w19-4">周长</span><span id="w19-5">最</span><span id="w19-6">短</span></div></div>
+    <div id="cue20" class="clip cue" data-start="42.873" data-duration="1.417" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl20"><span id="w20-0">用</span><span id="w20-1">最少</span><span id="w20-2">的</span><span id="w20-3">蜂蜡</span></div></div>
+    <div id="cue21" class="clip cue" data-start="44.29" data-duration="1.339" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl21"><span id="w21-0">围出</span><span id="w21-1">最大</span><span id="w21-2">的</span><span id="w21-3">空间</span></div></div>
+    <div id="cue22" class="clip cue" data-start="45.629" data-duration="1.495" data-track-index="2" data-track-kind="captions"><div class="cue-line" id="cl22"><span id="w22-0">这</span><span id="w22-1">就</span><span id="w22-2">是</span><span id="w22-3">六边形</span><span id="w22-4">的</span><span id="w22-5">秘密</span></div></div>
+    <audio id="narration" src="assets/narration.wav" data-start="0" data-duration="49.576" data-track-index="3"></audio>
+    </div>
+    <script>
+const tl = gsap.timeline({ paused: true });
+// 背景：蜂巢纹理整片缓慢上移
+tl.fromTo("#bg-hex", { y: 0 }, { y: -240, duration: 49.576, ease: "none" }, 0);
+
+// 分镜 hook：0.00s – 3.36s
+tl.fromTo("#sc-hook-title", { scale: 1.1 }, { scale: 1, duration: 0.8, ease: "power3.out" }, 0);
+tl.fromTo("#sc-hook-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 0.25);
+tl.fromTo("#sc-hook-c0", { scale: 0, opacity: 0, svgOrigin: "460.0 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "460.0 370.0", smoothOrigin: false }, 0.1);
+tl.fromTo("#sc-hook-c1", { scale: 0, opacity: 0, svgOrigin: "532.7 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "532.7 244.0", smoothOrigin: false }, 0.145);
+tl.fromTo("#sc-hook-c2", { scale: 0, opacity: 0, svgOrigin: "605.5 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "605.5 370.0", smoothOrigin: false }, 0.19);
+tl.fromTo("#sc-hook-c3", { scale: 0, opacity: 0, svgOrigin: "532.7 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "532.7 496.0", smoothOrigin: false }, 0.235);
+tl.fromTo("#sc-hook-c4", { scale: 0, opacity: 0, svgOrigin: "387.3 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "387.3 496.0", smoothOrigin: false }, 0.28);
+tl.fromTo("#sc-hook-c5", { scale: 0, opacity: 0, svgOrigin: "314.5 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "314.5 370.0", smoothOrigin: false }, 0.325);
+tl.fromTo("#sc-hook-c6", { scale: 0, opacity: 0, svgOrigin: "387.3 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "387.3 244.0", smoothOrigin: false }, 0.37);
+tl.fromTo("#sc-hook-c7", { scale: 0, opacity: 0, svgOrigin: "460.0 118.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "460.0 118.0", smoothOrigin: false }, 0.415);
+tl.fromTo("#sc-hook-c8", { scale: 0, opacity: 0, svgOrigin: "605.5 118.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "605.5 118.0", smoothOrigin: false }, 0.46);
+tl.fromTo("#sc-hook-c9", { scale: 0, opacity: 0, svgOrigin: "678.2 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "678.2 244.0", smoothOrigin: false }, 0.505);
+tl.fromTo("#sc-hook-c10", { scale: 0, opacity: 0, svgOrigin: "751.0 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "751.0 370.0", smoothOrigin: false }, 0.55);
+tl.fromTo("#sc-hook-c11", { scale: 0, opacity: 0, svgOrigin: "678.2 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "678.2 496.0", smoothOrigin: false }, 0.595);
+tl.fromTo("#sc-hook-c12", { scale: 0, opacity: 0, svgOrigin: "605.5 622.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "605.5 622.0", smoothOrigin: false }, 0.64);
+tl.fromTo("#sc-hook-c13", { scale: 0, opacity: 0, svgOrigin: "460.0 622.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "460.0 622.0", smoothOrigin: false }, 0.685);
+tl.fromTo("#sc-hook-c14", { scale: 0, opacity: 0, svgOrigin: "314.5 622.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "314.5 622.0", smoothOrigin: false }, 0.73);
+tl.fromTo("#sc-hook-c15", { scale: 0, opacity: 0, svgOrigin: "241.8 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "241.8 496.0", smoothOrigin: false }, 0.775);
+tl.fromTo("#sc-hook-c16", { scale: 0, opacity: 0, svgOrigin: "169.0 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "169.0 370.0", smoothOrigin: false }, 0.82);
+tl.fromTo("#sc-hook-c17", { scale: 0, opacity: 0, svgOrigin: "241.8 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "241.8 244.0", smoothOrigin: false }, 0.865);
+tl.fromTo("#sc-hook-c18", { scale: 0, opacity: 0, svgOrigin: "314.5 118.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)", svgOrigin: "314.5 118.0", smoothOrigin: false }, 0.91);
+tl.fromTo("#sc-hook-h0", { y: 156.24 }, { y: 0, duration: 0.9, ease: "power2.out" }, 1.595);
+tl.fromTo("#sc-hook-h2", { y: 156.24 }, { y: 31.248, duration: 0.9, ease: "power2.out" }, 1.665);
+tl.fromTo("#sc-hook-h5", { y: 156.24 }, { y: 62.496, duration: 0.9, ease: "power2.out" }, 1.735);
+tl.fromTo("#sc-hook-h7", { y: 156.24 }, { y: 15.624, duration: 0.9, ease: "power2.out" }, 1.805);
+tl.fromTo("#sc-hook-h10", { y: 156.24 }, { y: 78.12, duration: 0.9, ease: "power2.out" }, 1.875);
+tl.fromTo("#sc-hook-h13", { y: 156.24 }, { y: 39.06, duration: 0.9, ease: "power2.out" }, 1.945);
+tl.fromTo("#sc-hook-h15", { y: 156.24 }, { y: 54.684, duration: 0.9, ease: "power2.out" }, 2.015);
+tl.fromTo("#sc-hook-h18", { y: 156.24 }, { y: 23.436, duration: 0.9, ease: "power2.out" }, 2.085);
+tl.fromTo("#sc-hook-stage", { scale: 0.95 }, { scale: 1.03, duration: 3.36, ease: "sine.inOut" }, 0);
+tl.to("#sc-hook-inner", { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 3.11);
+
+// 分镜 tiling：3.36s – 12.96s
+tl.fromTo("#sc-tiling-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 3.41);
+tl.fromTo("#sc-tiling-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 3.61);
+tl.fromTo("#sc-tiling-p0", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.66);
+tl.to("#sc-tiling-q0", { opacity: 0, scale: 0.4, duration: 0.25, ease: "power2.in" }, 8.984);
+tl.fromTo("#sc-tiling-p0 polygon", { scale: 0, opacity: 0, transformOrigin: "50% 50%", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.007, transformOrigin: "50% 50%", smoothOrigin: false }, 8.984);
+tl.fromTo("#sc-tiling-l0", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 9.134);
+tl.fromTo("#sc-tiling-p1", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.78);
+tl.to("#sc-tiling-q1", { opacity: 0, scale: 0.4, duration: 0.25, ease: "power2.in" }, 9.932);
+tl.fromTo("#sc-tiling-p1 polygon", { scale: 0, opacity: 0, transformOrigin: "50% 50%", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.007, transformOrigin: "50% 50%", smoothOrigin: false }, 9.932);
+tl.fromTo("#sc-tiling-l1", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 10.082);
+tl.fromTo("#sc-tiling-p2", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.9);
+tl.to("#sc-tiling-q2", { opacity: 0, scale: 0.4, duration: 0.25, ease: "power2.in" }, 11.227);
+tl.fromTo("#sc-tiling-p2 polygon", { scale: 0, opacity: 0, transformOrigin: "50% 50%", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.007, transformOrigin: "50% 50%", smoothOrigin: false }, 11.227);
+tl.fromTo("#sc-tiling-l2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 11.377);
+tl.to("#sc-tiling-p2", { borderColor: "rgba(245,165,36,0.9)", boxShadow: "0 0 48px rgba(245,165,36,0.4)", scale: 1.05, duration: 0.5, ease: "power2.out" }, 12.127);
+tl.to("#sc-tiling-inner", { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 12.71);
+
+// 分镜 question：12.96s – 17.57s
+tl.fromTo("#sc-question-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 13.01);
+tl.fromTo("#sc-question-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 13.21);
+tl.fromTo("#sc-question-s0", { strokeDashoffset: 917.82 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, 13.16);
+tl.fromTo("#sc-question-s0", { fillOpacity: 0 }, { fillOpacity: 0.22, duration: 0.5, ease: "power1.out" }, 13.86);
+tl.fromTo("#sc-question-s1", { strokeDashoffset: 806 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, 13.36);
+tl.fromTo("#sc-question-s1", { fillOpacity: 0 }, { fillOpacity: 0.22, duration: 0.5, ease: "power1.out" }, 14.06);
+tl.fromTo("#sc-question-s2", { strokeDashoffset: 750.48 }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, 13.56);
+tl.fromTo("#sc-question-s2", { fillOpacity: 0 }, { fillOpacity: 0.22, duration: 0.5, ease: "power1.out" }, 14.26);
+tl.fromTo("#sc-question-t0", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 14.186);
+tl.fromTo("#sc-question-t1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 14.306);
+tl.fromTo("#sc-question-t2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 14.426);
+tl.to("#sc-question-g", { y: 120, duration: 0.6, ease: "power3.inOut" }, 15.152);
+tl.fromTo("#sc-question-mark", { opacity: 0, scale: 0.2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(2.2)" }, 15.302);
+tl.to("#sc-question-inner", { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 17.318);
+
+// 分镜 perimeter：17.57s – 25.66s
+tl.fromTo("#sc-perimeter-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 17.618);
+tl.fromTo("#sc-perimeter-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 17.818);
+tl.fromTo("#sc-perimeter-h0", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 19.207);
+tl.fromTo("#sc-perimeter-t0", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 19.207);
+tl.fromTo("#sc-perimeter-b0", { width: 0 }, { width: 900, duration: 0.9, ease: "power3.out" }, 20.402);
+tl.fromTo("#sc-perimeter-h1", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 21.306);
+tl.fromTo("#sc-perimeter-t1", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 21.306);
+tl.fromTo("#sc-perimeter-b1", { width: 0 }, { width: 789, duration: 0.9, ease: "power3.out" }, 21.986);
+tl.fromTo("#sc-perimeter-h2", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 22.734);
+tl.fromTo("#sc-perimeter-t2", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 22.734);
+tl.fromTo("#sc-perimeter-b2", { width: 0 }, { width: 734, duration: 0.9, ease: "power3.out" }, 23.872);
+tl.to("#sc-perimeter-b2", { boxShadow: "0 0 44px rgba(245,165,36,0.6)", duration: 0.5, ease: "power2.out" }, 24.872);
+tl.to("#sc-perimeter-inner", { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 25.406);
+
+// 分镜 wax：25.66s – 33.70s
+tl.fromTo("#sc-wax-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 25.706);
+tl.fromTo("#sc-wax-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 25.906);
+tl.fromTo("#sc-wax-wax", { strokeDashoffset: 394 }, { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut" }, 26.156);
+tl.fromTo("#sc-wax-wax", { fillOpacity: 0 }, { fillOpacity: 0.25, duration: 0.6, ease: "power1.out" }, 27.156);
+tl.fromTo("#sc-wax-c0", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 27.898);
+tl.fromTo("#sc-wax-n0", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, 29.338);
+tl.to("#sc-wax-c0", { borderColor: "rgba(245,165,36,0.75)", duration: 0.4, ease: "power1.out" }, 29.338);
+tl.fromTo("#sc-wax-c1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 30.376);
+tl.fromTo("#sc-wax-n1", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, 31.827);
+tl.to("#sc-wax-c1", { borderColor: "rgba(245,165,36,0.75)", duration: 0.4, ease: "power1.out" }, 31.827);
+tl.to("#sc-wax-inner", { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 33.446);
+
+// 分镜 proof：33.70s – 42.53s
+tl.fromTo("#sc-proof-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 33.746);
+tl.fromTo("#sc-proof-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 33.946);
+tl.fromTo("#sc-proof-year", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)" }, 34.041);
+tl.fromTo("#sc-proof-person", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 35.681);
+tl.fromTo("#sc-proof-claim", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 37.523);
+tl.fromTo("#sc-proof-l0", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, 37.523);
+tl.fromTo("#sc-proof-l1", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, 39.621);
+tl.fromTo("#sc-proof-ring", { strokeDashoffset: 297.027 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 41.184);
+tl.fromTo("#sc-proof-tick", { strokeDashoffset: 79.464 }, { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, 41.534);
+tl.to("#sc-proof-inner", { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 42.278);
+
+// 分镜 outro：42.53s – 49.58s
+tl.fromTo("#sc-outro-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 42.578);
+tl.fromTo("#sc-outro-accent", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 42.778);
+tl.fromTo("#sc-outro-c0", { scale: 0, opacity: 0, svgOrigin: "460.0 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "460.0 370.0", smoothOrigin: false }, 42.578);
+tl.fromTo("#sc-outro-c1", { scale: 0, opacity: 0, svgOrigin: "532.7 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "532.7 244.0", smoothOrigin: false }, 42.603);
+tl.fromTo("#sc-outro-c2", { scale: 0, opacity: 0, svgOrigin: "605.5 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "605.5 370.0", smoothOrigin: false }, 42.628);
+tl.fromTo("#sc-outro-c3", { scale: 0, opacity: 0, svgOrigin: "532.7 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "532.7 496.0", smoothOrigin: false }, 42.653);
+tl.fromTo("#sc-outro-c4", { scale: 0, opacity: 0, svgOrigin: "387.3 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "387.3 496.0", smoothOrigin: false }, 42.678);
+tl.fromTo("#sc-outro-c5", { scale: 0, opacity: 0, svgOrigin: "314.5 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "314.5 370.0", smoothOrigin: false }, 42.703);
+tl.fromTo("#sc-outro-c6", { scale: 0, opacity: 0, svgOrigin: "387.3 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "387.3 244.0", smoothOrigin: false }, 42.728);
+tl.fromTo("#sc-outro-c7", { scale: 0, opacity: 0, svgOrigin: "460.0 118.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "460.0 118.0", smoothOrigin: false }, 42.753);
+tl.fromTo("#sc-outro-c8", { scale: 0, opacity: 0, svgOrigin: "605.5 118.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "605.5 118.0", smoothOrigin: false }, 42.778);
+tl.fromTo("#sc-outro-c9", { scale: 0, opacity: 0, svgOrigin: "678.2 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "678.2 244.0", smoothOrigin: false }, 42.803);
+tl.fromTo("#sc-outro-c10", { scale: 0, opacity: 0, svgOrigin: "751.0 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "751.0 370.0", smoothOrigin: false }, 42.828);
+tl.fromTo("#sc-outro-c11", { scale: 0, opacity: 0, svgOrigin: "678.2 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "678.2 496.0", smoothOrigin: false }, 42.853);
+tl.fromTo("#sc-outro-c12", { scale: 0, opacity: 0, svgOrigin: "605.5 622.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "605.5 622.0", smoothOrigin: false }, 42.878);
+tl.fromTo("#sc-outro-c13", { scale: 0, opacity: 0, svgOrigin: "460.0 622.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "460.0 622.0", smoothOrigin: false }, 42.903);
+tl.fromTo("#sc-outro-c14", { scale: 0, opacity: 0, svgOrigin: "314.5 622.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "314.5 622.0", smoothOrigin: false }, 42.928);
+tl.fromTo("#sc-outro-c15", { scale: 0, opacity: 0, svgOrigin: "241.8 496.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "241.8 496.0", smoothOrigin: false }, 42.953);
+tl.fromTo("#sc-outro-c16", { scale: 0, opacity: 0, svgOrigin: "169.0 370.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "169.0 370.0", smoothOrigin: false }, 42.978);
+tl.fromTo("#sc-outro-c17", { scale: 0, opacity: 0, svgOrigin: "241.8 244.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "241.8 244.0", smoothOrigin: false }, 43.003);
+tl.fromTo("#sc-outro-c18", { scale: 0, opacity: 0, svgOrigin: "314.5 118.0", smoothOrigin: false }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.6)", svgOrigin: "314.5 118.0", smoothOrigin: false }, 43.028);
+tl.fromTo("#sc-outro-h0", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 43.107);
+tl.fromTo("#sc-outro-h1", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 43.265);
+tl.fromTo("#sc-outro-h2", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 43.422);
+tl.fromTo("#sc-outro-h3", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 43.58);
+tl.fromTo("#sc-outro-h4", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 43.738);
+tl.fromTo("#sc-outro-h5", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 43.895);
+tl.fromTo("#sc-outro-h6", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.053);
+tl.fromTo("#sc-outro-h7", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.211);
+tl.fromTo("#sc-outro-h8", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.368);
+tl.fromTo("#sc-outro-h9", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.526);
+tl.fromTo("#sc-outro-h10", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.684);
+tl.fromTo("#sc-outro-h11", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.841);
+tl.fromTo("#sc-outro-h12", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 44.999);
+tl.fromTo("#sc-outro-h13", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 45.157);
+tl.fromTo("#sc-outro-h14", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 45.314);
+tl.fromTo("#sc-outro-h15", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 45.472);
+tl.fromTo("#sc-outro-h16", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 45.63);
+tl.fromTo("#sc-outro-h17", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 45.787);
+tl.fromTo("#sc-outro-h18", { y: 156.24 }, { y: 0, duration: 0.7, ease: "power2.out" }, 45.945);
+tl.fromTo("#sc-outro-stage", { scale: 1 }, { scale: 1.06, duration: 2, ease: "power2.inOut" }, 44.603);
+tl.fromTo("#sc-outro-glow", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1.1, duration: 1.2, ease: "power2.out" }, 46.545);
+tl.to("#sc-outro-inner", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 49.076);
+
+// 字幕：逐条弹入，正在念的词高亮
+tl.fromTo("#cl0", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 0.345);
+tl.set("#w0-0", { color: "#F5A524" }, 0.345);
+tl.set("#w0-0", { color: "#FFFFFF" }, 0.869);
+tl.set("#w0-1", { color: "#F5A524" }, 0.869);
+tl.set("#w0-1", { color: "#FFFFFF" }, 1.226);
+tl.set("#w0-2", { color: "#F5A524" }, 1.226);
+tl.set("#w0-2", { color: "#FFFFFF" }, 1.461);
+tl.set("#w0-3", { color: "#F5A524" }, 1.461);
+tl.set("#w0-3", { color: "#FFFFFF" }, 1.595);
+tl.set("#w0-4", { color: "#F5A524" }, 1.595);
+tl.fromTo("#cl1", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 3.705);
+tl.set("#w1-0", { color: "#F5A524" }, 3.705);
+tl.set("#w1-0", { color: "#FFFFFF" }, 3.839);
+tl.set("#w1-1", { color: "#F5A524" }, 3.839);
+tl.set("#w1-1", { color: "#FFFFFF" }, 4.017);
+tl.set("#w1-2", { color: "#F5A524" }, 4.017);
+tl.set("#w1-2", { color: "#FFFFFF" }, 4.196);
+tl.set("#w1-3", { color: "#F5A524" }, 4.196);
+tl.set("#w1-3", { color: "#FFFFFF" }, 4.475);
+tl.set("#w1-4", { color: "#F5A524" }, 4.475);
+tl.fromTo("#cl2", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 5.457);
+tl.set("#w2-0", { color: "#F5A524" }, 5.457);
+tl.set("#w2-0", { color: "#FFFFFF" }, 5.624);
+tl.set("#w2-1", { color: "#F5A524" }, 5.624);
+tl.set("#w2-1", { color: "#FFFFFF" }, 5.959);
+tl.set("#w2-2", { color: "#F5A524" }, 5.959);
+tl.set("#w2-2", { color: "#FFFFFF" }, 6.138);
+tl.set("#w2-3", { color: "#F5A524" }, 6.138);
+tl.set("#w2-3", { color: "#FFFFFF" }, 6.595);
+tl.set("#w2-4", { color: "#F5A524" }, 6.595);
+tl.set("#w2-4", { color: "#FFFFFF" }, 6.752);
+tl.set("#w2-5", { color: "#F5A524" }, 6.752);
+tl.set("#w2-5", { color: "#FFFFFF" }, 6.897);
+tl.set("#w2-6", { color: "#F5A524" }, 6.897);
+tl.fromTo("#cl3", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 7.745);
+tl.set("#w3-0", { color: "#F5A524" }, 7.745);
+tl.set("#w3-0", { color: "#FFFFFF" }, 7.99);
+tl.set("#w3-1", { color: "#F5A524" }, 7.99);
+tl.set("#w3-1", { color: "#FFFFFF" }, 8.314);
+tl.set("#w3-2", { color: "#F5A524" }, 8.314);
+tl.fromTo("#cl4", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 8.984);
+tl.set("#w4-0", { color: "#F5A524" }, 8.984);
+tl.set("#w4-0", { color: "#FFFFFF" }, 9.932);
+tl.set("#w4-1", { color: "#F5A524" }, 9.932);
+tl.fromTo("#cl5", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 10.825);
+tl.set("#w5-0", { color: "#F5A524" }, 10.825);
+tl.set("#w5-0", { color: "#FFFFFF" }, 11.015);
+tl.set("#w5-1", { color: "#F5A524" }, 11.015);
+tl.set("#w5-1", { color: "#FFFFFF" }, 11.227);
+tl.set("#w5-2", { color: "#F5A524" }, 11.227);
+tl.fromTo("#cl6", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 13.305);
+tl.set("#w6-0", { color: "#F5A524" }, 13.305);
+tl.set("#w6-0", { color: "#FFFFFF" }, 13.628);
+tl.set("#w6-1", { color: "#F5A524" }, 13.628);
+tl.set("#w6-1", { color: "#FFFFFF" }, 13.896);
+tl.set("#w6-2", { color: "#F5A524" }, 13.896);
+tl.set("#w6-2", { color: "#FFFFFF" }, 14.108);
+tl.set("#w6-3", { color: "#F5A524" }, 14.108);
+tl.set("#w6-3", { color: "#FFFFFF" }, 14.186);
+tl.set("#w6-4", { color: "#F5A524" }, 14.186);
+tl.set("#w6-4", { color: "#FFFFFF" }, 14.454);
+tl.set("#w6-5", { color: "#F5A524" }, 14.454);
+tl.set("#w6-5", { color: "#FFFFFF" }, 14.577);
+tl.set("#w6-6", { color: "#F5A524" }, 14.577);
+tl.fromTo("#cl7", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 15.302);
+tl.set("#w7-0", { color: "#F5A524" }, 15.302);
+tl.set("#w7-0", { color: "#FFFFFF" }, 15.593);
+tl.set("#w7-1", { color: "#F5A524" }, 15.593);
+tl.set("#w7-1", { color: "#FFFFFF" }, 15.782);
+tl.set("#w7-2", { color: "#F5A524" }, 15.782);
+tl.set("#w7-2", { color: "#FFFFFF" }, 15.849);
+tl.set("#w7-3", { color: "#F5A524" }, 15.849);
+tl.set("#w7-3", { color: "#FFFFFF" }, 15.983);
+tl.set("#w7-4", { color: "#F5A524" }, 15.983);
+tl.set("#w7-4", { color: "#FFFFFF" }, 16.128);
+tl.set("#w7-5", { color: "#F5A524" }, 16.128);
+tl.fromTo("#cl8", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 17.913);
+tl.set("#w8-0", { color: "#F5A524" }, 17.913);
+tl.set("#w8-0", { color: "#FFFFFF" }, 18.326);
+tl.set("#w8-1", { color: "#F5A524" }, 18.326);
+tl.set("#w8-1", { color: "#FFFFFF" }, 18.46);
+tl.set("#w8-2", { color: "#F5A524" }, 18.46);
+tl.set("#w8-2", { color: "#FFFFFF" }, 18.638);
+tl.set("#w8-3", { color: "#F5A524" }, 18.638);
+tl.fromTo("#cl9", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 19.207);
+tl.set("#w9-0", { color: "#F5A524" }, 19.207);
+tl.set("#w9-0", { color: "#FFFFFF" }, 19.676);
+tl.set("#w9-1", { color: "#F5A524" }, 19.676);
+tl.set("#w9-1", { color: "#FFFFFF" }, 19.754);
+tl.set("#w9-2", { color: "#F5A524" }, 19.754);
+tl.set("#w9-2", { color: "#FFFFFF" }, 20.212);
+tl.set("#w9-3", { color: "#F5A524" }, 20.212);
+tl.set("#w9-3", { color: "#FFFFFF" }, 20.402);
+tl.set("#w9-4", { color: "#F5A524" }, 20.402);
+tl.fromTo("#cl10", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 21.306);
+tl.set("#w10-0", { color: "#F5A524" }, 21.306);
+tl.set("#w10-0", { color: "#FFFFFF" }, 21.864);
+tl.set("#w10-1", { color: "#F5A524" }, 21.864);
+tl.set("#w10-1", { color: "#FFFFFF" }, 21.986);
+tl.set("#w10-2", { color: "#F5A524" }, 21.986);
+tl.fromTo("#cl11", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 22.544);
+tl.set("#w11-0", { color: "#F5A524" }, 22.544);
+tl.set("#w11-0", { color: "#FFFFFF" }, 22.734);
+tl.set("#w11-1", { color: "#F5A524" }, 22.734);
+tl.set("#w11-1", { color: "#FFFFFF" }, 22.89);
+tl.set("#w11-2", { color: "#F5A524" }, 22.89);
+tl.set("#w11-2", { color: "#FFFFFF" }, 23.56);
+tl.set("#w11-3", { color: "#F5A524" }, 23.56);
+tl.set("#w11-3", { color: "#FFFFFF" }, 23.872);
+tl.set("#w11-4", { color: "#F5A524" }, 23.872);
+tl.fromTo("#cl12", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 26.001);
+tl.set("#w12-0", { color: "#F5A524" }, 26.001);
+tl.set("#w12-0", { color: "#FFFFFF" }, 26.157);
+tl.set("#w12-1", { color: "#F5A524" }, 26.157);
+tl.set("#w12-1", { color: "#FFFFFF" }, 26.291);
+tl.set("#w12-2", { color: "#F5A524" }, 26.291);
+tl.fromTo("#cl13", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 26.748);
+tl.set("#w13-0", { color: "#F5A524" }, 26.748);
+tl.set("#w13-0", { color: "#FFFFFF" }, 27.094);
+tl.set("#w13-1", { color: "#F5A524" }, 27.094);
+tl.set("#w13-1", { color: "#FFFFFF" }, 27.173);
+tl.set("#w13-2", { color: "#F5A524" }, 27.173);
+tl.set("#w13-2", { color: "#FFFFFF" }, 27.329);
+tl.set("#w13-3", { color: "#F5A524" }, 27.329);
+tl.fromTo("#cl14", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 27.898);
+tl.set("#w14-0", { color: "#F5A524" }, 27.898);
+tl.set("#w14-0", { color: "#FFFFFF" }, 28.077);
+tl.set("#w14-1", { color: "#F5A524" }, 28.077);
+tl.set("#w14-1", { color: "#FFFFFF" }, 28.802);
+tl.set("#w14-2", { color: "#F5A524" }, 28.802);
+tl.set("#w14-2", { color: "#FFFFFF" }, 29.07);
+tl.set("#w14-3", { color: "#F5A524" }, 29.07);
+tl.set("#w14-3", { color: "#FFFFFF" }, 29.204);
+tl.set("#w14-4", { color: "#F5A524" }, 29.204);
+tl.set("#w14-4", { color: "#FFFFFF" }, 29.338);
+tl.set("#w14-5", { color: "#F5A524" }, 29.338);
+tl.fromTo("#cl15", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 30.376);
+tl.set("#w15-0", { color: "#F5A524" }, 30.376);
+tl.set("#w15-0", { color: "#FFFFFF" }, 30.532);
+tl.set("#w15-1", { color: "#F5A524" }, 30.532);
+tl.set("#w15-1", { color: "#FFFFFF" }, 31.246);
+tl.set("#w15-2", { color: "#F5A524" }, 31.246);
+tl.set("#w15-2", { color: "#FFFFFF" }, 31.514);
+tl.set("#w15-3", { color: "#F5A524" }, 31.514);
+tl.set("#w15-3", { color: "#FFFFFF" }, 31.67);
+tl.set("#w15-4", { color: "#F5A524" }, 31.67);
+tl.set("#w15-4", { color: "#FFFFFF" }, 31.827);
+tl.set("#w15-5", { color: "#F5A524" }, 31.827);
+tl.fromTo("#cl16", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 34.041);
+tl.set("#w16-0", { color: "#F5A524" }, 34.041);
+tl.set("#w16-0", { color: "#FFFFFF" }, 34.588);
+tl.set("#w16-1", { color: "#F5A524" }, 34.588);
+tl.fromTo("#cl17", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 35.157);
+tl.set("#w17-0", { color: "#F5A524" }, 35.157);
+tl.set("#w17-0", { color: "#FFFFFF" }, 35.681);
+tl.set("#w17-1", { color: "#F5A524" }, 35.681);
+tl.set("#w17-1", { color: "#FFFFFF" }, 36.373);
+tl.set("#w17-2", { color: "#F5A524" }, 36.373);
+tl.set("#w17-2", { color: "#FFFFFF" }, 36.82);
+tl.set("#w17-3", { color: "#F5A524" }, 36.82);
+tl.set("#w17-3", { color: "#FFFFFF" }, 37.076);
+tl.set("#w17-4", { color: "#F5A524" }, 37.076);
+tl.fromTo("#cl18", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 37.523);
+tl.set("#w18-0", { color: "#F5A524" }, 37.523);
+tl.set("#w18-0", { color: "#FFFFFF" }, 37.69);
+tl.set("#w18-1", { color: "#F5A524" }, 37.69);
+tl.set("#w18-1", { color: "#FFFFFF" }, 38.036);
+tl.set("#w18-2", { color: "#F5A524" }, 38.036);
+tl.set("#w18-2", { color: "#FFFFFF" }, 38.349);
+tl.set("#w18-3", { color: "#F5A524" }, 38.349);
+tl.set("#w18-3", { color: "#FFFFFF" }, 38.672);
+tl.set("#w18-4", { color: "#F5A524" }, 38.672);
+tl.set("#w18-4", { color: "#FFFFFF" }, 38.985);
+tl.set("#w18-5", { color: "#F5A524" }, 38.985);
+tl.set("#w18-5", { color: "#FFFFFF" }, 39.063);
+tl.set("#w18-6", { color: "#F5A524" }, 39.063);
+tl.fromTo("#cl19", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 39.621);
+tl.set("#w19-0", { color: "#F5A524" }, 39.621);
+tl.set("#w19-0", { color: "#FFFFFF" }, 39.833);
+tl.set("#w19-1", { color: "#F5A524" }, 39.833);
+tl.set("#w19-1", { color: "#FFFFFF" }, 40.257);
+tl.set("#w19-2", { color: "#F5A524" }, 40.257);
+tl.set("#w19-2", { color: "#FFFFFF" }, 40.436);
+tl.set("#w19-3", { color: "#F5A524" }, 40.436);
+tl.set("#w19-3", { color: "#FFFFFF" }, 40.637);
+tl.set("#w19-4", { color: "#F5A524" }, 40.637);
+tl.set("#w19-4", { color: "#FFFFFF" }, 41.016);
+tl.set("#w19-5", { color: "#F5A524" }, 41.016);
+tl.set("#w19-5", { color: "#FFFFFF" }, 41.184);
+tl.set("#w19-6", { color: "#F5A524" }, 41.184);
+tl.fromTo("#cl20", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 42.873);
+tl.set("#w20-0", { color: "#F5A524" }, 42.873);
+tl.set("#w20-0", { color: "#FFFFFF" }, 43.107);
+tl.set("#w20-1", { color: "#F5A524" }, 43.107);
+tl.set("#w20-1", { color: "#FFFFFF" }, 43.453);
+tl.set("#w20-2", { color: "#F5A524" }, 43.453);
+tl.set("#w20-2", { color: "#FFFFFF" }, 43.52);
+tl.set("#w20-3", { color: "#F5A524" }, 43.52);
+tl.fromTo("#cl21", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 44.29);
+tl.set("#w21-0", { color: "#F5A524" }, 44.29);
+tl.set("#w21-0", { color: "#FFFFFF" }, 44.603);
+tl.set("#w21-1", { color: "#F5A524" }, 44.603);
+tl.set("#w21-1", { color: "#FFFFFF" }, 44.904);
+tl.set("#w21-2", { color: "#F5A524" }, 44.904);
+tl.set("#w21-2", { color: "#FFFFFF" }, 44.971);
+tl.set("#w21-3", { color: "#F5A524" }, 44.971);
+tl.fromTo("#cl22", { opacity: 0, y: 28, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2)" }, 45.629);
+tl.set("#w22-0", { color: "#F5A524" }, 45.629);
+tl.set("#w22-0", { color: "#FFFFFF" }, 45.774);
+tl.set("#w22-1", { color: "#F5A524" }, 45.774);
+tl.set("#w22-1", { color: "#FFFFFF" }, 45.875);
+tl.set("#w22-2", { color: "#F5A524" }, 45.875);
+tl.set("#w22-2", { color: "#FFFFFF" }, 46.02);
+tl.set("#w22-3", { color: "#F5A524" }, 46.02);
+tl.set("#w22-3", { color: "#FFFFFF" }, 46.455);
+tl.set("#w22-4", { color: "#F5A524" }, 46.455);
+tl.set("#w22-4", { color: "#FFFFFF" }, 46.545);
+tl.set("#w22-5", { color: "#F5A524" }, 46.545);
+
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
