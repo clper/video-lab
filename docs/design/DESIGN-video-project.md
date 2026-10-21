@@ -1,6 +1,6 @@
 # 设计：视频工程层 + 风格参考
 
-**状态**：原型已实现并验证（Phase 1），见第九节。代码在 `vlab/videokit/`，演示在 `lab/08-video-spec/`。
+**状态**：原型已实现并验证（Phase 1），见第九节。代码在 `toolkit/vlab/videokit/`，演示在 `research/visual/08-video-spec/`。
 **起因**：参考 Fotor Agent 的思路（代码渲染 + 可编辑工程 + 风格参考），结合我们"先配音、后画面"的流水线。
 
 ---
@@ -164,11 +164,11 @@ project.yaml ─► 校验 ─► 配音（旁白没变就跳过）─► 逐镜
 
 | 文件 | 作用 |
 |---|---|
-| `vlab/videokit/project.py` | 读工程和风格文件、校验、镜头指纹 |
-| `vlab/videokit/manim_templates.py` | 3 个模板（标题卡、数值对比柱、要点列表）+ 按词出场 + 微调 + 风格上色 |
-| `vlab/videokit/build.py` | 构建：校验 → 配音缓存 → 并行增量渲染 → 帧数校验 → 拼接加质感 → 合配音字幕 → 预览拼图 |
-| `vlab/videokit/style_extract.py` | 风格参考：镜头切换、总览图、主色板、亮度/饱和度/运动量 → 草稿风格文件 |
-| `lab/08-video-spec/` | 演示：`project.yaml`（3 个镜头）、两份风格文件、两段参考的分析结果、两个成片、风格对比图 |
+| `toolkit/vlab/videokit/project.py` | 读工程和风格文件、校验、镜头指纹 |
+| `toolkit/vlab/videokit/manim_templates.py` | 3 个模板（标题卡、数值对比柱、要点列表）+ 按词出场 + 微调 + 风格上色 |
+| `toolkit/vlab/videokit/build.py` | 构建：校验 → 配音缓存 → 并行增量渲染 → 帧数校验 → 拼接加质感 → 合配音字幕 → 预览拼图 |
+| `toolkit/vlab/videokit/style_extract.py` | 风格参考：镜头切换、总览图、主色板、亮度/饱和度/运动量 → 草稿风格文件 |
+| `research/visual/08-video-spec/` | 演示：`project.yaml`（3 个镜头）、两份风格文件、两段参考的分析结果、两个成片、风格对比图 |
 
 ### 实测（GTX 1060 机器，23 秒、3 个镜头的演示）
 
@@ -180,7 +180,7 @@ project.yaml ─► 校验 ─► 配音（旁白没变就跳过）─► 逐镜
 | 换成另一份风格文件 | 3 个镜头并行渲染 | 44 秒 |
 | 再换回原风格 | 两种风格缓存并存，直接复用 | 2 秒 |
 
-风格对比见 `lab/08-video-spec/renders/style_compare.png`。
+风格对比见 `research/visual/08-video-spec/renders/style_compare.png`。
 
 ### 测试中发现并修掉的问题
 

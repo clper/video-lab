@@ -1,4 +1,4 @@
-"""003 结尾：复用 vlab/scenes/landscape 的程序化日落湖景（和 lab/06 同一份代码），截取一段（有鹿抬头、鱼跃），叠标题。
+"""003 结尾：复用 toolkit/vlab/scenes/landscape 的程序化日落湖景（和 research/visual/06 同一份代码），截取一段（有鹿抬头、鱼跃），叠标题。
 
 帧数按 timeline.json 里 outro 分镜精确计算。标题在旁白说到"其实"时淡入。
 

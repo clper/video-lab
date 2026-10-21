@@ -1,0 +1,17 @@
+# 高空晨雾柔光（参考：research/visual/07-shader-raymarch/renders/cloudsea.mp4）
+# 草稿直接照搬了参考的灰粉色当背景、米白当文字，对比太低读不清；
+# 参考整体很亮（亮度 0.71）、低饱和（0.19），所以改成浅色主题：米色底 + 深梅子色字。
+name: cloudsea
+source: research/visual/07-shader-raymarch/renders/cloudsea.mp4
+palette:
+  bg: "#efe5d6"        # 云海的米白
+  bg2: "#c9b3b5"       # 上方天空的灰粉紫，背景从上到下的渐变
+  ink: "#3a2c33"       # 修正：山体暗部再压深，当文字色
+  dim: "#8a7378"       # 参考 #96787a 略压暗
+  accent1: "#c76b4f"   # 太阳光晕的暖色，加深成赤陶色
+  accent2: "#6f7fb0"   # 上方天空的灰蓝紫
+  accent3: "#c98a2e"   # 夕照金
+font: {family: Microsoft YaHei, title_size: 56, body_size: 40}
+layout: {title_y: 5.6, content_y: 1.2}
+motion: {enter: fade, duration: 0.8, stagger: 0.2, easing: smooth}       # 平稳滑翔感：纯淡入、偏慢
+texture: {vignette: 0.2, grain: 3}

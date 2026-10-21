@@ -1,7 +1,7 @@
 [project]
 name = "video-lab"
 version = "0.1.0"
-description = "用代码画科普视频：公共代码在 vlab/ 包里，uv sync 后以可编辑模式安装"
+description = "用代码画科普视频：公共代码在 toolkit/vlab/ 包里（import vlab），uv sync 后以可编辑模式安装"
 requires-python = ">=3.11"
 dependencies = [
     "edge-tts==7.3.1",
@@ -24,14 +24,15 @@ vlab-style = "vlab.videokit.style_extract:main" # 参考视频 → 风格分析 
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# 包放在 toolkit/vlab/（工具类文件夹），安装后的包名仍是 vlab
 [tool.hatch.build.targets.wheel]
-packages = ["vlab"]
+packages = ["toolkit/vlab"]
 
 # 仓库路径含中文括号【】：Python 3.11 在中文 Windows 上按 GBK 读 .pth（UTF-8 模式也一样），
 # 可编辑安装写进 .pth 的仓库路径会被读坏，import vlab 失败。这里另装一个纯 ASCII 的 .pth，
-# 运行时由 sys.prefix（.venv）推出仓库根目录。Python 3.13+ 起 .pth 按 UTF-8 读，就不需要这个了。
+# 运行时由 sys.prefix（.venv）推出仓库根目录，再把 toolkit/ 加进搜索路径。Python 3.13+ 起 .pth 按 UTF-8 读，就不需要这个了。
 [tool.hatch.build.targets.wheel.force-include]
-"vlab/_vlab_root.pth" = "_vlab_root.pth"
+"toolkit/vlab/_vlab_root.pth" = "_vlab_root.pth"
 
 [[tool.uv.index]]
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"

@@ -42,17 +42,18 @@
 
 ---
 
-## 参考项目
+## 存档：参考项目
 
 | 项目 | 说明 |
 |---|---|
-| [000-claude-video-lab](reference/000-claude-video-lab/) | Claude 开发的参考项目（只读快照），同一题目「蜂巢为什么是六边形」用三种技术各做一版（Pillow/HyperFrames/Manim） |
+| [000-claude-video-lab](archive/000-claude-video-lab/) | Claude 开发的参考项目（只读快照），同一题目「蜂巢为什么是六边形」用三种技术各做一版（Pillow/HyperFrames/Manim） |
 
 ---
 
 ## 技术路线
 
 详见 [docs/TECHNOLOGY.md](docs/TECHNOLOGY.md) —— 技术选型、工作流、踩坑记录、命名约定、未来方向。进度见 [docs/TODO.md](docs/TODO.md)。
+选题时先查 [docs/VIDEO-TYPES.md](docs/VIDEO-TYPES.md) —— 画面风格可做纲要、内容形态、两者怎么组合。
 
 **核心原则**：效果优先，技术为内容服务，可以混合使用。
 
@@ -62,6 +63,7 @@
 | 数据可视化/动态图表 | HyperFrames 或 Remotion |
 | 图文卡片/简单动画 | Pillow 或 HyperFrames |
 | 风景、氛围、震撼空镜 | 程序化风景 / GLSL 着色器 |
+| 人物小故事、复古游戏感 | 像素风（research/visual/11） |
 | 真人/实拍 | 像素级生成（Seedance/可灵） |
 | 写实 3D 场景 | Blender |
 
@@ -69,28 +71,37 @@
 
 ## 目录结构
 
+根目录只有 5 个文件夹，每个对应一类，首字母各不相同，一眼就能分清：
+
+| 文件夹 | 类别 | 放什么 |
+|---|---|---|
+| `videos/` | **项目结果** | 正式视频，一条一个目录：稿子、配音、分镜片段、成片 |
+| `research/` | **开发测试** | 试验和调研，结论不一定稳定：`visual/` 画面技术、`audio/` 音频、`frontier/` 前沿视频生成 |
+| `toolkit/` | **工具** | 所有项目共用：`vlab/` 公共代码包（`vlab-*` 命令）、`bin/` 本机可选的程序 |
+| `docs/` | **文档** | 技术路线、视频类型纲要、TODO、设计文档 |
+| `archive/` | **存档** | 只读快照（000 参考项目），不再修改 |
+
 ```
 AI-Vedio/
-├── videos/                  正式视频，一条一个目录（content/ 稿子、build/ 配音时间轴字幕、renders/ 成片、各技术子目录）
+├── videos/              【项目结果】
 │   ├── 001-float-precision/
 │   ├── 002-mobius-strip/
 │   └── 003-sunset-red/
-├── lab/                     技术测试，统一编号（01–10），每个目录自带脚本和 renders/
-├── reference/
-│   └── 000-claude-video-lab/  参考项目（只读快照，保留它自己的 shared/ 和环境配置）
-├── vlab/                    公共代码（Python 包，uv sync 后可在任意目录 import / 用命令）
-│   ├── pipeline/            配音 tts、合成 finalize
-│   ├── render/              渲染器：glsl（着色器 → 视频片段）
-│   ├── scenes/              可复用画面：landscape（程序化湖景）、shaders/（云海、大气散射）
-│   ├── videokit/            视频工程：project.yaml + 风格文件 → 成片（增量渲染）
-│   └── tools/               预览拼图、环境自检
-├── docs/                    TECHNOLOGY.md、TODO.md、design/ 设计文档
-├── AGENTS.md / CLAUDE.md    给 AI 助手的说明（克隆后先读）
-├── pyproject.toml / uv.lock Python 环境和 vlab-* 命令
-└── README.md                本文件
+├── research/            【开发测试】
+│   ├── visual/          画面技术 01–11
+│   ├── audio/           音频研究
+│   └── frontier/        前沿视频生成
+├── toolkit/             【工具】
+│   ├── vlab/            pipeline 配音合成 · render 渲染器 · scenes 可复用画面 · videokit 视频工程 · tools 预览自检
+│   └── bin/             可选：本机的 ffmpeg 等程序（不入库）
+├── docs/                【文档】
+├── archive/             【存档】
+│   └── 000-claude-video-lab/
+└── README.md  AGENTS.md  CLAUDE.md  pyproject.toml  uv.lock  .gitignore
 ```
 
-依赖方向：`videos/` 和 `lab/` 只依赖 `vlab/`，彼此不互相引用；可复用的东西先提升进 `vlab/` 再用。
+依赖方向：`videos/` 和 `research/` 只依赖 `toolkit/vlab/`，彼此不互相引用；可复用的东西先提升进 `toolkit/vlab/` 再用。
+每个文件夹里都有一份简短的 README，写明它放什么、不放什么。
 
 ---
 
@@ -109,9 +120,9 @@ AI 助手请先读根目录的 `AGENTS.md`（Claude Code 读 `CLAUDE.md`，内�
 
 | 已在仓库里 | 位置 |
 |---|---|
-| 成片 | `videos/*/renders/`、`lab/*/renders/`、`reference/000-claude-video-lab/out/` |
+| 成片 | `videos/*/renders/`、`research/visual/*/renders/`、`archive/000-claude-video-lab/out/` |
 | 配音、词级时间轴、字幕 | `videos/*/build/<id>/`（narration.wav、timeline.json、subs.ass/srt） |
-| 分镜片段（拼接成片用） | `videos/003-sunset-red/media/clips/`、`media/videos/`；`lab/08-video-spec/media/clips/`（带 `.hash` 指纹，增量构建直接复用） |
+| 分镜片段（拼接成片用） | `videos/003-sunset-red/media/clips/`、`media/videos/`；`research/visual/08-video-spec/media/clips/`（带 `.hash` 指纹，增量构建直接复用） |
 | Manim 成品视频 | 各项目 `media/videos/**/1920p30/` |
 
 需要一条命令重建的（和机器绑定，没有入库）：
@@ -119,7 +130,7 @@ AI 助手请先读根目录的 `AGENTS.md`（Claude Code 读 `CLAUDE.md`，内�
 | 内容 | 命令 |
 |---|---|
 | Python 环境 `.venv` | 根目录 `uv sync`（依赖锁在 `pyproject.toml` / `uv.lock`，配了清华 PyPI 镜像） |
-| 000 的 HyperFrames 依赖 | `cd reference/000-claude-video-lab/2_hyperframes; npm ci` |
+| 000 的 HyperFrames 依赖 | `cd archive/000-claude-video-lab/2_hyperframes; npm ci` |
 | 系统依赖 | PATH 上的 `ffmpeg`；Microsoft YaHei、Cascadia Mono 字体 |
 | 显卡（只在重渲染着色器镜头时需要） | 支持 OpenGL 3.3 的显卡；只拼接成片不需要 |
 
@@ -161,13 +172,13 @@ uv run python build.py
 
 两种方式：
 
-- **常规镜头为主**：用视频工程（`vlab/videokit`，设计见 [docs/design/DESIGN-video-project.md](docs/design/DESIGN-video-project.md)），
-  写 `project.yaml` 选模板填参数，`uv run vlab-build project.yaml`；示例见 `lab/08-video-spec/`。
+- **常规镜头为主**：用视频工程（`toolkit/vlab/videokit`，设计见 [docs/design/DESIGN-video-project.md](docs/design/DESIGN-video-project.md)），
+  写 `project.yaml` 选模板填参数，`uv run vlab-build project.yaml`；示例见 `research/visual/08-video-spec/`。
 - **定制镜头为主**：
   1. 创建项目目录：`videos/004-xxx/`
   2. 写剧本：`content/xxx.json`
   3. 跑配音：`uv run vlab-tts content/xxx.json`
-  4. 写动画：`manim/scene.py`（可复用的画面放进 `vlab/scenes/`）
+  4. 写动画：`manim/scene.py`（可复用的画面放进 `toolkit/vlab/scenes/`）
   5. 渲染：`uv run python -m manim render manim/scene.py SceneName --format mp4`
   6. 看图：`uv run vlab-preview media/videos/scene/1920p30/SceneName.mp4 --timeline build/xxx/timeline.json`
   7. 合成：`uv run vlab-finalize media/videos/scene/1920p30/SceneName.mp4 build/xxx renders/xxx_final.mp4`

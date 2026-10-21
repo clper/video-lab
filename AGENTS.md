@@ -1,7 +1,7 @@
 # AGENTS.md：给 AI 编程助手的说明
 
 这是一个"用代码画科普视频"的仓库：Manim、GLSL 着色器、程序化画面渲染画面，Edge TTS 配音，FFmpeg 合成。
-人类读的总览见 `README.md`；技术选型见 `docs/TECHNOLOGY.md`；进度见 `docs/TODO.md`；设计文档在 `docs/design/`。
+人类读的总览见 `README.md`；技术选型见 `docs/TECHNOLOGY.md`；选题时的风格和内容组合见 `docs/VIDEO-TYPES.md`；进度见 `docs/TODO.md`；设计文档在 `docs/design/`。
 
 ## 克隆后第一步（必做）
 
@@ -17,24 +17,29 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 | 内容 | 怎么重建 | 什么时候需要 |
 |---|---|---|
 | `.venv/` | `uv sync` | 总是 |
-| `reference/000-claude-video-lab/2_hyperframes/node_modules/` | 在该目录 `npm ci`（PowerShell 用 `npm.cmd ci`） | 只在重做 000 的 HyperFrames 版时 |
+| `archive/000-claude-video-lab/2_hyperframes/node_modules/` | 在该目录 `npm ci`（PowerShell 用 `npm.cmd ci`） | 只在重做 000 的 HyperFrames 版时 |
 | `ffmpeg`、`ffprobe` | 系统 PATH 上；Windows：`winget install Gyan.FFmpeg` | 总是 |
 | 字体 Microsoft YaHei、Cascadia Mono | 系统字体；Cascadia：`winget install Microsoft.CascadiaCode` | 总是（缺了 Manim 会悄悄换字体） |
-| 支持 OpenGL 3.3 的显卡 | 硬件 | 只在重渲染着色器镜头时（003 的 hook/noon/sunset、lab/07） |
+| 支持 OpenGL 3.3 的显卡 | 硬件 | 只在重渲染着色器镜头时（003 的 hook/noon/sunset、research/visual/07） |
 | 联网 | — | 只在重新配音时（Edge TTS 是在线服务） |
 
 ## 目录和依赖方向
 
+根目录 5 个文件夹各是一类：
+
 ```
-videos/      正式视频（001、002、003…），一条一个目录
-lab/         技术测试（01–10），每个目录自带脚本和 renders/
-reference/   000 参考项目：只读快照，不要改，它自带的 shared/ 和环境配置只属于它自己
-vlab/        公共代码（Python 包）：pipeline 配音合成、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具
-docs/        TECHNOLOGY.md、TODO.md、design/
+videos/      【项目结果】正式视频（001、002、003…），一条一个目录
+research/    【开发测试】visual/ 画面技术（01–11）、audio/ 音频研究、frontier/ 前沿视频生成；实验目录都是 NN-主题/
+toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
+docs/        【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
+archive/     【存档】000 参考项目的只读快照：不要改，它自带的 shared/ 和环境配置只属于它自己
 ```
 
-- **`videos/` 和 `lab/` 只依赖 `vlab/`，彼此不互相引用。** 想在正式视频里用 lab 里试出来的东西，先把它提升进 `vlab/`（比如 `vlab/scenes/landscape.py` 就是从 lab/06 提升上来的），再从两边引用。
-- **公共代码只有一份**：不要把 `vlab/` 里的文件复制到项目里。
+- **新东西放哪**：做成片 → `videos/`；做试验、调研 → `research/` 下对应的区；会被多个项目复用的代码 → `toolkit/vlab/`；说明文档 → `docs/`。
+- **`videos/` 和 `research/` 只依赖 `toolkit/vlab/`，彼此不互相引用；`research/` 下三个区之间也不互相引用。**
+  想在正式视频里用试验出来的东西，先把它提升进 `toolkit/vlab/`（比如 `toolkit/vlab/scenes/landscape.py` 就是从 research/visual/06 提升上来的），再从两边引用。
+- **公共代码只有一份**：不要把 `toolkit/vlab/` 里的文件复制到项目里。Python 里照常 `import vlab`。
+- **密钥和模型权重不入库**：API Key 只放本地 `.env`（可以入库不含真实值的 `.env.example`）；模型权重放在 `weights/` 目录或系统缓存里，`.gitignore` 已忽略，在实验 README 里写清下载方式。
 - 项目内部按技术分子目录：`manim/`、`shader/`、`hyperframes/`、`landscape/`；`content/` 稿子、`build/` 配音时间轴字幕、`renders/` 成片。
 
 ## 仓库里已有的成果：不要轻易重做
@@ -54,7 +59,7 @@ docs/        TECHNOLOGY.md、TODO.md、design/
 | 配音 | `uv run vlab-tts <项目>/content/<稿子>.json` |
 | 合配音、烧字幕 | `uv run vlab-finalize <无声画面.mp4> <项目>/build/<id> <输出.mp4>` |
 | 看渲染结果 | `uv run vlab-preview <视频> --timeline <timeline.json>` → 每个分镜的结尾画面拼成一张图 |
-| 视频工程构建 | `uv run vlab-build lab/08-video-spec/project.yaml [--style ...] [--check]` |
+| 视频工程构建 | `uv run vlab-build research/visual/08-video-spec/project.yaml [--style ...] [--check]` |
 | 分析参考视频的风格 | `uv run vlab-style <视频> <输出目录>` |
 | 环境自检 | `uv run vlab-check` |
 | 003 重新拼成片 | `cd videos/003-sunset-red; uv run python build.py`（`--force` 全部重渲染） |
@@ -65,7 +70,7 @@ docs/        TECHNOLOGY.md、TODO.md、design/
 
 - **渲染 → 看图 → 改**：改画面后一定用 `vlab-preview` 抽帧看图确认，不要只看代码就说"改好了"。
 - **画面跟着配音走**：画面元素绑定到配音里的"词"（`timeline.json` 的 words），不要写死秒数。
-- **新视频优先用视频工程**（`vlab/videokit`，设计见 `docs/design/DESIGN-video-project.md`）：
+- **新视频优先用视频工程**（`toolkit/vlab/videokit`，设计见 `docs/design/DESIGN-video-project.md`）：
   文案、数据、颜色、出场时机写在 `project.yaml` 里，常规镜头走模板；只有特殊镜头才写定制代码。
 - **入库原则**：渲染成果要入库（克隆即可用），环境和缓存碎片不入库；新增产物类型时先看 `.gitignore` 的规则说明。
 - **没有用户明确说"提交"/"推送"，不要 `git commit` / `git push`**。改完列出改动文件，等用户指令。
@@ -81,7 +86,7 @@ docs/        TECHNOLOGY.md、TODO.md、design/
 - Edge TTS 的分词和直觉不同（如"四次方"切成 四/次/方）：绑定的词必须是 `timeline.json` 里的词；
   videokit 配音后会校验并列出可用的词。
 - YAML 1.1 会把 `on`/`yes`/`no` 当布尔值：工程文件一律用 `vlab.videokit.project.load_yaml` 读，别用 `yaml.safe_load`。
-- Windows 显卡超时（约 2 秒）会重置驱动：重着色器要分块渲染（`vlab/render/glsl.py` 已处理）。
+- Windows 显卡超时（约 2 秒）会重置驱动：重着色器要分块渲染（`toolkit/vlab/render/glsl.py` 已处理）。
 - 这台机器的 ffmpeg `drawtext` 没有字体配置会崩：画面上叠字用 Pillow，不用 drawtext。
 - PowerShell 执行策略：npm 要写成 `npm.cmd`。
 - `.gitignore` 不支持行尾注释，注释必须单独一行。

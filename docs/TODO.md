@@ -16,9 +16,9 @@
 |---|---|---|---|---|
 | 1.1 | Manim 2D | 001-float-precision | 二进制位/尾数格子动画 | ✅ |
 | 1.2 | Manim 3D | 002-mobius-strip | 莫比乌斯环参数曲面 | ✅ |
-| 1.3 | Manim 综合 | lab/09-manim-showcase | 7 种能力炫技 | ✅ |
+| 1.3 | Manim 综合 | research/visual/09-manim-showcase | 7 种能力炫技 | ✅ |
 | 1.4 | HyperFrames | 001-float-precision | HTML+GSAP 排版动画 | ✅ |
-| 1.5 | Pillow | reference/000-claude-video-lab/1_cards | 静态图文卡片 | ✅ |
+| 1.5 | Pillow | archive/000-claude-video-lab/1_cards | 静态图文卡片 | ✅ |
 | 1.6 | Edge TTS | 所有项目 | 配音 + 词级时间轴 | ✅ |
 | 1.7 | FFmpeg 合成 | 所有项目 | 烧字幕 + 响度标准化 | ✅ |
 
@@ -32,8 +32,8 @@
 |---|---|---|---|---|---|
 | 2.1 | **Blender 基础** | 渲染一个简单 3D 场景（立方体 + 灯光） | 中 | ✅ | 金属/玻璃/粗糙材质 + 相机环绕 |
 | 2.2 | **Blender 地形** | 程序化生成山脉/地形 | 高 | ❌ | 用 Geometry Nodes |
-| 2.3 | **Blender 材质** | PBR 材质（金属/玻璃/水） | 高 | 🟡 | 金属、粗糙、玻璃已在 lab/04 用 Cycles 渲染；水未做 |
-| 2.4 | **Blender 相机动画** | 环绕/推拉/跟随动画 | 中 | 🟡 | 环绕已在 lab/04 做过；推拉、跟随未做 |
+| 2.3 | **Blender 材质** | PBR 材质（金属/玻璃/水） | 高 | 🟡 | 金属、粗糙、玻璃已在 research/visual/04 用 Cycles 渲染；水未做 |
+| 2.4 | **Blender 相机动画** | 环绕/推拉/跟随动画 | 中 | 🟡 | 环绕已在 research/visual/04 做过；推拉、跟随未做 |
 
 ### 优先级 2：生成艺术
 
@@ -92,8 +92,9 @@
 | 4.2 | Processing 分形树 | 抽象/算法美学 | 中 | ❌ | 递归生成 |
 | 4.3 | TouchDesigner 粒子 | 迷幻/动态 | 中高 | ❌ | 实时渲染 |
 | 4.4 | SVG 矢量插画 | 扁平/清新 | 中 | ❌ | 矢量图形 |
-| 4.5 | Python 程序化 2.5D 风景（numpy + Pillow） | 插画/剪影 | 中高 | ✅ | lab/06-landscape：分形山 + 透视水面倒影 + 鹿/雁群/跃鱼，12 秒竖屏 |
-| 4.6 | GLSL 着色器光线步进（moderngl） | 写实氛围：体积云、雪山、大气 | 中高 | ✅ | lab/07-shader-raymarch：云海飞越雪山，10 秒；003 里的大气散射天空 |
+| 4.5 | Python 程序化 2.5D 风景（numpy + Pillow） | 插画/剪影 | 中高 | ✅ | research/visual/06-landscape：分形山 + 透视水面倒影 + 鹿/雁群/跃鱼，12 秒竖屏 |
+| 4.6 | GLSL 着色器光线步进（moderngl） | 写实氛围：体积云、雪山、大气 | 中高 | ✅ | research/visual/07-shader-raymarch：云海飞越雪山，10 秒；003 里的大气散射天空 |
+| 4.7 | 像素风人物故事（numpy + Pillow） | 像素画 / 复古游戏 | 中 | ✅ | research/visual/11-pixel-story《掉落的星星》：手绘精灵帧、有序抖动、RPG 对话框按配音逐字打出、芯片音乐 |
 
 ---
 
@@ -101,13 +102,18 @@
 
 ### 当前计划（2026-10-20，顺序见 TECHNOLOGY.md 第六节）
 
-- [x] 基础整理：git 初始化、共享脚本合并成一份（现在在 `vlab/pipeline/`）、看图预览工具（现在是 `vlab-preview`）、测试脚本去掉写死路径
-- [x] 着色器光线步进测试（lab/07：云海飞越雪山）✅
+- [x] 基础整理：git 初始化、共享脚本合并成一份（现在在 `toolkit/vlab/pipeline/`）、看图预览工具（现在是 `vlab-preview`）、测试脚本去掉写死路径
+- [x] 着色器光线步进测试（research/visual/07：云海飞越雪山）✅
 - [x] 003 成片「夕阳为什么是红的」：着色器 + Manim + 程序化风景混剪（混合方案 3.4）✅
 - [ ] 决定是否安装 Blender（写实风景 + 动物）
-- [x] 视频工程层 + 风格参考原型（vlab/videokit，lab/08；设计见 docs/design/DESIGN-video-project.md）✅
-- [x] 目录重构：videos/ 正式视频、lab/ 测试、reference/ 参考、vlab/ 公共代码包（vlab-* 命令）、docs/ 文档 ✅
+- [x] 视频工程层 + 风格参考原型（toolkit/vlab/videokit，research/visual/08；设计见 docs/design/DESIGN-video-project.md）✅
+- [x] 目录重构（第一次）：正式视频、测试、参考、公共代码分开存放，公共代码做成 vlab 包（vlab-* 命令）✅
+- [x] 目录分区：videos/ 项目结果、research/ 开发测试、toolkit/ 工具、docs/ 文档、archive/ 存档，每个文件夹带简短 README ✅
 - [ ] 视频工程层 Phase 2：着色器 / 程序化风景作为 custom 镜头接入，把 003 改写成工程文件，再加 4–5 个模板
+- [x] 建立 `research/audio/` 音频研究区（8 个方向，路线和顺序见 research/audio/README.md）✅
+- [x] 建立 `research/frontier/` 前沿视频生成研究区（10 个方向，路线和顺序见 research/frontier/README.md）✅
+- [ ] 音频研究第一项：02 混音规范与自动避让
+- [ ] 前沿研究第一项：01 前沿全景与跟踪
 
 ### 已完成的安装类项目
 
@@ -121,7 +127,7 @@
 
 ### 环境说明
 
-lab 01–05 是在原开发机上完成的（当时目录叫 tech_test）。本机上 01、02 已重新跑通；
+research/visual 01–05 是在原开发机上完成的（当时目录叫 tech_test，后来叫 lab）。本机上 01、02 已重新跑通；
 03、05 需要先 `uv add opencv-python`；04 需要安装 Blender 后用 `blender --background --python` 运行。
 
 ---
@@ -133,9 +139,9 @@ lab 01–05 是在原开发机上完成的（当时目录叫 tech_test）。本�
 | 已验证技术 | 7 | 7 | 100% |
 | **待验证技术** | 20 | 5 | 25% |
 | 混合方案 | 4 | 1 | 25% |
-| 风景画专项 | 6 | 2 | 33% |
-| **总计** | **37** | **15** | **41%** |
+| 风景画专项 | 7 | 3 | 43% |
+| **总计** | **38** | **16** | **42%** |
 
 ---
 
-**最后更新**：2026-10-20（基础整理、lab/07 着色器、003 混剪成片、视频工程原型、目录重构完成）
+**最后更新**：2026-10-21（research/visual/11 像素风人物故事完成）

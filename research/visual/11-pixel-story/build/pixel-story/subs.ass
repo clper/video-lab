@@ -1,0 +1,29 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Microsoft YaHei,64,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,70,70,500,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:01.16,Default,,0,0,0,,傍晚
+Dialogue: 0,0:00:01.16,0:00:03.12,Default,,0,0,0,,小柚带着猫咪阿团
+Dialogue: 0,0:00:03.12,0:00:04.69,Default,,0,0,0,,走在回家的路上
+Dialogue: 0,0:00:05.68,0:00:06.49,Default,,0,0,0,,忽然
+Dialogue: 0,0:00:06.49,0:00:08.26,Default,,0,0,0,,一颗星星划过夜空
+Dialogue: 0,0:00:08.26,0:00:09.87,Default,,0,0,0,,掉到了山坡后面
+Dialogue: 0,0:00:10.86,0:00:12.37,Default,,0,0,0,,她们跑过去一看
+Dialogue: 0,0:00:12.37,0:00:14.55,Default,,0,0,0,,原来是一颗迷路的小星星
+Dialogue: 0,0:00:14.55,0:00:16.04,Default,,0,0,0,,正在偷偷地哭
+Dialogue: 0,0:00:17.01,0:00:18.87,Default,,0,0,0,,小柚把它高高举起
+Dialogue: 0,0:00:18.87,0:00:20.31,Default,,0,0,0,,阿团也跳起来
+Dialogue: 0,0:00:20.31,0:00:22.04,Default,,0,0,0,,帮它找回天上的路
+Dialogue: 0,0:00:23.01,0:00:24.72,Default,,0,0,0,,小星星回到夜空
+Dialogue: 0,0:00:24.72,0:00:26.28,Default,,0,0,0,,眨了眨眼睛
+Dialogue: 0,0:00:26.28,0:00:27.04,Default,,0,0,0,,晚安
+Dialogue: 0,0:00:27.04,0:00:27.84,Default,,0,0,0,,小柚

@@ -21,7 +21,7 @@
 
 | 技术                | 惊艳/擅长                                          | 典型效果                               | 门槛（含 AI 可写程度）         | 需要环境配置                                                   | 备注                                                                                         |
 | ------------------- | -------------------------------------------------- | -------------------------------------- | ------------------------------ | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| **Manim**           | 几何、数学、物理的连续变形；支持 3D 参数曲面       | 公式推导、图形变形、莫比乌斯环翻面粘合 | 中偏高 · ★★★               | 根目录 uv 环境已含 manim 0.22.0；不用 LaTeX（数字用 Text）     | **已验证**：001、002、lab/09-manim-showcase。静态排版弱；2D 约 1× 实时，3D 慢（002 低清约 3 分钟） |
+| **Manim**           | 几何、数学、物理的连续变形；支持 3D 参数曲面       | 公式推导、图形变形、莫比乌斯环翻面粘合 | 中偏高 · ★★★               | 根目录 uv 环境已含 manim 0.22.0；不用 LaTeX（数字用 Text）     | **已验证**：001、002、research/visual/09-manim-showcase。静态排版弱；2D 约 1× 实时，3D 慢（002 低清约 3 分钟） |
 | **HyperFrames**     | 浏览器能画的都能用：排版、渐变、遮罩、字幕逐词高亮 | 数据卡、标题动效、图文混排             | 中 · ★★★（自带 lint 检查） | Node +`npm i hyperframes@0.8.174`；首次渲染下载约 270MB Chrome | **已验证**：000、001 HTML 版。onUpdate 不触发，数字滚动做不了；1.5–2× 实时                 |
 | **Pillow 图文卡片** | 模板化量产，换稿子就出片                           | 资讯卡、语录卡                         | 低 · ★★★                   | 已在环境                                                       | **已验证**：000/1_cards。动画弱，像 PPT                                                      |
 | **Remotion**        | React 组件生态，企业级模板化                       | 产品发布、品牌模板视频                 | 中 · ★★★                   | Node + npm                                                     | **待验证**。3 人以上公司需买授权                                                             |
@@ -31,10 +31,11 @@
 
 | 技术                                             | 惊艳/擅长                                            | 典型效果                                           | 门槛（含 AI 可写程度）                        | 需要环境配置                                                                     | 备注                                                                                          |
 | ------------------------------------------------ | ---------------------------------------------------- | -------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Python 程序化 2.5D**（numpy + Pillow）         | 分层插画风景、透视水面倒影、逆光剪影动物             | 日落湖景：山、水、鹿、雁群、跃鱼                   | 中高 · ★★★（`--still` 几秒出单帧自检）    | 已在环境                                                                         | **已验证**：lab/06-landscape，12 秒竖屏约 4.5 分钟。上限是插画/剪影风格，写实动物做不了 |
-| **着色器光线步进**（GLSL，Shadertoy 一类）       | 几百行代码在 GPU 上逐像素算真实光照，惊艳/成本比最高 | 无限海洋、体积云、云海飞越雪山、外星地形、分形宇宙 | 中高（要懂图形数学）· ★★★ 单文件          | 已用 Python `moderngl` 离屏渲染（根环境已装），共享模块 `vlab/render/glsl.py`；也可走浏览器 WebGL | **已验证**：lab/07 云海飞越雪山（GTX 1060，2×2 超采样约 0.65 秒/帧）；003 大气散射天空。参考 Shadertoy 和 Inigo Quilez 的文章                                   |
+| **Python 程序化 2.5D**（numpy + Pillow）         | 分层插画风景、透视水面倒影、逆光剪影动物             | 日落湖景：山、水、鹿、雁群、跃鱼                   | 中高 · ★★★（`--still` 几秒出单帧自检）    | 已在环境                                                                         | **已验证**：research/visual/06-landscape，12 秒竖屏约 4.5 分钟。上限是插画/剪影风格，写实动物做不了 |
+| **像素风人物故事**（numpy + Pillow） | 角色前后一致、动作帧可控、整片同一套色板；比 AI 生成的像素图稳定得多 | 像素小人走路/抬头/举起/挥手、猫跳、流星、RPG 对话框逐字打字 | 中 · ★★★（字符网格画精灵，`--still` / `--sheet` 秒出图自检） | 已在环境；对白用系统自带宋体 12/16px 点阵字 | **已验证**：research/visual/11-pixel-story《掉落的星星》30 秒，含配音、代码合成的芯片音乐和音效 |
+| **着色器光线步进**（GLSL，Shadertoy 一类）       | 几百行代码在 GPU 上逐像素算真实光照，惊艳/成本比最高 | 无限海洋、体积云、云海飞越雪山、外星地形、分形宇宙 | 中高（要懂图形数学）· ★★★ 单文件          | 已用 Python `moderngl` 离屏渲染（根环境已装），共享模块 `toolkit/vlab/render/glsl.py`；也可走浏览器 WebGL | **已验证**：research/visual/07 云海飞越雪山（GTX 1060，2×2 超采样约 0.65 秒/帧）；003 大气散射天空。参考 Shadertoy 和 Inigo Quilez 的文章                                   |
 | **Three.js / WebGL + 后期**                      | 网页 3D + 辉光、景深                                 | 粒子星系、数据地球、3D 文字、科技感片头            | 中 · ★★★                                  | Node + three；渲染可复用 HyperFrames 的逐帧截图                                  | **待验证**                                                                                    |
-| **生成艺术**（Python + OpenCV，Processing 风格） | 分形、粒子、流场、利萨如曲线                         | 分形树、粒子引力、流场线条                         | 中 · ★★★                                  | 需`opencv-python`（根环境未装）                                                  | **已验证**：lab/05（原开发机）。脚本里写死了原机 ffmpeg 路径，换机要改                  |
+| **生成艺术**（Python + OpenCV，Processing 风格） | 分形、粒子、流场、利萨如曲线                         | 分形树、粒子引力、流场线条                         | 中 · ★★★                                  | 需`opencv-python`（根环境未装）                                                  | **已验证**：research/visual/05（原开发机）。脚本里写死了原机 ffmpeg 路径，换机要改                  |
 | **p5.js**                                        | 生成艺术、跟着音乐动                                 | 音乐可视化、抽象动态海报                           | 低中 · ★★★                                | 浏览器即可                                                                       | **待验证**                                                                                    |
 | **TouchDesigner**                                | 实时节点式视觉、音频响应                             | 演出级音乐可视化、粒子装置                         | 中高 · ★（主要靠节点界面，Python 只能辅助） | 需安装；非商用免费版分辨率上限 1280×1280                                        | **待验证**                                                                                    |
 | **分形渲染器**（如 Mandelbulber）                | 无限放大的三维分形                                   | 曼德尔球穿梭、分形城市                             | 低（调参数）· ★★（参数文件 + 命令行渲染）  | 需安装                                                                           | **待验证**                                                                                    |
@@ -44,7 +45,7 @@
 
 | 技术                                  | 惊艳/擅长                                | 典型效果                                       | 门槛（含 AI 可写程度）                                                   | 需要环境配置                                                                           | 备注                                                                                          |
 | ------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Blender**（Cycles/Eevee、几何节点） | 物理正确的光线追踪，接近照片；程序化地形 | 写实山川湖泊、带动画的动物、产品广告、相机运镜 | 中 · ★★（`bpy` 全脚本 + `blender --background` 后台渲染；素材要下载） | 需安装（约 300MB）；免费素材：Poly Haven（HDRI/材质/模型）、Quaternius（带动画的动物） | **基础已验证**：lab/04（原开发机，本机未装）。Cycles 慢，一帧几十秒起。**写实路线首选** |
+| **Blender**（Cycles/Eevee、几何节点） | 物理正确的光线追踪，接近照片；程序化地形 | 写实山川湖泊、带动画的动物、产品广告、相机运镜 | 中 · ★★（`bpy` 全脚本 + `blender --background` 后台渲染；素材要下载） | 需安装（约 300MB）；免费素材：Poly Haven（HDRI/材质/模型）、Quaternius（带动画的动物） | **基础已验证**：research/visual/04（原开发机，本机未装）。Cycles 慢，一帧几十秒起。**写实路线首选** |
 | **Unreal Engine 5**                   | 实时电影级画质，海量现成素材             | 写实森林、雪山、城市航拍                       | 高 · ★（有 Python 编辑器脚本，主要还是在编辑器里调）                   | 需好显卡、上百 GB 空间                                                                 | **待验证**，视硬件决定                                                                        |
 | **Houdini**                           | 影视特效行业标准，全程序化               | 爆炸、破碎、海浪、大规模模拟                   | 高 · ★（Python/VEX 能写，调试靠界面）                                  | 需安装；免费学习版有水印和分辨率限制                                                   | **待验证**                                                                                    |
 | **高斯泼溅三维重建**                  | 用手机拍一圈照片重建真实场景，再自由运镜 | 真实景点的无人机式穿梭                         | 中 · ★（重建可脚本化，但素材要人实地拍）                               | 需 NVIDIA 显卡                                                                         | **待验证**。属于逐场景训练的重建，不是生成模型                                                |
@@ -62,8 +63,8 @@
 
 | 技术         | 惊艳/擅长                                | 典型效果             | 门槛（含 AI 可写程度） | 需要环境配置                                    | 备注                                                        |
 | ------------ | ---------------------------------------- | -------------------- | ---------------------- | ----------------------------------------------- | ----------------------------------------------------------- |
-| **FFmpeg**   | 合成、转场、滤镜特效、烧字幕、响度标准化 | 20 种转场、15 种特效 | 低 · ★★★           | 本机在 PATH 上（8.1.1）；原开发机在`tools/bin/` | **已验证**：所有项目、lab/01、02                      |
-| **OpenCV**   | 图像处理、边缘检测、风格化               | 卡通化、描边、特征点 | 中 · ★★★           | 需`opencv-python`（根环境未装）                 | **已验证**：lab/03（原开发机）                        |
+| **FFmpeg**   | 合成、转场、滤镜特效、烧字幕、响度标准化 | 20 种转场、15 种特效 | 低 · ★★★           | 本机在 PATH 上（8.1.1）；原开发机在`toolkit/bin/` | **已验证**：所有项目、research/visual/01、02                      |
+| **OpenCV**   | 图像处理、边缘检测、风格化               | 卡通化、描边、特征点 | 中 · ★★★           | 需`opencv-python`（根环境未装）                 | **已验证**：research/visual/03（原开发机）                        |
 | **Edge TTS** | 免费配音 + 词级时间轴，画面按词对齐      | 所有项目的旁白和字幕 | 低 · ★★★           | 已在环境（7.3.1），需联网                       | **已验证**：所有项目。生成结果可能随时间变，`build/` 要入库 |
 
 ### F. 对照：AI 像素级生成（当前路线排除）
@@ -83,6 +84,7 @@
 | 产品发布（版式/文字）        | **HyperFrames**        | Remotion        | -                                         |
 | 模板化量产（资讯/语录）      | **Pillow**             | HyperFrames     | -                                         |
 | 风景、自然氛围（插画风）     | **Python 程序化 2.5D** | 着色器光线步进  | 程序化画面 + Edge TTS 旁白                |
+| 人物小故事、童话、怀旧游戏感 | **像素风** | Manim | 精灵动画 + RPG 对话框 + 芯片音乐 |
 | 风景、动物（写实）           | **Blender**            | Unreal Engine 5 | Blender 出空镜 + Manim/HyperFrames 叠文字 |
 | 震撼开场、空镜、转场         | **着色器光线步进**     | Three.js        | 几秒高光镜头 + FFmpeg 转场接正片          |
 | 物理现象科普（流体、沙、雪） | **Taichi**             | Blender 模拟    | 模拟片段 + Manim 标注讲解                 |
@@ -127,7 +129,7 @@
 }
 ```
 
-### 2. 配音链路（vlab/pipeline/tts.py，命令 `vlab-tts`，所有视频共用）
+### 2. 配音链路（toolkit/vlab/pipeline/tts.py，命令 `vlab-tts`，所有视频共用）
 
 **输入**：`content/xxx.json`**输出**：
 
@@ -162,7 +164,7 @@ uv run vlab-preview media/videos/scene/1920p30/SceneName.mp4 --timeline build/xx
 npm run render
 ```
 
-### 4. 合成（vlab/pipeline/finalize.py，命令 `vlab-finalize`）
+### 4. 合成（toolkit/vlab/pipeline/finalize.py，命令 `vlab-finalize`）
 
 **输入**：无声画面.mp4 + build/xxx/
 **输出**：`renders/xxx_final.mp4`
@@ -178,25 +180,24 @@ npm run render
 
 ## 三、项目结构规范
 
-### 仓库顶层
+### 仓库顶层（按类别分区）
 
 ```
-videos/        正式视频
-lab/           技术测试
-reference/     参考项目（只读快照）
-vlab/          公共代码（Python 包；uv sync 后 vlab-* 命令在任意目录可用）
-docs/          TECHNOLOGY.md、TODO.md、design/
-tools/bin/     原开发机的 ffmpeg.exe、ffprobe.exe（可选；本机用 PATH 上的 ffmpeg）
+videos/        【项目结果】正式视频
+research/      【开发测试】visual/ 画面技术、audio/ 音频、frontier/ 前沿视频生成
+toolkit/       【工具】vlab/ 公共代码包（uv sync 后 vlab-* 命令在任意目录可用）；bin/ 本机可选的 ffmpeg 等程序
+docs/          【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
+archive/       【存档】000 参考项目的只读快照
 ```
 
-依赖方向：`videos/`、`lab/` 只依赖 `vlab/`，彼此不互相引用；可复用的画面先提升进 `vlab/scenes/` 再用。
+依赖方向：`videos/`、`research/` 只依赖 `toolkit/vlab/`，彼此不互相引用；可复用的东西先提升进 `toolkit/vlab/` 再用。
 
 ### 正式视频项目（videos/三位编号-英文 slug/）
 
 ```
 content/           # 剧本稿子 (json)；用视频工程时是 project.yaml
 manim/             # Manim 动画 (scene.py)
-shader/            # 着色器片段的渲染脚本（着色器本身放 vlab/scenes/shaders/）- 可选
+shader/            # 着色器片段的渲染脚本（着色器本身放 toolkit/vlab/scenes/shaders/）- 可选
 hyperframes/       # HyperFrames 动画 (index.html、package.json、vendor/) - 可选
 build/             # 配音产物 (narration.wav, timeline.json, subs.ass)，入库
 media/clips/       # 多技术混剪时的分镜片段，入库（拼接成片不用重渲染）
@@ -204,14 +205,14 @@ renders/           # 成片 (mp4)，入库
 build.py           # 多技术混剪时的总装脚本 - 可选
 ```
 
-### 公共代码（vlab/）
+### 公共代码（toolkit/vlab/）
 
 ```
-vlab/pipeline/     tts.py 配音、finalize.py 合成
-vlab/render/       glsl.py 着色器 → 视频片段（分块渲染防显卡超时）
-vlab/scenes/       landscape.py 程序化湖景；shaders/ 云海、大气散射
-vlab/videokit/     视频工程：project.py、build.py、manim_templates.py、style_extract.py
-vlab/tools/        preview.py 抽帧拼图、check_env.py 环境自检
+toolkit/vlab/pipeline/     tts.py 配音、finalize.py 合成
+toolkit/vlab/render/       glsl.py 着色器 → 视频片段（分块渲染防显卡超时）
+toolkit/vlab/scenes/       landscape.py 程序化湖景；shaders/ 云海、大气散射
+toolkit/vlab/videokit/     视频工程：project.py、build.py、manim_templates.py、style_extract.py
+toolkit/vlab/tools/        preview.py 抽帧拼图、check_env.py 环境自检
 ```
 
 ---
@@ -257,7 +258,7 @@ vlab/tools/        preview.py 抽帧拼图、check_env.py 环境自检
 ### FFmpeg
 
 **版本**：7.1
-**位置**：`tools/bin/ffmpeg.exe`
+**位置**：`toolkit/bin/ffmpeg.exe`
 
 **常用命令**：
 
@@ -280,9 +281,11 @@ ffmpeg -i input.wav -af "pan=stereo|c0=c0|c1=c0" output.wav
 | 类型     | 格式                   | 示例                   |
 | -------- | ---------------------- | ---------------------- |
 | 正式视频 | `videos/三位编号-英文 slug` | `videos/001-float-precision`  |
-| 参考项目 | `reference/000-claude-xxx`  | `reference/000-claude-video-lab` |
-| 技术测试 | `lab/两位编号-英文用途`     | `lab/07-shader-raymarch`      |
-| 公共代码 | `vlab/<职责>/`              | `vlab/scenes/landscape.py`    |
+| 存档     | `archive/000-claude-xxx`    | `archive/000-claude-video-lab` |
+| 技术测试 | `research/visual/两位编号-英文用途`     | `research/visual/07-shader-raymarch`      |
+| 音频研究 | `research/audio/两位编号-英文用途`   | `research/audio/02-ducking`            |
+| 前沿研究 | `research/frontier/两位编号-英文用途` | `research/frontier/02-code-controlled` |
+| 公共代码 | `toolkit/vlab/<职责>/`              | `toolkit/vlab/scenes/landscape.py`    |
 
 ---
 
@@ -293,7 +296,7 @@ ffmpeg -i input.wav -af "pan=stereo|c0=c0|c1=c0" output.wav
 
 | 顺序 | 方向                          | 理由                                          | 前置条件                              |
 | ---- | ----------------------------- | --------------------------------------------- | ------------------------------------- |
-| 1    | **着色器光线步进** ✅ 已完成  | 惊艳/成本比最高，单文件、零素材，最适合 AI 写 | 已完成：lab/07、003 大气散射    |
+| 1    | **着色器光线步进** ✅ 已完成  | 惊艳/成本比最高，单文件、零素材，最适合 AI 写 | 已完成：research/visual/07、003 大气散射    |
 | 2    | **Blender 写实风景 + 动物**   | 写实路线唯一现实的选择，脚本可全程后台跑      | 安装 Blender，下载免费动物模型和 HDRI |
 | 3    | **Taichi 物理模拟**           | 几秒高光镜头，混剪价值高                      | `uv add taichi`                       |
 | 4    | **Three.js + 后期**           | 科技感片头、粒子、3D 文字                     | `npm i three`                         |
