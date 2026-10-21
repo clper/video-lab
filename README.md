@@ -64,6 +64,7 @@
 | 图文卡片/简单动画 | Pillow 或 HyperFrames |
 | 风景、氛围、震撼空镜 | 程序化风景 / GLSL 着色器 |
 | 人物小故事、复古游戏感 | 像素风（research/visual/11） |
+| 金句、歌词、数字冲击 | 文字动效（research/visual/12） |
 | 真人/实拍 | 像素级生成（Seedance/可灵） |
 | 写实 3D 场景 | Blender |
 
@@ -88,11 +89,11 @@ AI-Vedio/
 │   ├── 002-mobius-strip/
 │   └── 003-sunset-red/
 ├── research/            【开发测试】
-│   ├── visual/          画面技术 01–11
+│   ├── visual/          画面技术 01–12（第一阶段已结束）
 │   ├── audio/           音频研究
 │   └── frontier/        前沿视频生成
 ├── toolkit/             【工具】
-│   ├── vlab/            pipeline 配音合成 · render 渲染器 · scenes 可复用画面 · videokit 视频工程 · tools 预览自检
+│   ├── vlab/            pipeline 配音合成 · audio 音效配乐混音 · render 渲染器 · scenes 可复用画面 · videokit 视频工程 · tools 预览自检
 │   └── bin/             可选：本机的 ffmpeg 等程序（不入库）
 ├── docs/                【文档】
 ├── archive/             【存档】

@@ -4,7 +4,7 @@
 
 | 内容 | 说明 |
 |---|---|
-| [vlab/](vlab/) | 公共代码包（Python 里 `import vlab`）：`pipeline` 配音合成、`render` 渲染器、`scenes` 可复用画面、`videokit` 视频工程、`tools` 预览和自检 |
+| [vlab/](vlab/) | 公共代码包（Python 里 `import vlab`）：`pipeline` 配音合成、`audio` 音效配乐混音、`render` 渲染器、`scenes` 可复用画面、`videokit` 视频工程、`tools` 预览和自检 |
 | [bin/](bin/) | 可选：放本机的 ffmpeg.exe 等程序（不入库）；没有就用系统 PATH 上的 |
 
 命令（`uv sync` 后任意目录可用）：`vlab-tts`、`vlab-finalize`、`vlab-preview`、`vlab-build`、`vlab-style`、`vlab-check`，用法见根目录 README。

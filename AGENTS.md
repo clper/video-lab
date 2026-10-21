@@ -1,6 +1,6 @@
 # AGENTS.md：给 AI 编程助手的说明
 
-这是一个"用代码画科普视频"的仓库：Manim、GLSL 着色器、程序化画面渲染画面，Edge TTS 配音，FFmpeg 合成。
+这是一个"用代码画科普视频"的仓库：Manim、GLSL 着色器、程序化画面渲染画面，Edge TTS 配音，代码合成音效和配乐，FFmpeg 混音合成。
 人类读的总览见 `README.md`；技术选型见 `docs/TECHNOLOGY.md`；选题时的风格和内容组合见 `docs/VIDEO-TYPES.md`；进度见 `docs/TODO.md`；设计文档在 `docs/design/`。
 
 ## 克隆后第一步（必做）
@@ -29,14 +29,14 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 
 ```
 videos/      【项目结果】正式视频（001、002、003…），一条一个目录
-research/    【开发测试】visual/ 画面技术（01–11）、audio/ 音频研究、frontier/ 前沿视频生成；实验目录都是 NN-主题/
-toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
+research/    【开发测试】visual/ 画面技术（01–12）、audio/ 音频研究、frontier/ 前沿视频生成；实验目录都是 NN-主题/
+toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
 docs/        【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
 archive/     【存档】000 参考项目的只读快照：不要改，它自带的 shared/ 和环境配置只属于它自己
 ```
 
 - **新东西放哪**：做成片 → `videos/`；做试验、调研 → `research/` 下对应的区；会被多个项目复用的代码 → `toolkit/vlab/`；说明文档 → `docs/`。
-- **`videos/` 和 `research/` 只依赖 `toolkit/vlab/`，彼此不互相引用；`research/` 下三个区之间也不互相引用。**
+- **`videos/` 和 `research/` 只依赖 `toolkit/vlab/`，彼此不互相引用；`research/` 下各区之间也不互相引用。**
   想在正式视频里用试验出来的东西，先把它提升进 `toolkit/vlab/`（比如 `toolkit/vlab/scenes/landscape.py` 就是从 research/visual/06 提升上来的），再从两边引用。
 - **公共代码只有一份**：不要把 `toolkit/vlab/` 里的文件复制到项目里。Python 里照常 `import vlab`。
 - **密钥和模型权重不入库**：API Key 只放本地 `.env`（可以入库不含真实值的 `.env.example`）；模型权重放在 `weights/` 目录或系统缓存里，`.gitignore` 已忽略，在实验 README 里写清下载方式。
@@ -70,6 +70,7 @@ archive/     【存档】000 参考项目的只读快照：不要改，它自带
 
 - **渲染 → 看图 → 改**：改画面后一定用 `vlab-preview` 抽帧看图确认，不要只看代码就说"改好了"。
 - **画面跟着配音走**：画面元素绑定到配音里的"词"（`timeline.json` 的 words），不要写死秒数。
+- **声音按规范混**：有配乐或音效的成片用 `vlab.audio.mix.mux` 混音（说话时配乐自动压低，成片 -14 LUFS），不要另写 ffmpeg 混音参数；音效由画面的事件清单触发（`vlab.audio.sfx.render`，例子见 research/visual/12）。
 - **新视频优先用视频工程**（`toolkit/vlab/videokit`，设计见 `docs/design/DESIGN-video-project.md`）：
   文案、数据、颜色、出场时机写在 `project.yaml` 里，常规镜头走模板；只有特殊镜头才写定制代码。
 - **入库原则**：渲染成果要入库（克隆即可用），环境和缓存碎片不入库；新增产物类型时先看 `.gitignore` 的规则说明。

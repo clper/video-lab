@@ -56,6 +56,9 @@ research/visual/*/renders/concat_list.txt
 *.ckpt
 *.gguf
 *.pth
+# 例外：这个不是模型权重，是 vlab 的安装补丁（仓库路径含【】时 Python 按 GBK 读 .pth 会读坏，见 AGENTS.md「已知坑」）。
+# pyproject.toml 打包时强制包含它，不入库的话克隆后 uv sync 会失败。
+!toolkit/vlab/_vlab_root.pth
 
 # ---------- Blender 自动备份 ----------
 *.blend1

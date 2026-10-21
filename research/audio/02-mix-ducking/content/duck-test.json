@@ -1,0 +1,12 @@
+{
+  "id": "duck-test",
+  "title": "自动避让测试",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+0%",
+  "scenes": [
+    {"id": "s1", "narration": "这是一段测试配音，背景里一直有音乐。"},
+    {"id": "s2", "narration": "我说话的时候，音乐会自动压低。"},
+    {"id": "s3", "narration": "我停下来，音乐就慢慢回来。"},
+    {"id": "s4", "narration": "这样旁白听得清楚，画面也不会冷清。"}
+  ]
+}

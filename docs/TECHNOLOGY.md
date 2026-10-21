@@ -24,6 +24,7 @@
 | **Manim**           | 几何、数学、物理的连续变形；支持 3D 参数曲面       | 公式推导、图形变形、莫比乌斯环翻面粘合 | 中偏高 · ★★★               | 根目录 uv 环境已含 manim 0.22.0；不用 LaTeX（数字用 Text）     | **已验证**：001、002、research/visual/09-manim-showcase。静态排版弱；2D 约 1× 实时，3D 慢（002 低清约 3 分钟） |
 | **HyperFrames**     | 浏览器能画的都能用：排版、渐变、遮罩、字幕逐词高亮 | 数据卡、标题动效、图文混排             | 中 · ★★★（自带 lint 检查） | Node +`npm i hyperframes@0.8.174`；首次渲染下载约 270MB Chrome | **已验证**：000、001 HTML 版。onUpdate 不触发，数字滚动做不了；1.5–2× 实时                 |
 | **Pillow 图文卡片** | 模板化量产，换稿子就出片                           | 资讯卡、语录卡                         | 低 · ★★★                   | 已在环境                                                       | **已验证**：000/1_cards。动画弱，像 PPT                                                      |
+| **Python 文字动效**（Pillow + numpy） | 每个字单独运动：弹出回弹、数字滚动、沿圆弧排字、遮罩揭示、故障撕裂；每个动作卡在配音的词上 | 金句、歌词、数字冲击开场、标题转场 | 中 · ★★★（`--still` 秒出单帧自检） | 已在环境 | **已验证**：research/visual/12-kinetic-type《光有多快》20 秒，配 71 个自动音效。HyperFrames 做不了的数字滚动这里能做 |
 | **Remotion**        | React 组件生态，企业级模板化                       | 产品发布、品牌模板视频                 | 中 · ★★★                   | Node + npm                                                     | **待验证**。3 人以上公司需买授权                                                             |
 
 ### B. 程序化与生成艺术类（风景、氛围、空镜）
@@ -66,6 +67,9 @@
 | **FFmpeg**   | 合成、转场、滤镜特效、烧字幕、响度标准化 | 20 种转场、15 种特效 | 低 · ★★★           | 本机在 PATH 上（8.1.1）；原开发机在`toolkit/bin/` | **已验证**：所有项目、research/visual/01、02                      |
 | **OpenCV**   | 图像处理、边缘检测、风格化               | 卡通化、描边、特征点 | 中 · ★★★           | 需`opencv-python`（根环境未装）                 | **已验证**：research/visual/03（原开发机）                        |
 | **Edge TTS** | 免费配音 + 词级时间轴，画面按词对齐      | 所有项目的旁白和字幕 | 低 · ★★★           | 已在环境（7.3.1），需联网                       | **已验证**：所有项目。生成结果可能随时间变，`build/` 要入库 |
+| **代码合成音效**（numpy，`vlab.audio.sfx`） | 12 种电子感音效，零素材、无版权问题；画面事件清单直接生成音效轨，和画面严丝合缝 | 字弹出、转场呼啸、数字咔嗒、亮点铃音 | 低 · ★★★ | 已在环境 | **已验证**：research/audio/09、research/visual/12。写实声音（脚步、水、风）要靠 CC0 音效库 |
+| **自动避让混音**（ffmpeg，`vlab.audio.mix`） | 说话时配乐稳定压低 8 dB、停顿时回来；两遍响度标准化到立体声 -14 LUFS | 所有带配乐的成片 | 低 · ★★★ | 已在环境 | **已验证**：research/audio/02，用电平曲线实测 |
+| **程序化配乐**（numpy，`vlab.audio.music`） | 按时长和速度生成背景音乐，自己合成、无版权问题 | 和弦铺底 + 琶音 + 轻鼓；芯片音乐 | 中 · ★★★ | 已在环境 | **部分验证**：目前只有两种风格，扩展见 research/audio/03 |
 
 ### F. 对照：AI 像素级生成（当前路线排除）
 
@@ -85,6 +89,7 @@
 | 模板化量产（资讯/语录）      | **Pillow**             | HyperFrames     | -                                         |
 | 风景、自然氛围（插画风）     | **Python 程序化 2.5D** | 着色器光线步进  | 程序化画面 + Edge TTS 旁白                |
 | 人物小故事、童话、怀旧游戏感 | **像素风** | Manim | 精灵动画 + RPG 对话框 + 芯片音乐 |
+| 金句、歌词、数字冲击 | **Python 文字动效** | HyperFrames | 逐词动效 + 事件音效 + 自动避让配乐 |
 | 风景、动物（写实）           | **Blender**            | Unreal Engine 5 | Blender 出空镜 + Manim/HyperFrames 叠文字 |
 | 震撼开场、空镜、转场         | **着色器光线步进**     | Three.js        | 几秒高光镜头 + FFmpeg 转场接正片          |
 | 物理现象科普（流体、沙、雪） | **Taichi**             | Blender 模拟    | 模拟片段 + Manim 标注讲解                 |
@@ -106,7 +111,7 @@
        ↓
      渲染画面 (manim/scene.py 或 hyperframes/index.html)
        ↓
-     合成 (uv run vlab-finalize)
+     合成 (uv run vlab-finalize；有配乐、音效时用 vlab.audio.mix)
        ↓
      成片 (renders/xxx_final.mp4)
 ```
@@ -176,6 +181,10 @@ npm run render
 - 单声道→立体声（pan 滤镜）
 - 响度标准化（-16 LUFS）
 
+**有配乐、音效时**：改用 `vlab.audio.mix.mux(无声画面, narration.wav, 输出, music=..., sfx=...)`。
+配乐在说话时自动压低 8 dB，成片两遍标准化到立体声 -14 LUFS、真峰值 -1.5 dBTP（规范和实测见 `research/audio/02-mix-ducking`）。
+`mux` 不烧字幕、画面原样复制，需要字幕就先画进画面。
+
 ---
 
 ## 三、项目结构规范
@@ -213,6 +222,7 @@ toolkit/vlab/render/       glsl.py 着色器 → 视频片段（分块渲染防�
 toolkit/vlab/scenes/       landscape.py 程序化湖景；shaders/ 云海、大气散射
 toolkit/vlab/videokit/     视频工程：project.py、build.py、manim_templates.py、style_extract.py
 toolkit/vlab/tools/        preview.py 抽帧拼图、check_env.py 环境自检
+toolkit/vlab/audio/        sfx.py 合成音效、music.py 程序化配乐、mix.py 混音规范（自动避让 + 响度）
 ```
 
 ---
@@ -283,7 +293,7 @@ ffmpeg -i input.wav -af "pan=stereo|c0=c0|c1=c0" output.wav
 | 正式视频 | `videos/三位编号-英文 slug` | `videos/001-float-precision`  |
 | 存档     | `archive/000-claude-xxx`    | `archive/000-claude-video-lab` |
 | 技术测试 | `research/visual/两位编号-英文用途`     | `research/visual/07-shader-raymarch`      |
-| 音频研究 | `research/audio/两位编号-英文用途`   | `research/audio/02-ducking`            |
+| 音频研究 | `research/audio/两位编号-英文用途`   | `research/audio/02-mix-ducking`            |
 | 前沿研究 | `research/frontier/两位编号-英文用途` | `research/frontier/02-code-controlled` |
 | 公共代码 | `toolkit/vlab/<职责>/`              | `toolkit/vlab/scenes/landscape.py`    |
 

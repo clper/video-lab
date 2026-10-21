@@ -20,7 +20,7 @@
 | 数学 / 几何动画 | 公式推导、图形连续变形 | 纯代码 | Manim | ✅ 已验证（001、002） |
 | 信息图 / MG 动画 | 图标、数据卡、标题动效 | 纯代码 | HyperFrames、videokit 模板、Pillow | ✅ 已验证（000、research/visual/08） |
 | 数据可视化 | 柱状图、排行、地图、走势 | 纯代码 | HyperFrames、Manim、videokit 模板 | ✅ 部分验证（research/visual/08 对比柱） |
-| 文字动效 | 歌词、金句、逐词跳字 | 纯代码 | HyperFrames、Remotion | 能做，未验证 |
+| 文字动效 | 歌词、金句、逐词跳字、数字滚动 | 纯代码 | Python（Pillow + numpy）自绘；也可用 HyperFrames、Remotion | ✅ 已验证（research/visual/12） |
 | 像素风 / 复古游戏 | 像素小人、RPG 对话框、芯片音乐 | 纯代码 | Python 精灵图 + 有序抖动 | ✅ 已验证（research/visual/11） |
 | 扁平插画 / 剪影 | 分层视差风景、逆光剪影动物 | 纯代码 | Python 程序化 2.5D | ✅ 已验证（research/visual/06） |
 | 写实氛围空镜 | 云海、天空、雪山、日落、星空 | 纯代码 | GLSL 着色器 | ✅ 已验证（research/visual/07、003） |
@@ -28,7 +28,7 @@
 | 低多边形 3D | 折纸感的山川、动物、小场景 | 纯代码（也可用 Blender） | Three.js、着色器 | 能做，未验证 |
 | 等距视角 | 小城市、工厂流程、系统架构 | 纯代码 | 2D 绘制、Three.js | 能做，未验证 |
 | 科学模拟 | 流体、沙子、天体、物理实验 | 纯代码 | Taichi、Manim | 能做，未验证 |
-| 赛博 / 故障风 | 霓虹、扫描线、画面撕裂 | 纯代码 | 着色器、FFmpeg 特效 | 部分验证（research/visual/02） |
+| 赛博 / 故障风 | 霓虹、扫描线、画面撕裂 | 纯代码 | 着色器、FFmpeg 特效、Pillow | 部分验证（research/visual/02；12 的故障字） |
 | 拼贴 / 剪纸风 | 照片剪贴、纸片翻动 | 代码 + 素材 | 代码做动画；图片素材（可 AI 生成）+ 自动抠图 | 能做，未验证 |
 | 手绘 / 水彩 / 素描风 | 水彩晕染、铅笔线条 | 代码 + 素材 | 着色器风格化滤镜作用在插画或图片上 | 能做，未验证 |
 | 实拍素材包装 | 口播字幕、B-roll、贴纸叠加 | 代码 + 素材 | FFmpeg、HyperFrames；画面来自拍摄或录屏 | 能做，未验证 |

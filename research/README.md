@@ -4,11 +4,11 @@
 
 | 区 | 研究什么 | 说明 |
 |---|---|---|
-| [visual/](visual/) | 画面技术：Manim、着色器、程序化风景、像素风、视频工程… | 01–11，清单见 visual/README.md |
-| [audio/](audio/) | 音频：配音、混音、音乐、音效、音画同步 | 路线和顺序见 audio/README.md |
+| [visual/](visual/) | 画面技术：Manim、着色器、程序化风景、像素风、文字动效、视频工程… | 01–12（第一阶段已结束），清单见 visual/README.md |
+| [audio/](audio/) | 音频：配音、混音、音乐、音效、音画同步 | 02、09 已完成；路线和顺序见 audio/README.md |
 | [frontier/](frontier/) | 前沿视频生成技术的调研和试验 | 结论必须带日期和来源 |
 
 规则：
 
 - 一个实验一个目录 `NN-主题/`，自带脚本、README 和 `renders/`（输出入库）。
-- 只依赖 `toolkit/vlab/`；三个区之间、和 `videos/` 之间都不互相引用。
+- 只依赖 `toolkit/vlab/`；各区之间、和 `videos/` 之间都不互相引用。
