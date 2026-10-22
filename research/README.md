@@ -7,6 +7,7 @@
 | [visual/](visual/) | 画面技术：Manim、着色器、程序化风景、像素风、文字动效、视频工程… | 01–12（第一阶段已结束），清单见 visual/README.md |
 | [audio/](audio/) | 音频：配音、混音、音乐、音效、音画同步 | 02、09 已完成；路线和顺序见 audio/README.md |
 | [frontier/](frontier/) | 前沿视频生成技术的调研和试验 | 结论必须带日期和来源 |
+| [content/](content/) | 创作内容：面向大众的内容方向、账号定位、平台、合规 | 01、03、08 已有第一版，总览见 content/README.md；结论带日期和来源 |
 
 规则：
 

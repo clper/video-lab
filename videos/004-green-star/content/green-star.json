@@ -1,0 +1,28 @@
+{
+  "id": "green-star",
+  "title": "为什么没有绿色的恒星",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+3%",
+  "scenes": [
+    {"id": "s01_sky",     "narration": "夜空里的星星，有红色的，有蓝色的，有白色的。", "headline": "红、蓝、白", "tech": "shader-starfield"},
+    {"id": "s02_nogreen", "narration": "但你永远找不到一颗绿色的星星。一颗也没有。", "headline": "没有绿色的恒星", "tech": "shader-starfield"},
+    {"id": "s03_why",     "narration": "奇怪的是，恒星什么颜色的光都在发。为什么偏偏没有绿色？", "headline": "什么色都发，为何没有绿", "tech": "manim"},
+
+    {"id": "s04_temp",    "narration": "星星的颜色来自温度。越热越偏蓝，越冷越偏红。", "headline": "颜色来自温度", "tech": "manim"},
+    {"id": "s05_gap",     "narration": "从最热的蓝，到最冷的红，中间是白、黄、橙。这串颜色里，没有绿。", "headline": "蓝 白 黄 橙 红", "tech": "manim"},
+
+    {"id": "s06_calc",    "narration": "可要是算一下：什么温度的恒星，发光最强的波长正好是绿色？答案是五千一百度到五千八百度。", "headline": "5100 – 5800 度", "tech": "manim"},
+    {"id": "s07_sun",     "narration": "而太阳的表面温度，是五千七百七十二度。", "headline": "太阳 5772 度", "tech": "shader-sun"},
+    {"id": "s08_notgreen","narration": "也就是说，太阳发光最强的波长，就在绿色。可太阳看起来，一点也不绿。", "headline": "一点也不绿", "tech": "kinetic"},
+
+    {"id": "s09_wrong",   "narration": "问题出在一个错误的假设：发光最强的颜色，就是我们看到的颜色。", "headline": "峰值 ≠ 颜色", "tech": "manim"},
+    {"id": "s10_curve",   "narration": "恒星不是只发一种光。它在整个可见光范围里，什么颜色都在发。峰值只是最强的那一个，不是唯一的那一个。", "headline": "整个可见光都在发", "tech": "manim"},
+    {"id": "s11_data",    "narration": "看太阳的实际数据：蓝光、绿光、红光三段的强度，是零点九九、一点零零、零点八八。几乎一样多。", "headline": "0.99 : 1.00 : 0.88", "tech": "manim"},
+    {"id": "s12_mix",     "narration": "当这三种光以差不多的强度一起进入眼睛，你看到的不是绿色，是白色。", "headline": "三色混合 = 白", "tech": "manim"},
+
+    {"id": "s13_answer",  "narration": "这就是答案：不是绿色缺席了，是只要绿色最强，红和蓝就一定也很强，混在一起就成了白色。", "headline": "绿最强时，红蓝也强", "tech": "manim"},
+    {"id": "s14_rethink", "narration": "所以回到最开始的问题，为什么没有绿色的恒星？因为这个问题，问错了。", "headline": "问题问错了", "tech": "shader-starfield"},
+    {"id": "s15_white",   "narration": "绿色的恒星一直都在，太阳就是一颗。只是当它所有的颜色一起照进你眼睛，你给这个颜色起了另一个名字，白色。", "headline": "白色", "tech": "shader-sun"},
+    {"id": "s16_outro",   "narration": "下次抬头看星星，你看到的每一颗白色的星，可能都是一颗绿色的恒星。", "headline": "为什么 · 日常科学", "tech": "shader-starfield"}
+  ]
+}

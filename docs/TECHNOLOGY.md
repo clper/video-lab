@@ -193,7 +193,7 @@ npm run render
 
 ```
 videos/        【项目结果】正式视频
-research/      【开发测试】visual/ 画面技术、audio/ 音频、frontier/ 前沿视频生成
+research/      【开发测试】visual/ 画面技术、audio/ 音频、frontier/ 前沿视频生成、content/ 创作内容
 toolkit/       【工具】vlab/ 公共代码包（uv sync 后 vlab-* 命令在任意目录可用）；bin/ 本机可选的 ffmpeg 等程序
 docs/          【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
 archive/       【存档】000 参考项目的只读快照
@@ -295,6 +295,7 @@ ffmpeg -i input.wav -af "pan=stereo|c0=c0|c1=c0" output.wav
 | 技术测试 | `research/visual/两位编号-英文用途`     | `research/visual/07-shader-raymarch`      |
 | 音频研究 | `research/audio/两位编号-英文用途`   | `research/audio/02-mix-ducking`            |
 | 前沿研究 | `research/frontier/两位编号-英文用途` | `research/frontier/02-code-controlled` |
+| 内容研究 | `research/content/两位编号-英文用途` | `research/content/01-directions` |
 | 公共代码 | `toolkit/vlab/<职责>/`              | `toolkit/vlab/scenes/landscape.py`    |
 
 ---

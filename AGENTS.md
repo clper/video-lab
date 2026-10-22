@@ -29,7 +29,7 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 
 ```
 videos/      【项目结果】正式视频（001、002、003…），一条一个目录
-research/    【开发测试】visual/ 画面技术（01–12）、audio/ 音频研究、frontier/ 前沿视频生成；实验目录都是 NN-主题/
+research/    【开发测试】visual/ 画面技术（01–12）、audio/ 音频研究、frontier/ 前沿视频生成、content/ 创作内容研究（内容方向、平台、合规）；实验目录都是 NN-主题/
 toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
 docs/        【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
 archive/     【存档】000 参考项目的只读快照：不要改，它自带的 shared/ 和环境配置只属于它自己
@@ -71,6 +71,7 @@ archive/     【存档】000 参考项目的只读快照：不要改，它自带
 - **渲染 → 看图 → 改**：改画面后一定用 `vlab-preview` 抽帧看图确认，不要只看代码就说"改好了"。
 - **画面跟着配音走**：画面元素绑定到配音里的"词"（`timeline.json` 的 words），不要写死秒数。
 - **声音按规范混**：有配乐或音效的成片用 `vlab.audio.mix.mux` 混音（说话时配乐自动压低，成片 -14 LUFS），不要另写 ffmpeg 混音参数；音效由画面的事件清单触发（`vlab.audio.sfx.render`，例子见 research/visual/12）。
+- **发布前过合规清单**（`research/content/08-compliance/README.md`）：用了 TTS 配音要标 AI（平台 AI 声明加必选标签，片头加提示）；配乐音效只用自己合成的；商用发布前字体要换成开源可商用的（微软雅黑不行）。
 - **新视频优先用视频工程**（`toolkit/vlab/videokit`，设计见 `docs/design/DESIGN-video-project.md`）：
   文案、数据、颜色、出场时机写在 `project.yaml` 里，常规镜头走模板；只有特殊镜头才写定制代码。
 - **入库原则**：渲染成果要入库（克隆即可用），环境和缓存碎片不入库；新增产物类型时先看 `.gitignore` 的规则说明。
