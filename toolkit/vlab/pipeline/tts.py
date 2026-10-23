@@ -5,6 +5,7 @@
 
 用法（任意目录）:
        uv run vlab-tts videos/001-float-precision/content/float.json
+稿子里可以写 "aspect": "landscape" 出横屏（1920x1080），不写就是竖屏（1080x1920）。
 产物写到稿子所在项目的 build 目录（稿子在 <项目>/content/ 下）:
        <项目>/build/<id>/narration.wav   整条配音
        <项目>/build/<id>/timeline.json   分镜起止时间、每个词的时间点、字幕条
@@ -20,11 +21,18 @@ from pathlib import Path
 
 import edge_tts
 
+from vlab import fonts
+
 SAMPLE_RATE = 24000
 LEAD = 0.25  # 画面切进来后，停多久再开口
 TRAIL = 0.35  # 这段说完后，留多久再切下一个画面
 END_HOLD = 1.6  # 片尾多停一会儿
-MAX_LINE = 13  # 每条字幕最多字数
+# 画幅：竖屏给手机，横屏给 B 站这类以横屏为主的平台。字幕字号、边距、每行字数都跟着画幅走。
+ASPECTS = {
+    "portrait": dict(width=1080, height=1920, font=64, margin_v=500, margin_h=70, max_line=13),
+    "landscape": dict(width=1920, height=1080, font=56, margin_v=70, margin_h=200, max_line=22),
+}
+DEFAULT_ASPECT = "portrait"
 BREAK_PUNCT = "，。：；？！,.:;?!"  # 遇到这些标点就断开字幕
 STRIP_PUNCT = "，。：；、,.:;"  # 字幕里去掉的标点（问号、感叹号保留）
 
@@ -83,7 +91,7 @@ def align_words(text: str, words: list[dict]) -> list[dict]:
     return aligned
 
 
-def make_cues(aligned: list[dict]) -> list[dict]:
+def make_cues(aligned: list[dict], max_line: int) -> list[dict]:
     cues = []
     line: list[dict] = []
     for i, w in enumerate(aligned):
@@ -91,7 +99,7 @@ def make_cues(aligned: list[dict]) -> list[dict]:
         length = sum(len(x["shown"]) for x in line)
         nxt = len(aligned[i + 1]["shown"]) if i + 1 < len(aligned) else 0
         breaks = any(p in w["trailing"] for p in BREAK_PUNCT)
-        if breaks or length + nxt > MAX_LINE or i == len(aligned) - 1:
+        if breaks or length + nxt > max_line or i == len(aligned) - 1:
             text = "".join(x["shown"] + x["trailing"] for x in line).strip(STRIP_PUNCT + " ")
             text = text.lstrip(BREAK_PUNCT + "、")
             if text:
@@ -110,16 +118,18 @@ def srt_time(t: float) -> str:
     return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
 
 
-ASS_HEADER = """[Script Info]
+def ass_header(a: dict) -> str:
+    """字幕样式。字号和边距按画幅给，横屏字幕贴底，竖屏抬高到安全区以上。"""
+    return f"""[Script Info]
 ScriptType: v4.00+
-PlayResX: 1080
-PlayResY: 1920
+PlayResX: {a["width"]}
+PlayResY: {a["height"]}
 WrapStyle: 2
 ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Microsoft YaHei,64,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,70,70,500,1
+Style: Default,{fonts.FAMILY},{a["font"]},&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,{a["margin_h"]},{a["margin_h"]},{a["margin_v"]},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -128,6 +138,10 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 async def main(content_path: Path) -> None:
     content = json.loads(content_path.read_text(encoding="utf-8"))
+    aspect_name = content.get("aspect", DEFAULT_ASPECT)
+    if aspect_name not in ASPECTS:
+        sys.exit(f"aspect 只能是 {' 或 '.join(ASPECTS)}，稿子里写的是 {aspect_name!r}")
+    aspect = ASPECTS[aspect_name]
     project = content_path.resolve().parent.parent      # <项目>/content/xxx.json → <项目>
     out_dir = project / "build" / content["id"]
     seg_dir = out_dir / "segments"
@@ -154,7 +168,7 @@ async def main(content_path: Path) -> None:
         for w in aligned:
             w["start"] += voice_start
             w["end"] += voice_start
-        scene_cues = make_cues(aligned)
+        scene_cues = make_cues(aligned, aspect["max_line"])
         cues += scene_cues
 
         scenes.append(
@@ -190,8 +204,9 @@ async def main(content_path: Path) -> None:
     timeline = {
         "id": content["id"],
         "title": content["title"],
-        "width": 1080,
-        "height": 1920,
+        "aspect": aspect_name,
+        "width": aspect["width"],
+        "height": aspect["height"],
         "fps": 30,
         "duration": round(t, 3),
         "scenes": scenes,
@@ -199,7 +214,7 @@ async def main(content_path: Path) -> None:
     }
     (out_dir / "timeline.json").write_text(json.dumps(timeline, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    ass = ASS_HEADER + "".join(
+    ass = ass_header(aspect) + "".join(
         f"Dialogue: 0,{ass_time(c['start'])},{ass_time(c['end'])},Default,,0,0,0,,{c['text']}\n" for c in cues
     )
     (out_dir / "subs.ass").write_text(ass, encoding="utf-8-sig")

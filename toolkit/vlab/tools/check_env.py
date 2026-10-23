@@ -49,16 +49,27 @@ def main() -> None:
         else:
             check("必需", exe, False, "没在 PATH 上；Windows 可 `winget install Gyan.FFmpeg`，装完重开终端")
 
+    # 项目字体：思源黑体，随仓库入库（vlab/assets/fonts），Manim、Pillow、字幕都用它
+    try:
+        from vlab import fonts as vfonts
+        miss = [p.name for p in (vfonts.REGULAR, vfonts.BOLD, vfonts.LICENSE) if not p.exists()]
+        if miss:
+            check("必需", "项目字体 思源黑体", False, f"缺 {miss}：它们应随仓库入库，检查克隆是否完整")
+        else:
+            vfonts.register_manim()
+            check("必需", "项目字体 思源黑体（Manim、Pillow、字幕）", True, f"{vfonts.FAMILY}，已注册给 Manim")
+    except Exception as e:  # noqa: BLE001
+        check("必需", "项目字体 思源黑体", False, f"Manim 注册失败：{e}")
+
+    # 旧片子的字体：001–003 和早期试验还没换字体，只有重渲它们时才需要
     try:
         import manimpango
-        fonts = set(manimpango.list_fonts())
-        for f in ("Microsoft YaHei", "Cascadia Mono"):
-            check("必需", f"字体 {f}（Manim 用）", f in fonts,
-                  "可用" if f in fonts else "没装；Manim 会悄悄换成别的字体，画面和成片不一致。Cascadia Mono 可 `winget install Microsoft.CascadiaCode`")
-    except Exception as e:  # noqa: BLE001
-        check("必需", "字体检查", False, f"manimpango 不可用：{e}")
-    for p in ("C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/msyhbd.ttc"):
-        check("必需", f"字体文件 {Path(p).name}（Pillow 叠字用）", Path(p).exists(), "存在" if Path(p).exists() else "缺失：需要 Windows 自带的微软雅黑")
+        installed = set(manimpango.list_fonts())
+    except Exception:  # noqa: BLE001
+        installed = set()
+    for f, why in (("Microsoft YaHei", "重渲 001–003 和早期试验；不能用于商业发布"),
+                   ("Cascadia Mono", "重渲 001 的代码字体；`winget install Microsoft.CascadiaCode`")):
+        check("按需", f"字体 {f}", f in installed, "可用" if f in installed else f"没装；只影响{why}")
 
     # ---------- 按需 ----------
     try:
@@ -81,7 +92,8 @@ def main() -> None:
     expect = ["videos/001-float-precision/renders/float-precision_final.mp4",
               "videos/002-mobius-strip/renders/mobius-strip_final.mp4",
               "videos/003-sunset-red/renders/sunset-red_final.mp4", "videos/003-sunset-red/media/clips/hook.mp4",
-              "videos/003-sunset-red/build/sunset-red/timeline.json", "research/visual/08-video-spec/media/clips/landscape/intro.hash"]
+              "videos/003-sunset-red/build/sunset-red/timeline.json", "research/visual/08-video-spec/media/clips/landscape/intro.hash",
+              "videos/004-green-star/renders/green-star.mp4", "videos/004-green-star/media/clips/s01_sky.mp4"]
     missing = [e for e in expect if not (ROOT / e).exists()]
     check("必需", "仓库里的成片和分镜片段", not missing, "齐全" if not missing else f"缺：{missing}（克隆不完整，或用了 Git LFS 但没 `git lfs pull`）")
 

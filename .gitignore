@@ -30,6 +30,7 @@ __pycache__/
 # 但 Manim 的碎片、低清预览、调参静帧不要
 **/media/videos/**/partial_movie_files/
 **/media/videos/**/960p15/
+**/media/videos/**/540p15/
 **/media/clips/*_preview/
 **/media/clips/**/*_still_*.png
 

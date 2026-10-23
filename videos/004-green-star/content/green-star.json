@@ -1,28 +1,165 @@
 {
   "id": "green-star",
   "title": "为什么没有绿色的恒星",
+  "aspect": "landscape",
   "voice": "zh-CN-YunxiNeural",
   "rate": "+3%",
   "scenes": [
-    {"id": "s01_sky",     "narration": "夜空里的星星，有红色的，有蓝色的，有白色的。", "headline": "红、蓝、白", "tech": "shader-starfield"},
-    {"id": "s02_nogreen", "narration": "但你永远找不到一颗绿色的星星。一颗也没有。", "headline": "没有绿色的恒星", "tech": "shader-starfield"},
-    {"id": "s03_why",     "narration": "奇怪的是，恒星什么颜色的光都在发。为什么偏偏没有绿色？", "headline": "什么色都发，为何没有绿", "tech": "manim"},
-
-    {"id": "s04_temp",    "narration": "星星的颜色来自温度。越热越偏蓝，越冷越偏红。", "headline": "颜色来自温度", "tech": "manim"},
-    {"id": "s05_gap",     "narration": "从最热的蓝，到最冷的红，中间是白、黄、橙。这串颜色里，没有绿。", "headline": "蓝 白 黄 橙 红", "tech": "manim"},
-
-    {"id": "s06_calc",    "narration": "可要是算一下：什么温度的恒星，发光最强的波长正好是绿色？答案是五千一百度到五千八百度。", "headline": "5100 – 5800 度", "tech": "manim"},
-    {"id": "s07_sun",     "narration": "而太阳的表面温度，是五千七百七十二度。", "headline": "太阳 5772 度", "tech": "shader-sun"},
-    {"id": "s08_notgreen","narration": "也就是说，太阳发光最强的波长，就在绿色。可太阳看起来，一点也不绿。", "headline": "一点也不绿", "tech": "kinetic"},
-
-    {"id": "s09_wrong",   "narration": "问题出在一个错误的假设：发光最强的颜色，就是我们看到的颜色。", "headline": "峰值 ≠ 颜色", "tech": "manim"},
-    {"id": "s10_curve",   "narration": "恒星不是只发一种光。它在整个可见光范围里，什么颜色都在发。峰值只是最强的那一个，不是唯一的那一个。", "headline": "整个可见光都在发", "tech": "manim"},
-    {"id": "s11_data",    "narration": "看太阳的实际数据：蓝光、绿光、红光三段的强度，是零点九九、一点零零、零点八八。几乎一样多。", "headline": "0.99 : 1.00 : 0.88", "tech": "manim"},
-    {"id": "s12_mix",     "narration": "当这三种光以差不多的强度一起进入眼睛，你看到的不是绿色，是白色。", "headline": "三色混合 = 白", "tech": "manim"},
-
-    {"id": "s13_answer",  "narration": "这就是答案：不是绿色缺席了，是只要绿色最强，红和蓝就一定也很强，混在一起就成了白色。", "headline": "绿最强时，红蓝也强", "tech": "manim"},
-    {"id": "s14_rethink", "narration": "所以回到最开始的问题，为什么没有绿色的恒星？因为这个问题，问错了。", "headline": "问题问错了", "tech": "shader-starfield"},
-    {"id": "s15_white",   "narration": "绿色的恒星一直都在，太阳就是一颗。只是当它所有的颜色一起照进你眼睛，你给这个颜色起了另一个名字，白色。", "headline": "白色", "tech": "shader-sun"},
-    {"id": "s16_outro",   "narration": "下次抬头看星星，你看到的每一颗白色的星，可能都是一颗绿色的恒星。", "headline": "为什么 · 日常科学", "tech": "shader-starfield"}
+    {
+      "id": "s01_sky",
+      "narration": "夜空里的星星，有红色的，有蓝色的，有白色的。",
+      "headline": "红、蓝、白",
+      "tech": "shader-starfield"
+    },
+    {
+      "id": "s02_nogreen",
+      "narration": "但你永远找不到一颗绿色的星星。不是稀少，是一颗也没有。",
+      "headline": "没有绿色的恒星",
+      "tech": "shader-starfield"
+    },
+    {
+      "id": "s03_why",
+      "narration": "奇怪的是，恒星什么颜色的光都在发。绿色就在红和蓝的中间，为什么偏偏没有？",
+      "headline": "绿色去哪了",
+      "tech": "manim"
+    },
+    {
+      "id": "s04_temp",
+      "narration": "要回答这个问题，得先知道星星的颜色是怎么来的。答案是温度。",
+      "headline": "颜色来自温度",
+      "tech": "manim"
+    },
+    {
+      "id": "s05_iron",
+      "narration": "就像一块铁，烧热了先变暗红，再变橙黄，温度再高，就成了刺眼的蓝白色。",
+      "headline": "越热越偏蓝",
+      "tech": "manim"
+    },
+    {
+      "id": "s06_class",
+      "narration": "天文学家把恒星也这样排了序。最热的三万度以上是蓝色，一万度上下是蓝白，七千度是白色。",
+      "headline": "蓝 → 蓝白 → 白",
+      "tech": "manim"
+    },
+    {
+      "id": "s07_class2",
+      "narration": "再往下，六千度是黄白，五千度是黄，四千度是橙，三千度以下，就是暗红。",
+      "headline": "黄 → 橙 → 红",
+      "tech": "manim"
+    },
+    {
+      "id": "s08_gap",
+      "narration": "从最热的蓝，到最冷的红，中间是白、黄、橙。这一整串颜色里，就是没有绿。",
+      "headline": "整串颜色里没有绿",
+      "tech": "manim"
+    },
+    {
+      "id": "s09_wien",
+      "narration": "可是温度和颜色之间，有一条很简单的规律：温度越高，发光最强的波长就越短。",
+      "headline": "温度越高，波长越短",
+      "tech": "manim"
+    },
+    {
+      "id": "s10_calc",
+      "narration": "按这条规律倒着算：什么温度的恒星，发光最强的波长正好落在绿色？答案是五千一百度到五千八百度。",
+      "headline": "5100 – 5800 度",
+      "tech": "manim"
+    },
+    {
+      "id": "s11_sun",
+      "narration": "而太阳的表面温度，是五千七百七十二度。正好落在这个区间里。",
+      "headline": "太阳 5772 度",
+      "tech": "shader-sun"
+    },
+    {
+      "id": "s12_peak",
+      "narration": "也就是说，太阳发光最强的波长，就在绿色。它本该是一颗绿色的恒星。",
+      "headline": "峰值 502 纳米",
+      "tech": "manim"
+    },
+    {
+      "id": "s13_notgreen",
+      "narration": "可太阳看起来，一点也不绿。",
+      "headline": "一点也不绿",
+      "tech": "kinetic"
+    },
+    {
+      "id": "s14_wrong",
+      "narration": "问题出在我们一开始的假设：发光最强的颜色，就是我们看到的颜色。这个假设是错的。",
+      "headline": "峰值 ≠ 颜色",
+      "tech": "manim"
+    },
+    {
+      "id": "s15_curve",
+      "narration": "恒星不是只发一种光，它在整个可见光范围里什么颜色都在发。峰值只是最强的那一个，不是唯一的那一个。",
+      "headline": "整个可见光都在发",
+      "tech": "manim"
+    },
+    {
+      "id": "s16_data",
+      "narration": "我们来看太阳的实际数据。蓝光、绿光、红光，这三段的强度分别是零点九九、一点零零、零点八八。",
+      "headline": "0.99 : 1.00 : 0.88",
+      "tech": "manim"
+    },
+    {
+      "id": "s17_equal",
+      "narration": "几乎一样多。绿光确实最强，但只强了那么一点点。",
+      "headline": "三者几乎相等",
+      "tech": "manim"
+    },
+    {
+      "id": "s18_mix",
+      "narration": "当红、绿、蓝三种光以差不多的强度一起进入你的眼睛，你看到的不是绿色，是白色。",
+      "headline": "三色混合 = 白",
+      "tech": "manim"
+    },
+    {
+      "id": "s19_yellow",
+      "narration": "说到这里你可能想问：太阳明明是黄的，哪里白了？",
+      "headline": "太阳不是黄的吗",
+      "tech": "shader-sun"
+    },
+    {
+      "id": "s20_atmos",
+      "narration": "那是因为你隔着大气在看它。大气把一部分蓝光散射到整个天空，这才有了蓝天，也让剩下的阳光偏黄。",
+      "headline": "蓝光被散射走了",
+      "tech": "shader-atmosphere"
+    },
+    {
+      "id": "s21_space",
+      "narration": "在大气层外面看，太阳是白的。宇航员拍到的太阳，就是一颗白色的星。",
+      "headline": "大气外：白色",
+      "tech": "shader-sun"
+    },
+    {
+      "id": "s22_answer",
+      "narration": "所以这就是答案：不是绿色缺席了，是只要绿色最强，红光和蓝光就一定也很强，混在一起就成了白色。",
+      "headline": "绿最强时，红蓝也强",
+      "tech": "manim"
+    },
+    {
+      "id": "s23_never",
+      "narration": "一颗恒星可以偏红，可以偏蓝，但它永远没办法只偏绿。",
+      "headline": "永远无法只偏绿",
+      "tech": "manim"
+    },
+    {
+      "id": "s24_rethink",
+      "narration": "回到最开始的问题，为什么没有绿色的恒星？因为这个问题，本身就问错了。",
+      "headline": "问题问错了",
+      "tech": "shader-starfield"
+    },
+    {
+      "id": "s25_white",
+      "narration": "绿色的恒星一直都在，太阳就是一颗。只是它所有的颜色一起照进你的眼睛时，你给这个颜色起了另一个名字，白色。",
+      "headline": "白色",
+      "tech": "shader-sun"
+    },
+    {
+      "id": "s26_outro",
+      "narration": "下次抬头看星星，你看到的每一颗白色的星，可能都是一颗绿色的恒星。",
+      "headline": "为什么 · 日常科学",
+      "tech": "shader-starfield"
+    }
   ]
 }

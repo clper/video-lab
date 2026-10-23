@@ -40,6 +40,13 @@
 开场 GLSL 着色器云海飞越雪山；原理讲解 Manim；中午蓝天和日落晚霞用按真实物理公式计算的大气散射着色器（只改太阳高度，蓝天、红日、晚霞都是公式算出来的）；结尾复用程序化日落湖景  
 **一键重出**：`cd videos/003-sunset-red; uv run python build.py`
 
+### 004-green-star《为什么没有绿色的恒星》
+
+3 分 30 秒，横屏 1920×1080，26 镜。Manim 讲光谱和普朗克曲线，着色器画星空、太阳和大气，
+文字动效做转折。关键数据：太阳在蓝、绿、红三段的强度是 0.99 : 1.00 : 0.88，几乎相等，所以看起来是白的。
+
+**一键重出**：`cd videos/004-green-star; uv run python build.py`（先 `--check` 看缺哪些片段）
+
 ---
 
 ## 存档：参考项目
@@ -87,14 +94,15 @@ AI-Vedio/
 ├── videos/              【项目结果】
 │   ├── 001-float-precision/
 │   ├── 002-mobius-strip/
-│   └── 003-sunset-red/
+│   ├── 003-sunset-red/
+│   └── 004-green-star/  第一条横屏片
 ├── research/            【开发测试】
 │   ├── visual/          画面技术 01–12（第一阶段已结束）
 │   ├── audio/           音频研究
 │   ├── content/         创作内容研究：方向、平台、合规
 │   └── frontier/        前沿视频生成
 ├── toolkit/             【工具】
-│   ├── vlab/            pipeline 配音合成 · audio 音效配乐混音 · render 渲染器 · scenes 可复用画面 · videokit 视频工程 · tools 预览自检
+│   ├── vlab/            pipeline 配音合成 · audio 音效配乐混音 · fonts 项目字体 · render 渲染器 · scenes 可复用画面 · videokit 视频工程 · tools 预览自检
 │   └── bin/             可选：本机的 ffmpeg 等程序（不入库）
 ├── docs/                【文档】
 ├── archive/             【存档】

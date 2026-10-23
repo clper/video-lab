@@ -223,6 +223,7 @@ toolkit/vlab/scenes/       landscape.py 程序化湖景；shaders/ 云海、大�
 toolkit/vlab/videokit/     视频工程：project.py、build.py、manim_templates.py、style_extract.py
 toolkit/vlab/tools/        preview.py 抽帧拼图、check_env.py 环境自检
 toolkit/vlab/audio/        sfx.py 合成音效、music.py 程序化配乐、mix.py 混音规范（自动避让 + 响度）
+toolkit/vlab/fonts.py      项目字体：思源黑体（OFL 可商用），文件在 vlab/assets/fonts/，随仓库入库
 ```
 
 ---
@@ -253,6 +254,13 @@ toolkit/vlab/audio/        sfx.py 合成音效、music.py 程序化配乐、mix.
 3. 字体映射 → 加 `@font-face { src: local(...) }`
 4. 对比度 → 深色背景文字不透明度 ≥ 0.55
 5. **onUpdate 回调不触发** → 只能用纯属性补间，数字滚动做不了
+
+### 画幅：竖屏和横屏
+
+稿子里写 `"aspect": "landscape"` 出横屏 1920×1080，不写就是竖屏 1080×1920（`vlab.pipeline.tts.ASPECTS`）。
+字幕字号、左右边距、每行字数都跟着画幅走（竖屏每行 13 字，横屏 22 字）。
+Manim 场景要自己设 `config.frame_width, config.frame_height = 16, 9` 和对应的像素尺寸。
+平台取向见 `research/content/03-platforms/`：B站等平台都在扶持横屏中长视频。
 
 ### Edge TTS
 

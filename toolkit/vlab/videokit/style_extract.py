@@ -24,7 +24,9 @@ import numpy as np
 import yaml
 from PIL import Image, ImageDraw, ImageFont
 
-FONT = "C:/Windows/Fonts/msyh.ttc"
+from vlab import fonts
+
+FONT = str(fonts.REGULAR)   # 仓库自带的思源黑体
 
 
 def probe(video):

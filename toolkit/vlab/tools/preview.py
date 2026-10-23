@@ -24,7 +24,9 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-FONT_PATHS = ["C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/simhei.ttf"]
+from vlab import fonts
+
+FONT_PATHS = [str(fonts.REGULAR), "C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/simhei.ttf"]   # 仓库字体优先
 
 
 def probe_duration(video: Path) -> float:

@@ -27,16 +27,27 @@ void main() { gl_Position = vec4(pos, 0.0, 1.0); }
 """
 
 
+# 一个进程只开一个 OpenGL 上下文，所有渲染器共用。
+# 开两个独立上下文在同一线程里交错渲染时，画面会串（一个着色器画到另一个的缓冲上）。
+_CTX = None
+
+
+def _ctx():
+    global _CTX
+    if _CTX is None:
+        _CTX = moderngl.create_standalone_context(require=330)
+    return _CTX
+
+
 class ShaderRenderer:
     def __init__(self, frag, ss: int = 1, tile: int = 160, size=(W, H)):
-        self.ctx = moderngl.create_standalone_context(require=330)
+        self.ctx = _ctx()
         self.prog = self.ctx.program(vertex_shader=_VS, fragment_shader=Path(frag).read_text(encoding="utf-8"))
         vbo = self.ctx.buffer(np.array([-1, -1, 1, -1, -1, 1, 1, 1], "f4").tobytes())
         self.vao = self.ctx.simple_vertex_array(self.prog, vbo, "pos")
         self.out_w, self.out_h = size
         self.w, self.h, self.ss, self.tile = size[0] * ss, size[1] * ss, ss, tile * ss
         self.fbo = self.ctx.simple_framebuffer((self.w, self.h), components=4)
-        self.fbo.use()
         self.set(iResolution=(float(self.w), float(self.h)))
 
     def set(self, **uniforms):
@@ -45,6 +56,9 @@ class ShaderRenderer:
                 self.prog[k].value = v
 
     def frame(self, t: float, **uniforms) -> np.ndarray:
+        # 每帧都要重新绑定自己的 framebuffer：同一个进程里有第二个 ShaderRenderer 时，
+        # 后创建的那个会在 __init__ 里把绑定抢走，不重新绑定就会画到别人的缓冲上。
+        self.fbo.use()
         self.set(iTime=float(t), **uniforms)
         for y in range(0, self.h, self.tile):
             self.ctx.scissor = (0, y, self.w, min(self.tile, self.h - y))

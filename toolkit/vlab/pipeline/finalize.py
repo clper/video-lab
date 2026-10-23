@@ -6,16 +6,27 @@
 """
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+from vlab import fonts
 
 
 def finalize(video: Path, build_dir: Path, out: Path, burn_subs: bool = True) -> None:
     duration = json.loads((build_dir / "timeline.json").read_text(encoding="utf-8"))["duration"]
     out.parent.mkdir(parents=True, exist_ok=True)
-    # 在 build 目录里运行，字幕文件用相对路径，省掉 Windows 盘符在滤镜里的转义麻烦
-    vf = ["-vf", "subtitles=subs.ass"] if burn_subs else []
+    # 在 build 目录里运行，字幕文件和字体目录都用相对路径，省掉 Windows 盘符在滤镜里的转义麻烦。
+    # fontsdir 指向仓库自带的思源黑体，libass 不再依赖系统装没装字体。
+    vf = []
+    if burn_subs:
+        try:
+            fdir = os.path.relpath(fonts.DIR, build_dir).replace("\\", "/")
+            vf = ["-vf", f"subtitles=subs.ass:fontsdir={fdir}"]
+        except ValueError:          # 不在同一个盘：退回系统字体
+            print("提示：build 目录和仓库不在同一个盘，字幕改用系统字体")
+            vf = ["-vf", "subtitles=subs.ass"]
     cmd = [
         "ffmpeg", "-y", "-v", "error",
         "-i", str(video.resolve()),

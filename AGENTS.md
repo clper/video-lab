@@ -19,7 +19,7 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 | `.venv/` | `uv sync` | 总是 |
 | `archive/000-claude-video-lab/2_hyperframes/node_modules/` | 在该目录 `npm ci`（PowerShell 用 `npm.cmd ci`） | 只在重做 000 的 HyperFrames 版时 |
 | `ffmpeg`、`ffprobe` | 系统 PATH 上；Windows：`winget install Gyan.FFmpeg` | 总是 |
-| 字体 Microsoft YaHei、Cascadia Mono | 系统字体；Cascadia：`winget install Microsoft.CascadiaCode` | 总是（缺了 Manim 会悄悄换字体） |
+| 字体 Microsoft YaHei、Cascadia Mono | 系统字体；Cascadia：`winget install Microsoft.CascadiaCode` | 只在重渲 001–003 和早期试验时；新片子用仓库自带的思源黑体（`vlab.fonts`），不用装 |
 | 支持 OpenGL 3.3 的显卡 | 硬件 | 只在重渲染着色器镜头时（003 的 hook/noon/sunset、research/visual/07） |
 | 联网 | — | 只在重新配音时（Edge TTS 是在线服务） |
 
@@ -30,7 +30,7 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 ```
 videos/      【项目结果】正式视频（001、002、003…），一条一个目录
 research/    【开发测试】visual/ 画面技术（01–12）、audio/ 音频研究、frontier/ 前沿视频生成、content/ 创作内容研究（内容方向、平台、合规）；实验目录都是 NN-主题/
-toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
+toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、fonts 项目字体、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
 docs/        【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
 archive/     【存档】000 参考项目的只读快照：不要改，它自带的 shared/ 和环境配置只属于它自己
 ```
@@ -64,14 +64,17 @@ archive/     【存档】000 参考项目的只读快照：不要改，它自带
 | 环境自检 | `uv run vlab-check` |
 | 003 重新拼成片 | `cd videos/003-sunset-red; uv run python build.py`（`--force` 全部重渲染） |
 | 001 / 002 重渲染 | `cd videos/00x-...; uv run python -m manim render manim/scene.py <场景类> --format mp4`，再 `uv run vlab-finalize ...`（见 README） |
-| 低清快速预览 | 先设 `$env:PREVIEW='1'`（540×960、15fps） |
+| 低清快速预览 | 先设 `$env:PREVIEW='1'`（竖屏 540×960、横屏 960×540，15fps） |
 
 ## 工作约定
 
 - **渲染 → 看图 → 改**：改画面后一定用 `vlab-preview` 抽帧看图确认，不要只看代码就说"改好了"。
+  看图时要逐项核对内容和标签是否对应（色块的颜色像不像它的名字、数字是不是脚本里的值），不只看版式；
+  004 的光谱型色块 O 和 B 颜色相同、"黄"显白，版式看着没问题，是逐块对照标签才发现的。有数值的地方打印出来核对。
 - **画面跟着配音走**：画面元素绑定到配音里的"词"（`timeline.json` 的 words），不要写死秒数。
 - **声音按规范混**：有配乐或音效的成片用 `vlab.audio.mix.mux` 混音（说话时配乐自动压低，成片 -14 LUFS），不要另写 ffmpeg 混音参数；音效由画面的事件清单触发（`vlab.audio.sfx.render`，例子见 research/visual/12）。
-- **发布前过合规清单**（`research/content/08-compliance/README.md`）：用了 TTS 配音要标 AI（平台 AI 声明加必选标签，片头加提示）；配乐音效只用自己合成的；商用发布前字体要换成开源可商用的（微软雅黑不行）。
+- **发布前过合规清单**（`research/content/08-compliance/README.md`）：用了 TTS 配音，发布时在平台勾选 AI 声明、必选标签选「含有AI生成内容」（视频画面内不加文字声明，项目负责人定）；配乐音效只用自己合成的。
+- **字体统一用 `vlab.fonts`**（思源黑体，随仓库入库，SIL OFL 1.1 可商用）：Manim 用 `fonts.register_manim()` 返回的族名，Pillow 用 `fonts.pil(字号, bold)`，不要再写 `C:/Windows/Fonts/...` 的路径。微软雅黑不能用于商业发布。
 - **新视频优先用视频工程**（`toolkit/vlab/videokit`，设计见 `docs/design/DESIGN-video-project.md`）：
   文案、数据、颜色、出场时机写在 `project.yaml` 里，常规镜头走模板；只有特殊镜头才写定制代码。
 - **入库原则**：渲染成果要入库（克隆即可用），环境和缓存碎片不入库；新增产物类型时先看 `.gitignore` 的规则说明。
@@ -85,10 +88,17 @@ archive/     【存档】000 参考项目的只读快照：不要改，它自带
 - `uv run` 提示 `VIRTUAL_ENV ... does not match`：本机激活了别的虚拟环境，无害，uv 仍用仓库的 `.venv`。
 - Manim：要 `config.disable_caching = True`（缓存会让时间轴错位）；分辨率用 `PREVIEW` 环境变量切换，`-ql` 会被脚本里的设置覆盖；
   对齐时间要按"当前真实帧数"补齐，冻结帧和逐帧两种等待的取整方式不同（见各 scene.py 的 `wait_to`）。
-- Edge TTS 的分词和直觉不同（如"四次方"切成 四/次/方）：绑定的词必须是 `timeline.json` 里的词；
-  videokit 配音后会校验并列出可用的词。
+- Edge TTS 的分词和直觉不同（如"四次方"切成 四/次/方，"一颗"切成 一/颗）：绑定的词必须是 `timeline.json` 里的词；
+  videokit 配音后会校验并列出可用的词。写画面脚本前先把整段词表打出来看一遍，比逐个试错快。
+- **先配音后画面，成片长度由旁白字数定**，不是由分镜表上的"画面时长"定。
+  中文配音约 0.236 秒/字（含停顿，实测 003），按这个估，写稿时就能把时长控制住；
+  靠拉长镜头留白来凑时长会让片子显得拖。
 - YAML 1.1 会把 `on`/`yes`/`no` 当布尔值：工程文件一律用 `vlab.videokit.project.load_yaml` 读，别用 `yaml.safe_load`。
 - Windows 显卡超时（约 2 秒）会重置驱动：重着色器要分块渲染（`toolkit/vlab/render/glsl.py` 已处理）。
+- **一个进程里用两个着色器会串画面**：各自建独立 OpenGL 上下文、在同一线程交错渲染时，
+  一个着色器会画到另一个的缓冲上，现象是某几镜整屏变成另一个着色器的画面。
+  `glsl.py` 已改成全进程共用一个上下文（`_ctx()`），不要再自己 `create_standalone_context`。
 - 这台机器的 ffmpeg `drawtext` 没有字体配置会崩：画面上叠字用 Pillow，不用 drawtext。
+- **烧字幕不给字体目录，libass 会悄悄换字体**：实测找不到思源黑体时先退到 Arial、再退到微软雅黑，画面看着正常、字体却错了。`vlab-finalize` 已传仓库字体目录（`fontsdir`），自己写 ffmpeg 字幕滤镜时也要带上。
 - PowerShell 执行策略：npm 要写成 `npm.cmd`。
 - `.gitignore` 不支持行尾注释，注释必须单独一行。
