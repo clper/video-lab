@@ -1,0 +1,64 @@
+{
+  "id": "007-sample",
+  "title": "回归（样片）",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+6%",
+  "scenes": [
+    {
+      "id": "S01",
+      "narration": "一位飞行教官，站起来反驳了他。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S02",
+      "narration": "他表扬飞得漂亮的学员。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S03",
+      "narration": "下一次，那个人飞得更差。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S04",
+      "narration": "他骂飞得糟糕的，下次更好。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S05",
+      "narration": "所以他说：表扬没用，骂才有用。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S06",
+      "narration": "他错在哪？",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S07",
+      "narration": "",
+      "min_hold": 4.8
+    },
+    {
+      "id": "S08",
+      "narration": "先玩一个东西：一块板，一堆钉子。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S09",
+      "narration": "一颗珠子从顶端落下，左或右。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S10",
+      "narration": "每一层，都是一次抛硬币。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S11",
+      "narration": "",
+      "min_hold": 3.4
+    }
+  ],
+  "aspect": "landscape"
+}

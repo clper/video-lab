@@ -21,6 +21,11 @@ import { LineGrow } from "./LineGrow";
 import { MaskWipe } from "./MaskWipe";
 import { Nebula3D } from "./Nebula3D";
 import { ParticleText } from "./ParticleText";
+import { GaltonBoard } from "./GaltonBoard";
+import { RegressTitle } from "./RegressTitle";
+import { BriefRoom } from "./BriefRoom";
+import { ScatterRegress } from "./ScatterRegress";
+import { WaveField } from "./WaveField";
 import { PaperLength } from "./PaperLength";
 import { PaperRoll } from "./PaperRoll";
 import { Polaroid } from "./Polaroid";
@@ -61,6 +66,11 @@ export const CARDS: Record<string, React.ComponentType<any>> = {
   foldGalaxy: FoldGalaxy,
   foldCurve: FoldCurve,
   foldTitle: FoldTitle,
+  galtonBoard: GaltonBoard,
+  regressTitle: RegressTitle,
+  briefRoom: BriefRoom,
+  scatterRegress: ScatterRegress,
+  waveField: WaveField,
 };
 
 export const CARD_NAMES = Object.keys(CARDS);

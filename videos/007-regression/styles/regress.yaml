@@ -1,0 +1,17 @@
+# 007《回归》的风格：和 006 同一家族（深底 + 金/青），但主角是"光"——
+# 一束顶光打在板子上，钉子按离中心的远近做景深，海面是灰蓝。
+# 金 = 回归线 / 那颗金珠；冰蓝 = 已知、中位线；红 = 极端（最好那次、最差那次）。
+name: regress
+palette:
+  bg: "#05070c"
+  bg2: "#0c1522"
+  ink: "#f4f1e8"
+  dim: "#8b93a7"
+  accent1: "#f3c14b"
+  accent2: "#49e3d1"
+  accent3: "#ff5b5b"
+  paper: "#f8f2e4"
+font: {family: Source Han Sans CN, title_size: 52, body_size: 38}
+motion: {enter: fade_up, duration: 0.5, stagger: 0.12, easing: smooth}
+# 本片有旁白，配乐要让位；暗角比 006 轻一点，玻璃罩自己有反光
+texture: {vignette: 0.14, grain: 0}

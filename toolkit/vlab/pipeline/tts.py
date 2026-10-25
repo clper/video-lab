@@ -218,20 +218,29 @@ async def main(content_path: Path) -> None:
     t = 0.0
     scenes, cues = [], []
     for i, scene in enumerate(content["scenes"]):
-        audio, words = await synth(scene["narration"], content["voice"], content["rate"])
-        mp3 = seg_dir / f"{i:02d}_{scene['id']}.mp3"
-        mp3.write_bytes(audio)
-        seg = mp3_to_pcm(mp3)
-        seg_len = len(seg) / 2 / SAMPLE_RATE
-        if not words:
-            sys.exit(f"分镜 {scene['id']} 没有拿到词时间点，检查网络或 edge-tts 版本")
+        text = (scene.get("narration") or "").strip()
+        if text:
+            audio, words = await synth(text, content["voice"], content["rate"])
+            mp3 = seg_dir / f"{i:02d}_{scene['id']}.mp3"
+            mp3.write_bytes(audio)
+            seg = mp3_to_pcm(mp3)
+            seg_len = len(seg) / 2 / SAMPLE_RATE
+            if not words:
+                sys.exit(f"分镜 {scene['id']} 没有拿到词时间点，检查网络或 edge-tts 版本")
+        else:
+            # 呼吸镜：没有旁白，画面自己演。以前这里会因为拿不到词而直接退出，
+            # 所以有旁白的片子里插不进空镜——007《回归》需要 6 个呼吸镜，才加的这条路。
+            words, seg, seg_len = [], b"", 0.0
 
         voice_start = t + LEAD
         tail = TRAIL + (end_hold if i == len(content["scenes"]) - 1 else 0)
-        pcm += silence(LEAD) + seg + silence(tail)
-        end = voice_start + seg_len + tail
+        # 镜头最短时长 min_hold（秒）：呼吸镜至少要停够（不然 0.6 秒一闪而过），
+        # 有旁白的镜头也能靠它把节奏压整齐。不写 = 0，行为和以前完全一样。
+        pad = max(0.0, float(scene.get("min_hold") or 0) - (LEAD + seg_len + tail))
+        pcm += silence(LEAD) + seg + silence(tail + pad)
+        end = voice_start + seg_len + tail + pad
 
-        aligned = align_words(scene["narration"], words)
+        aligned = align_words(text, words)
         for w in aligned:
             w["start"] += voice_start
             w["end"] += voice_start
@@ -248,6 +257,8 @@ async def main(content_path: Path) -> None:
                 **scene,
                 "start": round(t, 3),
                 "end": round(end, 3),
+                "width": aspect["width"],
+                "height": aspect["height"],
                 "voice_start": round(voice_start, 3),
                 "voice_end": round(voice_start + seg_len, 3),
                 "words": [{"text": w["shown"], "start": round(w["start"], 3), "end": round(w["end"], 3)} for w in aligned],

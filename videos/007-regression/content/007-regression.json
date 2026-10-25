@@ -1,0 +1,215 @@
+{
+  "id": "007-regression",
+  "title": "回归",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+6%",
+  "scenes": [
+    {
+      "id": "S01",
+      "narration": "一位飞行教官，站起来反驳了他。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S02",
+      "narration": "他表扬飞得漂亮的学员。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S03",
+      "narration": "下一次，那个人飞得更差。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S04",
+      "narration": "他骂飞得糟糕的，下次更好。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S05",
+      "narration": "所以他说：表扬没用，骂才有用。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S06",
+      "narration": "他错在哪？",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S07",
+      "narration": "",
+      "min_hold": 4.8
+    },
+    {
+      "id": "S08",
+      "narration": "先玩一个东西：一块板，一堆钉子。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S09",
+      "narration": "一颗珠子从顶端落下，左或右。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S10",
+      "narration": "每一层，都是一次抛硬币。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S11",
+      "narration": "",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S12",
+      "narration": "几千颗之后，堆出这条曲线。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S13",
+      "narration": "中间最多，两头最少。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S14",
+      "narration": "极端不是本事，是运气。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S15",
+      "narration": "1886 年，高尔顿也画了这条线。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S16",
+      "narration": "他量了 928 个成年子女的身高。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S17",
+      "narration": "",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S18",
+      "narration": "高个父母的孩子，平均更矮。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S19",
+      "narration": "矮个父母的孩子，平均更高。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S20",
+      "narration": "偏离的那部分，只回来三分之二。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S21",
+      "narration": "他给这件事起了个名字：回归。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S22",
+      "narration": "",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S23",
+      "narration": "不是退步，是回到自己的那条线。",
+      "min_hold": 4.4
+    },
+    {
+      "id": "S24",
+      "narration": "那次飞得漂亮，是超常发挥。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S25",
+      "narration": "下次就算什么都不做，也会下来。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S26",
+      "narration": "那次摔得难看，也一样。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S27",
+      "narration": "",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S28",
+      "narration": "所以有了二年级墙、封面魔咒。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S29",
+      "narration": "去年销冠，今年多半不是他。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "S30",
+      "narration": "上一次考砸的孩子，这次会好点。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S31",
+      "narration": "和谁夸他、谁骂他，都没关系。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "S32",
+      "narration": "这条规律冷，但它有个好处。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S33",
+      "narration": "你最好的那次之后会回落，",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S34",
+      "narration": "",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S35",
+      "narration": "不是你骄傲了，也不是你松了。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S36",
+      "narration": "最差的那次之后会回升，",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S37",
+      "narration": "也不是你终于做对了什么。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "S38",
+      "narration": "你只是，回到了自己的那条线。",
+      "min_hold": 4.2
+    },
+    {
+      "id": "S39",
+      "narration": "",
+      "min_hold": 3.0
+    },
+    {
+      "id": "S40",
+      "narration": "",
+      "min_hold": 4.8
+    },
+    {
+      "id": "S41",
+      "narration": "",
+      "min_hold": 4.8
+    }
+  ],
+  "aspect": "landscape",
+  "end_hold": 1.8
+}

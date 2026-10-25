@@ -1,0 +1,167 @@
+# 007《回归》样片：钩子 + 片名 + 板子立起 + 弹珠雨（S01–S11，约 40 秒）
+#
+# 有旁白模式（voice）：时长由配音定，画面按 timeline.json 的词时间点对齐。
+#   narration —— 这一句说的话；留空 = "让画面自己演"的呼吸镜
+#   min_hold  —— 镜头最短几秒（呼吸镜至少停够，不然 0.6 秒一闪而过；tts.py 支持）
+#
+# 全片 41 镜的完整版等这张卡验收完再写。
+
+id: 007-sample
+title: 回归（样片）
+brand: VIBE / 回归
+style: styles/regress.yaml
+aspect: landscape
+fps: 30
+
+fx_default:
+  flash: false          # 切点不许发亮（STYLE-RHYTHM「特效栈的边界」）
+  dipIn: 0.12
+  dipFrames: 4
+
+voice: {name: zh-CN-YunxiNeural, rate: "+6%"}
+
+audio:
+  music: true
+  music_fn: fold_score      # 复用 006 那段带段落的铺底
+  music_v: 1
+  bpm: 100
+  seed: 23
+  music_db: -6        # 有人声，铺底先让一档
+  sfx_db: -4
+  duck: true          # 说话时配乐自动压低（006 是 false，那片没人声）
+  lufs: -14
+
+fx: {handheld: true, sweep: true, flash: false, breathing: true, grain: true, stardust: true, subtitleBar: false}
+
+scenes:
+  # ── 钩子 ──────────────────────────────────────────────
+  - id: S01
+    renderer: remotion
+    card: briefRoom
+    fx: {dipIn: 0.75, dipFrames: 10}
+    narration: 一位飞行教官，站起来反驳了他。
+    min_hold: 3.2
+    params:
+      kicker: 以色列空军 · 一堂飞行教官的课
+      line: 他站了起来
+      sub: D. KAHNEMAN
+
+  - id: S02
+    renderer: remotion
+    card: chartCard
+    narration: 他表扬飞得漂亮的学员。
+    min_hold: 3.2
+    params:
+      kicker: 01 · 记录　THE RECORD
+      title: 第一次：飞得漂亮
+      points: [[0, 0.32], [0.34, 0.72], [0.58, 0.90], [1, 0.88]]
+      dropLabel: 好 → 表扬
+      note: 教官给了表扬
+
+  - id: S03
+    renderer: remotion
+    card: chartCard
+    narration: 下一次，那个人飞得更差。
+    min_hold: 3.2
+    params:
+      kicker: 01 · 记录　THE RECORD
+      title: 第二次：更差
+      points: [[0, 0.88], [0.4, 0.62], [0.7, 0.47], [1, 0.44]]
+      dropLabel: 更差
+      note: 这次什么都没说
+
+  - id: S04
+    renderer: remotion
+    card: briefRoom
+    narration: 他骂飞得糟糕的，下次更好。
+    min_hold: 3.2
+    params:
+      kicker: 以色列空军 · 同一堂课
+      line: 骂完，下次更好
+      sub: 他的经验，第二半
+
+  - id: S05
+    renderer: remotion
+    card: kineticSubtitle
+    narration: 所以他说：表扬没用，骂才有用。
+    min_hold: 3.4
+    params:
+      text: 表扬没用，骂才有用
+      highlight: 没用
+      footer: 教官的结论
+
+  - id: S06
+    renderer: remotion
+    card: kineticSubtitle
+    narration: 他错在哪？
+    min_hold: 3.0
+    params:
+      text: 他错在哪？
+      highlight: 哪
+      footer: 观察没错，结论错了
+
+  # ── 片名 ──────────────────────────────────────────────
+  - id: S07
+    renderer: remotion
+    card: regressTitle
+    fx: {dipIn: 0.55, dipOut: 0.55, dipFrames: 10}
+    narration: ""
+    min_hold: 4.8
+    params:
+      title: 回归
+      sub: 最好的一次之后，必然是更差的一次
+      latin: REGRESSIO
+      bead: true
+
+  # ── 章一 · 板 ─────────────────────────────────────────
+  - id: S08
+    renderer: remotion
+    card: galtonBoard
+    fx: {dipIn: 0.55, dipFrames: 10, stardust: false}
+    narration: 先玩一个东西：一块板，一堆钉子。
+    min_hold: 3.2
+    params:
+      mode: board
+      kicker: 02 · 板　THE BOARD
+      note: 每一层都是一次抛硬币：左或右，各一半。
+      label: 高尔顿板
+
+  - id: S09
+    renderer: remotion
+    card: galtonBoard
+    fx: {stardust: false}
+    narration: 一颗珠子从顶端落下，左或右。
+    min_hold: 3.2
+    params:
+      mode: one
+      travel: 2
+      kicker: 02 · 板　THE BOARD
+      note: 撞到钉子，一半向左，一半向右。
+      label: 左，或右
+
+  - id: S10
+    renderer: remotion
+    card: scaleCard
+    narration: 每一层，都是一次抛硬币。
+    min_hold: 3.0
+    params:
+      kicker: 02 · 板　THE BOARD
+      rows:
+        - {label: 一层, value: "2", unit: 种走法, frac: 0.10}
+        - {label: 三层, value: "8", unit: 种走法, frac: 0.28}
+        - {label: 六层, value: "64", unit: 种走法, frac: 0.55}
+        - {label: 十二层, value: "4096", unit: 种走法, frac: 0.94}
+      note: 只有一条路能一直往右 —— 极端就这么来的
+
+  - id: S11
+    renderer: remotion
+    card: galtonBoard
+    fx: {stardust: false}
+    narration: ""
+    min_hold: 3.4
+    params:
+      mode: rain
+      rate: 9
+      pellets: 900
+      kicker: 02 · 板　THE BOARD
+      note: 几千颗同时落下。

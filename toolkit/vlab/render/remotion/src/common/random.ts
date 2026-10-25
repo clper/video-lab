@@ -11,5 +11,5 @@ export function mulberry32(seed: number): () => number {
 
 export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
-export const clamp = (v: number, lo: number, hi: number): number =>
+export const clamp = (v: number, lo = 0, hi = 1): number =>
   Math.min(hi, Math.max(lo, v));

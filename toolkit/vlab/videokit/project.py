@@ -153,8 +153,9 @@ class Project:
                     errs.append(f"[{sid}] 找不到着色器 {frag}")
             narration = s.get("narration", "")
             if self.mode == "voice":
-                if not narration:
-                    errs.append(f"[{sid}] 没有旁白 narration")
+                # 呼吸镜可以不写旁白，但必须写 min_hold —— 不然镜头只有 LEAD+TRAIL=0.6 秒，一闪而过
+                if not narration and not s.get("min_hold"):
+                    errs.append(f"[{sid}] 没有旁白 narration（呼吸镜不写旁白的话，必须写 min_hold 撑住时长）")
             else:
                 hold = s.get("hold")
                 if not isinstance(hold, (int, float)) or hold <= 0:
@@ -193,7 +194,8 @@ class Project:
         v = self.data.get("voice", {})
         out = {"id": self.id, "title": self.data.get("title", self.id),
                "voice": v.get("name", "zh-CN-YunxiNeural"), "rate": v.get("rate", "+8%"),
-               "scenes": [{"id": s["id"], "narration": s["narration"]} for s in self.scenes]}
+               "scenes": [{"id": s["id"], "narration": s.get("narration", ""),
+                           "min_hold": s.get("min_hold")} for s in self.scenes]}
         for k in ("aspect", "end_hold"):      # 可选：画幅、片尾停留（默认竖屏 / 1.6s）
             if k in self.data:
                 out[k] = self.data[k]

@@ -86,6 +86,9 @@ archive/     【存档】000 参考项目的只读快照：不要改，它自带
 - **声音按规范混**：有配乐或音效的成片用 `vlab.audio.mix.mux` 混音（说话时配乐自动压低，成片 -14 LUFS），不要另写 ffmpeg 混音参数；音效由画面的事件清单触发（`vlab.audio.sfx.render`，例子见 research/visual/12）。
 - **发布前过合规清单**（`research/content/08-compliance/README.md`）：用了 TTS 配音，发布时在平台勾选 AI 声明、必选标签选「含有AI生成内容」（视频画面内不加文字声明，项目负责人定）；配乐音效只用自己合成的。
 - **字体统一用 `vlab.fonts`**（思源黑体，随仓库入库，SIL OFL 1.1 可商用）：Manim 用 `fonts.register_manim()` 返回的族名，Pillow 用 `fonts.pil(字号, bold)`，不要再写 `C:/Windows/Fonts/...` 的路径。微软雅黑不能用于商业发布。
+- **传播优先（第一优先级）**：项目的唯一目标是做出比对标账号（比特新语，见 `docs/STYLE-IMPACT.md`）更受欢迎的知识短片。
+  写稿、定稿、出片都按 `docs/STYLE-IMPACT.md` 的五条硬规矩过：情绪落点、人声优先、光影优先、情绪句标题、130–170 秒密度。
+  **知识完整性和传播效果冲突时以传播为准**，并在项目 `SCRIPT.md` 里写明破了哪条、为什么。
 - **新视频优先用视频工程**（`toolkit/vlab/videokit`，设计见 `docs/design/DESIGN-video-project.md`）：
   文案、数据、颜色、出场时机写在 `project.yaml` 里，常规镜头走模板；只有特殊镜头才写定制代码。
 - **片长 2–6 分钟（120–360 秒），时长服从内容**：不做固定 3 分钟，也不为凑时长注水。
