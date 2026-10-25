@@ -1,33 +1,87 @@
-# Render outputs
-renders/
-media/
-build/
-*.mp4
-*.wav
-*.png
-*.ass
-*.srt
+# 原则：克隆下来就能直接用。
+#   入库：源码、稿子、时间轴、字幕、最新一部的成片与配乐母带。
+#   忽略：和机器绑定的环境、工具缓存碎片、用完即删的过渡文件（都能一条命令重建），
+#         以及旧部的成片/音频（300 MB 的旧视频会把克隆拖到十几分钟，换来的只是"能看旧片"）。
+# 克隆后的准备步骤见 README「克隆后直接使用」。
+# 注意：.gitignore 不支持行尾注释，注释必须单独一行。
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-.manim/
-
-# Node
+# ---------- 环境（和机器绑定，按锁文件重建） ----------
+# uv sync 按 uv.lock 重建
+.venv/
+# npm ci 按 package-lock.json 重建
 node_modules/
+# 原开发机的 ffmpeg 二进制；其他机器用 PATH 上的 ffmpeg
+toolkit/bin/*.exe
 
-# Blender
+# ---------- Python / 工具缓存 ----------
+__pycache__/
+*.py[cod]
+.manim/
+# HyperFrames 的检查记录和渲染历史，不是成果
+.hyperframes/
+
+# ---------- Manim 的 media 目录：只留成品，丢碎片 ----------
+# media 下默认忽略（文字缓存、图片缓存、无声拼接过渡文件、日志、拼接清单……）
+**/media/*
+# 渲染好的分镜片段要入库：003 和视频工程（videokit）靠它们直接拼成片，指纹文件 .hash 让增量构建能复用
+!**/media/clips/
+# Manim 渲染出的成品视频要入库（如 archive/000 的 Hexagon.mp4、videos/003 的 Physics.mp4）
+!**/media/videos/
+# 但 Manim 的碎片、低清预览、调参静帧不要
+**/media/videos/**/partial_movie_files/
+**/media/videos/**/960p15/
+**/media/videos/**/540p15/
+**/media/clips/*_preview/
+**/media/clips/**/*_still_*.png
+
+# ---------- 配音的分段过渡文件（下游不用；整条 narration.wav 和 timeline.json 入库） ----------
+**/build/*/segments/
+
+# ---------- 临时看图、调试截帧 ----------
+# vlab-preview 生成的抽帧拼图
+*_preview.png
+# 调试截帧，如 000 里 2_hyperframes/tmp、3_manim/tmp
+tmp/
+research/visual/*/renders/concat_list.txt
+
+# ---------- 外部参考仓库（各自带 .git，按 README 重新 clone 更合适，不当 gitlink 入库） ----------
+# 直接 add 会把它们记成 submodule 指针，别人克隆下来只能看到两个空目录。
+research/refs/*/
+
+# ---------- 媒体产物：只留最新一部的成片与配乐（2026-10-25 定） ----------
+# 仓库主要给人和 agent 读架构、剧本、源码。保留 006 的成片（克隆后能直接看最新效果）
+# 和配乐母带（重拼不必重新生成）；其余 mp4 / wav 都能用各自的 .py 一条命令重建。
+**/*.mp4
+!videos/006-fold/renders/006-fold_fold.mp4
+**/*.wav
+!videos/006-fold/build/006-fold/music_fold_score.wav
+**/*.mov
+# 构建日志：调试时的中间输出
+videos/*/*.log
+
+# ---------- 密钥（frontier / audio 实验调用在线接口时用） ----------
+# 真实密钥只放本地 .env；不含真实值的 .env.example 可以入库，用来说明需要哪些变量
+.env
+.env.*
+!.env.example
+*.key
+
+# ---------- 模型权重（几个 G，按实验 README 里写的方式下载） ----------
+**/weights/
+*.safetensors
+*.ckpt
+*.gguf
+*.pth
+# 例外：这个不是模型权重，是 vlab 的安装补丁（仓库路径含【】时 Python 按 GBK 读 .pth 会读坏，见 AGENTS.md「已知坑」）。
+# pyproject.toml 打包时强制包含它，不入库的话克隆后 uv sync 会失败。
+!toolkit/vlab/_vlab_root.pth
+
+# ---------- Blender 自动备份 ----------
 *.blend1
 *.blend2
 
-# OS
+# ---------- 系统 / IDE ----------
 Thumbs.db
 .DS_Store
-
-# IDE
 .vscode/
 .idea/
-
-# Tools (large binaries)
-tools/bin/*.exe

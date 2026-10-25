@@ -1,0 +1,357 @@
+[
+ {
+  "t": 0.348,
+  "kind": "pop",
+  "gain": 0.5
+ },
+ {
+  "t": 0.514,
+  "kind": "pop",
+  "gain": 0.5
+ },
+ {
+  "t": 0.8,
+  "kind": "chime",
+  "gain": 0.8
+ },
+ {
+  "t": 0.8,
+  "kind": "pop",
+  "gain": 0.6
+ },
+ {
+  "t": 0.967,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 1.086,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 1.24,
+  "kind": "pop",
+  "gain": 0.5
+ },
+ {
+  "t": 1.455,
+  "kind": "boing",
+  "gain": 0.6
+ },
+ {
+  "t": 2.6,
+  "kind": "whoosh",
+  "gain": 0.7
+ },
+ {
+  "t": 3.228,
+  "kind": "whoosh",
+  "gain": 0.35
+ },
+ {
+  "t": 3.721,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.729,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.746,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.754,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.771,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.779,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.796,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.804,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.821,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.837,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.854,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.862,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.879,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.896,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.912,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.937,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.954,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.971,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 3.996,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.021,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.037,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.071,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.096,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.129,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.162,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.204,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.246,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.304,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.311,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 4.387,
+  "kind": "tick",
+  "gain": 0.45
+ },
+ {
+  "t": 4.711,
+  "kind": "impact",
+  "gain": 0.9
+ },
+ {
+  "t": 5.48,
+  "kind": "whip",
+  "gain": 0.8
+ },
+ {
+  "t": 6.108,
+  "kind": "key",
+  "gain": 0.6
+ },
+ {
+  "t": 6.334,
+  "kind": "key",
+  "gain": 0.6
+ },
+ {
+  "t": 6.56,
+  "kind": "key",
+  "gain": 0.6
+ },
+ {
+  "t": 7.036,
+  "kind": "shimmer",
+  "gain": 0.5
+ },
+ {
+  "t": 7.191,
+  "kind": "whoosh",
+  "gain": 0.35
+ },
+ {
+  "t": 7.322,
+  "kind": "pop",
+  "gain": 0.45
+ },
+ {
+  "t": 7.667,
+  "kind": "impact",
+  "gain": 0.7
+ },
+ {
+  "t": 9.152,
+  "kind": "whoosh",
+  "gain": 0.6
+ },
+ {
+  "t": 9.78,
+  "kind": "pop",
+  "gain": 0.3
+ },
+ {
+  "t": 10.018,
+  "kind": "whoosh",
+  "gain": 0.45
+ },
+ {
+  "t": 10.387,
+  "kind": "pop",
+  "gain": 0.3
+ },
+ {
+  "t": 10.506,
+  "kind": "whoosh",
+  "gain": 0.45
+ },
+ {
+  "t": 11.256,
+  "kind": "laser",
+  "gain": 0.45
+ },
+ {
+  "t": 11.982,
+  "kind": "whip",
+  "gain": 0.45
+ },
+ {
+  "t": 12.684,
+  "kind": "chime",
+  "gain": 0.6
+ },
+ {
+  "t": 12.734,
+  "kind": "tick",
+  "gain": 0.4
+ },
+ {
+  "t": 13.592,
+  "kind": "whoosh",
+  "gain": 0.35
+ },
+ {
+  "t": 14.22,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 14.803,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 15.339,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 15.636,
+  "kind": "impact",
+  "gain": 0.8
+ },
+ {
+  "t": 15.636,
+  "kind": "chime",
+  "gain": 0.5
+ },
+ {
+  "t": 16.482,
+  "kind": "pop",
+  "gain": 0.4
+ },
+ {
+  "t": 16.696,
+  "kind": "glitch",
+  "gain": 0.6
+ },
+ {
+  "t": 17.243,
+  "kind": "glitch",
+  "gain": 0.35
+ },
+ {
+  "t": 17.446,
+  "kind": "chime",
+  "gain": 0.45
+ },
+ {
+  "t": 18.3,
+  "kind": "tick",
+  "gain": 0.3
+ },
+ {
+  "t": 18.4,
+  "kind": "glitch",
+  "gain": 0.3
+ },
+ {
+  "t": 19.25,
+  "kind": "glitch",
+  "gain": 0.3
+ }
+]

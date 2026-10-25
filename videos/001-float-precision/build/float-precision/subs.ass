@@ -1,0 +1,34 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Microsoft YaHei,64,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,70,70,500,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.34,0:00:02.35,Default,,0,0,0,,0.1 加 0.2 等于多少？
+Dialogue: 0,0:00:03.56,0:00:05.41,Default,,0,0,0,,直觉告诉你 0.3
+Dialogue: 0,0:00:05.41,0:00:06.33,Default,,0,0,0,,但计算机说
+Dialogue: 0,0:00:06.33,0:00:09.92,Default,,0,0,0,,0.30000000000000004
+Dialogue: 0,0:00:11.10,0:00:12.19,Default,,0,0,0,,这不是 bug
+Dialogue: 0,0:00:13.38,0:00:14.82,Default,,0,0,0,,0.1 在二进制里是
+Dialogue: 0,0:00:14.82,0:00:16.07,Default,,0,0,0,,无限循环小数
+Dialogue: 0,0:00:16.07,0:00:18.87,Default,,0,0,0,,0.0001100110011……
+Dialogue: 0,0:00:20.05,0:00:21.95,Default,,0,0,0,,双精度浮点数只有 52 位
+Dialogue: 0,0:00:21.95,0:00:22.66,Default,,0,0,0,,尾数
+Dialogue: 0,0:00:22.66,0:00:24.19,Default,,0,0,0,,存不下无限循环
+Dialogue: 0,0:00:24.19,0:00:25.17,Default,,0,0,0,,只能截断
+Dialogue: 0,0:00:26.36,0:00:28.58,Default,,0,0,0,,所以 0.1 在计算机里
+Dialogue: 0,0:00:28.58,0:00:30.36,Default,,0,0,0,,从来就不是精确的 0.1
+Dialogue: 0,0:00:31.54,0:00:33.08,Default,,0,0,0,,两个近似值相加
+Dialogue: 0,0:00:33.08,0:00:34.48,Default,,0,0,0,,误差也跟着相加
+Dialogue: 0,0:00:35.67,0:00:36.79,Default,,0,0,0,,有限的位
+Dialogue: 0,0:00:36.79,0:00:38.27,Default,,0,0,0,,表示不了无限的数
+Dialogue: 0,0:00:39.47,0:00:40.72,Default,,0,0,0,,这就是 IEEE
+Dialogue: 0,0:00:40.72,0:00:42.61,Default,,0,0,0,,754 双精度浮点数的
+Dialogue: 0,0:00:42.61,0:00:43.28,Default,,0,0,0,,真相

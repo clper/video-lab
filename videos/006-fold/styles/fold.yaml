@@ -1,0 +1,16 @@
+# 006《对折》的风格：夜曲那一套——黑底、金 + 冰蓝、纸的暖白，和 design/tokens.ts 同家族。
+# 这一支没有旁白，成片文件名与总装质感都从这里取。
+name: fold
+palette:
+  bg: "#05060a"
+  bg2: "#0d1220"
+  ink: "#f6f2e7"
+  dim: "#8b93a7"
+  accent1: "#f3c14b"
+  accent2: "#49e3d1"
+  accent3: "#ff5b5b"
+  paper: "#f8f2e4"
+font: {family: Source Han Sans CN, title_size: 56, body_size: 40}
+motion: {enter: fade_up, duration: 0.5, stagger: 0.12, easing: smooth}
+# 横屏 3 分钟、暗场为主：暗角轻一点，颗粒交给 Remotion，避免两层叠加显脏
+texture: {vignette: 0.16, grain: 0}

@@ -1,0 +1,15 @@
+# 005《涌现》的风格：深底 + 金/青强调，和 Remotion 的 design/tokens.ts 保持同一家族。
+# 这一版没有 manim 镜头，但 clip 目录名、成片文件名、总装质感都从这里取。
+name: emergent
+palette:
+  bg: "#06070d"
+  bg2: "#0e1424"
+  ink: "#f6f2e7"
+  dim: "#8b93a7"
+  accent1: "#f3c14b"
+  accent2: "#49e3d1"
+  accent3: "#e86bd4"
+font: {family: Source Han Sans CN, title_size: 56, body_size: 40}
+motion: {enter: fade_up, duration: 0.5, stagger: 0.12, easing: smooth}
+# 颗粒和暗角已经由 Remotion 的七层特效栈负责，这里只补一点点暗角，避免两层叠加显得脏
+texture: {vignette: 0.18, grain: 0}

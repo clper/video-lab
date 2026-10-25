@@ -1,0 +1,18 @@
+{
+  "id": "sunset-red",
+  "title": "夕阳为什么是红的",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+8%",
+  "scenes": [
+    {"id": "hook", "narration": "为什么白天的天空是蓝的，夕阳却是红的？", "headline": "天为什么蓝，夕阳为什么红", "tech": "shader-cloudsea"},
+    {"id": "white", "narration": "太阳光看起来是白色，其实是彩虹里所有颜色的光混在一起。", "headline": "白光 = 所有颜色", "tech": "manim"},
+    {"id": "molecule", "narration": "而大气里的氮气和氧气分子，比光的波长还要小得多。", "headline": "分子比波长小一千多倍", "tech": "manim"},
+    {"id": "scatter", "narration": "光碰到这些小分子，会被弹向四面八方，这叫瑞利散射。", "headline": "瑞利散射", "tech": "manim"},
+    {"id": "ratio", "narration": "波长越短，散射越强：蓝光被散射的程度，差不多是红光的六倍。", "headline": "蓝光散射约为红光 6 倍", "tech": "manim"},
+    {"id": "noon", "narration": "中午阳光直射，被散射开的蓝光铺满整个天空，所以天是蓝的。", "headline": "中午：天是蓝的", "tech": "shader-atmosphere"},
+    {"id": "path", "narration": "傍晚太阳贴近地平线，阳光斜着穿过的大气，比太阳在头顶时厚几十倍。", "headline": "傍晚：路程长几十倍", "tech": "manim"},
+    {"id": "lose_blue", "narration": "一路上蓝光几乎被散射光了，最后走到我们眼里的，主要是红光和橙光。", "headline": "蓝光被散射光了", "tech": "manim"},
+    {"id": "sunset", "narration": "所以夕阳是红的，连天边的云也被染成了橙红色。", "headline": "夕阳和晚霞", "tech": "shader-atmosphere"},
+    {"id": "outro", "narration": "天空的蓝和夕阳的红，其实来自同一个原因。", "headline": "同一个原因：瑞利散射", "tech": "landscape"}
+  ]
+}

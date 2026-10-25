@@ -1,0 +1,219 @@
+# 005《涌现》—— 对标比特新语的第一条全量片。
+#
+# 构建：uv run vlab-build videos/005-emergence/project.yaml
+# 体检：uv run vlab-review videos/005-emergence/project.yaml --loudness
+#
+# 三条规矩（见 docs/STYLE-RHYTHM.md）：
+#   1. 每镜一句旁白、≤18 字，时长由配音定（0.236 秒/字 + 前后留白）；
+#   2. 相邻两镜不用同一个零件，同款最多连 2 镜；
+#   3. 每个镜头至少 2 个 action beat（remotion 卡片在组件里做动作，用 beats 申报）。
+id: 005-emergence
+title: 涌现
+brand: VIBE / 涌现
+style: styles/emergent.yaml
+voice: {name: zh-CN-YunxiNeural, rate: "+8%"}
+aspect: portrait
+end_hold: 0.9          # 片尾只多停 0.9s：1.6s 会把最后一镜顶过 5.2s 的硬指标
+fps: 30
+
+# 声音：程序化配乐（自己生成，无版权问题）+ 成片 -14 LUFS。
+# 配乐铺底 -18 dB，说话时由 mix 的 sidechain 自动压低，留出人声。
+audio:
+  music: true
+  bpm: 88
+  seed: 7
+  music_db: -18
+  lufs: -14
+
+# 七层全局特效（默认全开，字幕条关掉——字幕由 finalize 烧 ASS，开两层会重叠）
+fx:
+  handheld: true
+  sweep: true
+  flash: true
+  breathing: true
+  grain: true
+  stardust: true
+  subtitleBar: false
+
+scenes:
+  # ── 开场钩子：640 只鸟按几何级数出生，自己成团 ──
+  - id: S1
+    renderer: remotion
+    card: flock
+    narration: 鸟群没有指挥，为什么从不相撞？
+    beats: 3
+    params:
+      n: 640
+      birth: true
+      seed: 1987
+      kicker: 640 BIRDS / ZERO LEADER
+      title: 没有指挥，也不相撞
+
+  # ── 三规则科技卡 ──
+  - id: S2
+    renderer: remotion
+    card: techCard
+    narration: 没有会议，没有领导，只有三条规则。
+    beats: 4
+    params:
+      kicker: BOIDS / 1987
+      heading: 三条规则，零个指挥
+
+  # ── 威胁斜穿，群体撕开又合回 ──
+  - id: S3
+    renderer: remotion
+    card: flock
+    narration: 一只猛禽斜穿过来，鸟群瞬间撕开。
+    beats: 3
+    params:
+      n: 640
+      seed: 4242
+      kicker: THREAT / LIVE
+      title: 一只猛禽，撕开整群
+      threat: {from: [70, 360], to: [1010, 1520], t0: 18, t1: 136}
+
+  # ── 近景：相机跟着鸟群，读数 ──
+  - id: S4
+    renderer: remotion
+    card: flock
+    narration: 每一只，都只看着身边的七只。
+    beats: 2
+    params:
+      n: 640
+      seed: 1987
+      closeup: true
+      readout: NEIGHBORS ≈ 7 · DELAY 0.1s
+
+  # ── 金色菌丝递归分叉 ──
+  - id: S5
+    renderer: remotion
+    card: lineGrow
+    narration: 黏菌没有大脑，却能画出最优路线。
+    beats: 3
+    params:
+      kicker: NO BRAIN, BEST ROUTE
+      title: 没有大脑的路线图
+      note: 八小时，长成一张网
+      morph: false
+      seed: 44
+
+  # ── 同一张网拉直成地铁图（同一张网，只改一个参数）──
+  - id: S6
+    renderer: remotion
+    card: lineGrow
+    narration: 同一张网，被工程师抄成了地铁图。
+    beats: 3
+    params:
+      kicker: SAME NETWORK, NEW USE
+      title: 同一张网，抄成地铁
+      note: 黏菌 → 地铁网
+      morph: true
+      seed: 44
+
+  # ── 生命游戏：5 个细胞到 130 代 ──
+  - id: S7
+    renderer: remotion
+    card: lifeGame
+    narration: 五个细胞，能演化出会飞的滑翔机。
+    beats: 3
+    params:
+      kicker: 5 CELLS → 130 GENERATIONS
+      title: 规则只有四条
+      gens: 130
+      sim: 200
+
+  # ── 滑翔机读数：数字来自真实演化搜索（scripts/find-glider）──
+  - id: S8
+    renderer: remotion
+    card: countUp
+    narration: 第五十六代，它自己走了出来。
+    beats: 2
+    params:
+      to: 56
+      label: 代
+      kicker: GLIDER FOUND
+      caption: 滑翔机不是画上去的，是搜出来的 ——
+      note: 坐标 (33, 23)
+
+  # ── 尺度跳变：四行量级依次入场 ──
+  - id: S9
+    renderer: remotion
+    card: scaleCard
+    narration: 一个机制，撑住了四个尺度。
+    beats: 3
+    params:
+      kicker: ONE MECHANISM, FOUR SCALES
+      note: 从一只鸟，到一种秩序
+      rows:
+        - {label: 一只鸟, value: "0.2", unit: kg, frac: 0.06}
+        - {label: 一群鸟, value: "640", unit: 只, frac: 0.24}
+        - {label: 一次互动, value: "10⁴", unit: 次/秒, frac: 0.55}
+        - {label: 一种秩序, value: "∞", unit: 种可能, frac: 0.95}
+
+  # ── 皮层放电（GLSL）──
+  - id: S10
+    renderer: glsl
+    frag: shader/cortex.frag
+    ss: 1
+    narration: 你的大脑，也是这样亮起来的。
+    beats: 2
+    params:
+      uIntensity: 0.8
+
+  # ── 同一批鸟、同一套规则，改一个参数演崩散 ──
+  - id: S11
+    renderer: remotion
+    card: flock
+    narration: 同一套规则，也能让群体瞬间崩散。
+    beats: 3
+    params:
+      n: 640
+      seed: 1987
+      collapseAt: 34
+      red: true
+      kicker: SAME RULES / COLLAPSE
+      title: 同一套规则，换一个结局
+
+  # ── 崩盘断崖曲线 ──
+  - id: S12
+    renderer: remotion
+    card: chartCard
+    narration: 越过临界点，崩塌只用了一瞬间。
+    beats: 3
+    params:
+      kicker: PHASE TRANSITION
+      title: 崩溃不是变慢，是一步跨过
+      dropLabel: "-92%"
+      note: 越过临界点，恢复力小于扰动力
+
+  # ── 印章划掉反例 ──
+  - id: S13
+    renderer: remotion
+    card: stampStrike
+    narration: 以为它们只是各自在飞，错了。
+    beats: 3
+    params:
+      text: 它们只是各自在飞
+      stamp: 反例
+      sub: WRONG INTUITION
+
+  # ── 粒子汇聚成「涌现」点阵 ──
+  - id: S14
+    renderer: remotion
+    card: particleText
+    narration: 涌现：整体有了，个体却没有。
+    beats: 3
+    params:
+      text: 涌现
+      kicker: EMERGENCE
+      sub: 整体有了，个体却没有
+
+  # ── 金句 + 空镜收尾（GLSL 背景，金句走烧字幕）──
+  - id: S15
+    renderer: glsl
+    frag: shader/void.frag
+    ss: 1
+    narration: 你无法从一只鸟，读出整个鸟群。
+    beats: 2
+    params:
+      uGlow: 0.5

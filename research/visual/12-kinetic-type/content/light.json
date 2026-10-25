@@ -1,0 +1,13 @@
+{
+  "id": "light-speed",
+  "title": "光有多快",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+5%",
+  "scenes": [
+    {"id": "q", "narration": "你知道光有多快吗？"},
+    {"id": "speed", "narration": "每秒三十万公里。"},
+    {"id": "orbit", "narration": "一秒钟，能绕地球七圈半。"},
+    {"id": "sun", "narration": "从太阳到地球，光也要走八分多钟。"},
+    {"id": "past", "narration": "所以你看到的太阳，是八分多钟前的太阳。"}
+  ]
+}

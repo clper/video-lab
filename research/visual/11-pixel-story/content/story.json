@@ -1,0 +1,13 @@
+{
+  "id": "pixel-story",
+  "title": "掉落的星星",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "+0%",
+  "scenes": [
+    {"id": "walk", "narration": "傍晚，小柚带着猫咪阿团，走在回家的路上。"},
+    {"id": "fall", "narration": "忽然，一颗星星划过夜空，掉到了山坡后面。"},
+    {"id": "find", "narration": "她们跑过去一看，原来是一颗迷路的小星星，正在偷偷地哭。"},
+    {"id": "lift", "narration": "小柚把它高高举起，阿团也跳起来，帮它找回天上的路。"},
+    {"id": "end", "narration": "小星星回到夜空，眨了眨眼睛。晚安，小柚。"}
+  ]
+}

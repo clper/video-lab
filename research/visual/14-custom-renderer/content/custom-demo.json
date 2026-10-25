@@ -1,0 +1,13 @@
+{
+  "id": "custom-demo",
+  "title": "自定义渲染器",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+8%",
+  "scenes": [
+    {
+      "id": "S1",
+      "narration": "这一镜的画面，是脚本直接画出来的。"
+    }
+  ],
+  "aspect": "portrait"
+}

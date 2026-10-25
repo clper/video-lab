@@ -1,0 +1,1 @@
+import os, sys; _r = os.path.join(os.path.dirname(sys.prefix), "toolkit"); _r in sys.path or sys.path.append(_r)

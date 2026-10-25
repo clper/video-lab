@@ -1,0 +1,36 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Microsoft YaHei,64,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,70,70,500,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.34,0:00:02.51,Default,,0,0,0,,蜂巢为什么偏偏是六边形？
+Dialogue: 0,0:00:03.70,0:00:05.46,Default,,0,0,0,,只用同一种正多边形
+Dialogue: 0,0:00:05.46,0:00:07.74,Default,,0,0,0,,把平面铺满、不留缝隙
+Dialogue: 0,0:00:07.74,0:00:08.98,Default,,0,0,0,,只有三种选择
+Dialogue: 0,0:00:08.98,0:00:10.82,Default,,0,0,0,,三角形、正方形
+Dialogue: 0,0:00:10.82,0:00:12.12,Default,,0,0,0,,和正六边形
+Dialogue: 0,0:00:13.30,0:00:15.30,Default,,0,0,0,,假如每个格子的面积都一样
+Dialogue: 0,0:00:15.30,0:00:16.74,Default,,0,0,0,,谁需要的边最短？
+Dialogue: 0,0:00:17.91,0:00:19.21,Default,,0,0,0,,面积都取1
+Dialogue: 0,0:00:19.21,0:00:21.31,Default,,0,0,0,,三角形的周长约4.56
+Dialogue: 0,0:00:21.31,0:00:22.54,Default,,0,0,0,,正方形是4
+Dialogue: 0,0:00:22.54,0:00:24.82,Default,,0,0,0,,而正六边形只要3.72
+Dialogue: 0,0:00:26.00,0:00:26.75,Default,,0,0,0,,边越短
+Dialogue: 0,0:00:26.75,0:00:27.90,Default,,0,0,0,,蜂蜡就越省
+Dialogue: 0,0:00:27.90,0:00:30.38,Default,,0,0,0,,比正方形少用约7%
+Dialogue: 0,0:00:30.38,0:00:32.88,Default,,0,0,0,,比三角形少用约18%
+Dialogue: 0,0:00:34.04,0:00:35.16,Default,,0,0,0,,1999年
+Dialogue: 0,0:00:35.16,0:00:37.52,Default,,0,0,0,,数学家托马斯·黑尔斯证明了
+Dialogue: 0,0:00:37.52,0:00:39.62,Default,,0,0,0,,把平面分成面积相等的格子
+Dialogue: 0,0:00:39.62,0:00:41.71,Default,,0,0,0,,正六边形的总周长最短
+Dialogue: 0,0:00:42.87,0:00:44.29,Default,,0,0,0,,用最少的蜂蜡
+Dialogue: 0,0:00:44.29,0:00:45.63,Default,,0,0,0,,围出最大的空间
+Dialogue: 0,0:00:45.63,0:00:47.12,Default,,0,0,0,,这就是六边形的秘密
