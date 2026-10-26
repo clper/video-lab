@@ -1,0 +1,31 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Source Han Sans CN,56,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,200,200,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:01.68,Default,,0,0,0,,{\fad(150,150)}一位飞行教官
+Dialogue: 0,0:00:01.68,0:00:03.09,Default,,0,0,0,,{\fad(150,150)}站起来反驳了他
+Dialogue: 0,0:00:04.31,0:00:06.26,Default,,0,0,0,,{\fad(150,150)}他表扬飞得漂亮的学员
+Dialogue: 0,0:00:07.51,0:00:08.59,Default,,0,0,0,,{\fad(150,150)}下一次
+Dialogue: 0,0:00:08.59,0:00:09.91,Default,,0,0,0,,{\fad(150,150)}那个人飞得更差
+Dialogue: 0,0:00:11.13,0:00:12.56,Default,,0,0,0,,{\fad(150,150)}他骂飞得糟糕的
+Dialogue: 0,0:00:12.56,0:00:13.60,Default,,0,0,0,,{\fad(150,150)}下次更好
+Dialogue: 0,0:00:14.83,0:00:15.85,Default,,0,0,0,,{\fad(150,150)}所以他说
+Dialogue: 0,0:00:15.85,0:00:16.93,Default,,0,0,0,,{\fad(150,150)}表扬没用
+Dialogue: 0,0:00:16.93,0:00:17.99,Default,,0,0,0,,{\fad(150,150)}骂才有用
+Dialogue: 0,0:00:19.22,0:00:20.49,Default,,0,0,0,,{\fad(150,150)}他错在哪？
+Dialogue: 0,0:00:27.02,0:00:28.38,Default,,0,0,0,,{\fad(150,150)}先玩一个东西
+Dialogue: 0,0:00:28.38,0:00:29.28,Default,,0,0,0,,{\fad(150,150)}一块板
+Dialogue: 0,0:00:29.28,0:00:30.20,Default,,0,0,0,,{\fad(150,150)}一堆钉子
+Dialogue: 0,0:00:31.44,0:00:33.56,Default,,0,0,0,,{\fad(150,150)}一颗珠子从顶端落下
+Dialogue: 0,0:00:33.56,0:00:34.41,Default,,0,0,0,,{\fad(150,150)}左或右
+Dialogue: 0,0:00:35.64,0:00:36.60,Default,,0,0,0,,{\fad(150,150)}每一层
+Dialogue: 0,0:00:36.60,0:00:42.14,Default,,0,0,0,,{\fad(150,150)}都是一次抛硬币

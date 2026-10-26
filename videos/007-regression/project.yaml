@@ -1,0 +1,577 @@
+# 007《回归》全片：16:9 · 有旁白 + 字幕 + 配乐（规矩 2：人声优先）
+#
+# voice 模式：时长由配音定，画面按 timeline.json 的词时间点对齐。
+#   narration —— 这一句说的话；留空 = "让画面自己演"的呼吸镜
+#   min_hold  —— 镜头最短几秒（呼吸镜至少停够；tts.py 支持，默认 0 = 老行为）
+#
+# 预计全片约 147s（32 句 + 9 个呼吸镜），落在规矩 5 的 130–170s 区间。
+
+id: 007-regression
+title: 回归
+brand: VIBE / 回归
+style: styles/regress.yaml
+aspect: landscape
+fps: 30
+end_hold: 1.8
+
+fx_default:
+  flash: false          # 切点不许发亮（STYLE-RHYTHM「特效栈的边界」）
+  dipIn: 0.12
+  dipFrames: 4
+
+voice: {name: zh-CN-YunxiNeural, rate: "+6%"}
+
+audio:
+  music: true
+  music_fn: fold_score      # 带段落的铺底
+  # music_segs: 待写。段落要按 007 自己的章节时间设计，剧本确认、章节时间定下来后再写；
+  #   以前直接复用了 006 的段落表，配乐会在 006 的节点上变化，和 007 的叙事对不上。
+  music_v: 1
+  bpm: 100
+  seed: 23
+  music_db: -6        # 有人声，铺底先让一档
+  sfx_db: -4
+  duck: true          # 说话时配乐自动压低（006 是 false，那片没人声）
+  lufs: -14
+
+fx: {handheld: true, sweep: true, flash: false, breathing: true, grain: true, stardust: true, dip: true, subtitleBar: false}
+
+scenes:
+  # ── 钩子 ──────────────────────────────────────────────
+  - id: S01
+    renderer: remotion
+    card: briefRoom
+    fx: {dipIn: 0.75, dipFrames: 10}
+    narration: 一位飞行教官，站起来反驳了他。
+    min_hold: 3.2
+    beats: 2
+    params:
+      kicker: 以色列空军 · 一堂飞行教官的课
+      line: 他站了起来
+      sub: D. KAHNEMAN
+
+  - id: S02
+    renderer: remotion
+    card: chartCard
+    narration: 他表扬飞得漂亮的学员。
+    min_hold: 3.2
+    beats: 2
+    params:
+      kicker: 01 · 记录　THE RECORD
+      title: 第一次：飞得漂亮
+      points: [[0, 0.32], [0.34, 0.72], [0.58, 0.90], [1, 0.88]]
+      dropLabel: 好 → 表扬
+      note: 教官给了表扬
+
+  - id: S03
+    renderer: remotion
+    card: chartCard
+    narration: 下一次，那个人飞得更差。
+    min_hold: 3.2
+    beats: 2
+    params:
+      kicker: 01 · 记录　THE RECORD
+      title: 第二次：更差
+      points: [[0, 0.88], [0.4, 0.62], [0.7, 0.47], [1, 0.44]]
+      dropLabel: 更差
+      note: 这次什么都没说
+
+  - id: S04
+    renderer: remotion
+    card: briefRoom
+    narration: 他骂飞得糟糕的，下次更好。
+    min_hold: 3.2
+    beats: 2
+    params:
+      kicker: 以色列空军 · 同一堂课
+      line: 骂完，下次更好
+      sub: 他的经验，第二半
+
+  - id: S05
+    renderer: remotion
+    card: kineticSubtitle
+    narration: 所以他说：表扬没用，骂才有用。
+    min_hold: 3.4
+    beats: 2
+    params:
+      text: 表扬没用，骂才有用
+      highlight: 没用
+      footer: 教官的结论
+
+  - id: S06
+    renderer: remotion
+    card: kineticSubtitle
+    narration: 他错在哪？
+    min_hold: 3.0
+    beats: 2
+    params:
+      text: 他错在哪？
+      highlight: 哪
+      footer: 观察没错，结论错了
+
+  # ── 片名 ──────────────────────────────────────────────
+  - id: S07
+    renderer: remotion
+    card: regressTitle
+    fx: {dipIn: 0.55, dipOut: 0.55, dipFrames: 10}
+    narration: ""
+    min_hold: 4.8
+    beats: 3
+    params:
+      title: 回归
+      sub: 最好的一次之后，必然是更差的一次
+      latin: REGRESSIO
+      bead: true
+
+  # ── 章一 · 板 ─────────────────────────────────────────
+  - id: S08
+    renderer: remotion
+    card: galtonBoard
+    fx: {dipIn: 0.55, dipFrames: 10, stardust: false}
+    narration: 先玩一个东西：一块板，一堆钉子。
+    min_hold: 3.2
+    beats: 2
+    params:
+      mode: board
+      kicker: 02 · 板　THE BOARD
+      note: 每一层都是一次抛硬币：左或右，各一半。
+      label: 高尔顿板
+
+  - id: S09
+    renderer: remotion
+    card: galtonBoard
+    fx: {stardust: false}
+    narration: 一颗珠子从顶端落下，左或右。
+    min_hold: 3.2
+    beats: 3
+    params:
+      mode: one
+      travel: 2
+      kicker: 02 · 板　THE BOARD
+      note: 撞到钉子，一半向左，一半向右。
+      label: 左，或右
+
+  - id: S10
+    renderer: remotion
+    card: scaleCard
+    narration: 每一层，都是一次抛硬币。
+    min_hold: 3.0
+    beats: 3
+    params:
+      kicker: 02 · 板　THE BOARD
+      rows:
+        - {label: 一层, value: "2", unit: 种走法, frac: 0.10}
+        - {label: 三层, value: "8", unit: 种走法, frac: 0.28}
+        - {label: 六层, value: "64", unit: 种走法, frac: 0.55}
+        - {label: 十二层, value: "4096", unit: 种走法, frac: 0.94}
+      note: 只有一条路能一直往右 —— 极端就这么来的
+
+  - id: S11
+    renderer: remotion
+    card: galtonBoard
+    fx: {stardust: false}
+    narration: ""
+    min_hold: 3.4
+    beats: 3
+    params:
+      mode: rain
+      rate: 9
+      pellets: 900
+      kicker: 02 · 板　THE BOARD
+      note: 几千颗同时落下。
+
+  - id: S12
+    renderer: remotion
+    card: galtonBoard
+    fx: {stardust: false}
+    narration: 几千颗之后，堆出这条曲线。
+    min_hold: 3.2
+    beats: 3
+    params:
+      mode: pile
+      rate: 11
+      pellets: 1100
+      kicker: 02 · 板　THE BOARD
+      note: 珠子越多，轮廓越像同一条曲线。
+      label: 几千颗之后
+
+  - id: S13
+    renderer: remotion
+    card: chartCard
+    narration: 中间最多，两头最少。
+    min_hold: 3.0
+    beats: 2
+    params:
+      kicker: 02 · 板　THE BOARD
+      title: 中间最多，两头最少
+      points: [[0, 0.5], [0.2, 0.75], [0.4, 0.9], [0.5, 0.95], [0.6, 0.9], [0.8, 0.75], [1, 0.5]]
+      dropLabel: 68.3% / 95.4%
+      note: 正态分布：±1σ 占 68.3%，±2σ 占 95.4%
+
+  - id: S14
+    renderer: remotion
+    card: galtonBoard
+    fx: {stardust: false}
+    narration: 极端不是本事，是运气。
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: extremes
+      kicker: 02 · 板　THE BOARD
+      note: 最左、最右两格被标红 —— 它们只是稀有。
+      label: 极端不是本事，是运气
+
+  # ── 章二 · 线 ─────────────────────────────────────────
+  - id: S15
+    renderer: remotion
+    card: scatterRegress
+    fx: {dipIn: 0.55, dipFrames: 10, stardust: false}
+    narration: 1886 年，高尔顿也画了这条线。
+    min_hold: 3.2
+    beats: 2
+    params:
+      mode: intro
+      kicker: 03 · 线　THE LINE
+      note: F. Galton, 1886：《Regression towards mediocrity in hereditary stature》
+      label: 1886 · 高尔顿
+
+  - id: S16
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: 他量了 928 个成年子女的身高。
+    min_hold: 3.2
+    beats: 2
+    params:
+      mode: points
+      kicker: 03 · 线　THE LINE
+      note: 205 对夫妻，928 个成年子女（高尔顿实测）。
+
+  - id: S17
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: ""
+    min_hold: 3.0
+    beats: 2
+    params:
+      mode: drift
+      kicker: 03 · 线　THE LINE
+      note: 镜头贴散点云平移。
+
+  - id: S18
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: 高个父母的孩子，平均更矮。
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: tall
+      kicker: 03 · 线　THE LINE
+      note: 父母高于均值的部分，孩子只回来三分之二。
+      label: 父 +2σ → 子 +1.3σ
+
+  - id: S19
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: 矮个父母的孩子，平均更高。
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: short
+      kicker: 03 · 线　THE LINE
+      note: 反过来一样。
+      label: 父 −2σ → 子 −1.3σ
+
+  - id: S20
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: 偏离的那部分，只回来三分之二。
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: coef
+      kicker: 03 · 线　THE LINE
+      note: 虚线是"如果完全遗传"，金线是实际。
+      label: 只回来三分之二
+
+  - id: S21
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: 他给这件事起了个名字：回归。
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: line
+      kicker: 03 · 线　THE LINE
+      note: 「回归」这个词就出自这篇 1886 年的论文。
+      label: 他给这件事起了个名字：回归
+
+  - id: S22
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: ""
+    min_hold: 3.0
+    beats: 2
+    params:
+      mode: push
+      kicker: 03 · 线　THE LINE
+      note: 镜头沿金线推近。
+
+  - id: S23
+    renderer: remotion
+    card: scatterRegress
+    fx: {dipOut: 0.5, dipFrames: 10, stardust: false}
+    narration: 不是退步，是回到自己的那条线。
+    min_hold: 4.4
+    beats: 2
+    params:
+      mode: one
+      kicker: 03 · 线　THE LINE
+      note: 一个被点中的孩子，滑回自己的线。
+      label: 回到自己的线
+
+  # ── 章三 · 人 ─────────────────────────────────────────
+  - id: S24
+    renderer: remotion
+    card: chartCard
+    fx: {dipIn: 0.55, dipFrames: 10}
+    narration: 那次飞得漂亮，是超常发挥。
+    min_hold: 3.2
+    beats: 2
+    params:
+      kicker: 04 · 人　THE LIFE
+      title: 那次飞得漂亮
+      points: [[0, 0.42], [0.3, 0.90], [0.6, 0.62], [1, 0.50]]
+      dropLabel: 超常
+      note: 最高点的那次，本来就稀有
+
+  - id: S25
+    renderer: remotion
+    card: chartCard
+    narration: 下次就算什么都不做，也会下来。
+    min_hold: 3.4
+    beats: 2
+    params:
+      kicker: 04 · 人　THE LIFE
+      title: 下次：什么都不做
+      points: [[0, 0.90], [0.5, 0.62], [1, 0.50]]
+      dropLabel: 回落
+      note: 和表扬、批评都没关系
+
+  - id: S26
+    renderer: remotion
+    card: scatterRegress
+    fx: {stardust: false}
+    narration: 那次摔得难看，也一样。
+    min_hold: 3.2
+    beats: 2
+    params:
+      mode: one
+      flip: true
+      kicker: 04 · 人　THE LIFE
+      note: 低的那次也往回走 —— 同样和骂不骂没关系。
+      label: 也一样
+
+  - id: S27
+    renderer: remotion
+    card: chartCard
+    narration: ""
+    min_hold: 3.0
+    beats: 2
+    params:
+      kicker: 04 · 人　THE LIFE
+      title: 折线横过来
+      points: [[0, 0.5], [0.25, 0.56], [0.5, 0.46], [0.75, 0.53], [1, 0.50]]
+      dropLabel: 人生线
+      note: 它在往你的平均走
+
+  - id: S28
+    renderer: remotion
+    card: stampStrike
+    narration: 所以有了二年级墙、封面魔咒。
+    min_hold: 3.4
+    beats: 2
+    params:
+      text: 二年级墙
+      stamp: 封面魔咒
+      sub: 都有同一个解释：回归
+
+  - id: S29
+    renderer: remotion
+    card: chartCard
+    narration: 去年销冠，今年多半不是他。
+    min_hold: 3.2
+    beats: 2
+    params:
+      kicker: 04 · 人　THE LIFE
+      title: 去年销冠
+      points: [[0, 0.9], [0.5, 0.68], [1, 0.52]]
+      dropLabel: 今年
+      note: 不是不努力，是那次第一本来就稀有
+
+  - id: S30
+    renderer: remotion
+    card: scaleCard
+    narration: 上一次考砸的孩子，这次会好点。
+    min_hold: 3.4
+    beats: 3
+    params:
+      kicker: 04 · 人　THE LIFE
+      rows:
+        - {label: 上次考砸, value: "58", unit: 分, frac: 0.18}
+        - {label: 这次, value: "71", unit: 分, frac: 0.42}
+        - {label: 他的平均, value: "68", unit: 分, frac: 0.40}
+        - {label: 家长的嘴, value: "0", unit: 功劳, frac: 0.05}
+      note: 他没变 —— 只是上次那次本来就不是常态
+
+  - id: S31
+    renderer: remotion
+    card: kineticSubtitle
+    fx: {dipOut: 0.5, dipFrames: 10}
+    narration: 和谁夸他、谁骂他，都没关系。
+    min_hold: 3.8
+    beats: 2
+    params:
+      text: 和谁夸他、谁骂他，都没关系
+      highlight: 没关系
+      footer: 教官的观察没错，结论错了
+
+  # ── 落点 ──────────────────────────────────────────────
+  - id: S32
+    renderer: remotion
+    card: kineticSubtitle
+    fx: {dipIn: 0.55, dipFrames: 10}
+    narration: 这条规律冷，但它有个好处。
+    min_hold: 3.4
+    beats: 2
+    params:
+      text: 这条规律冷，但它有个好处
+      highlight: 好处
+      footer: 回归均值
+
+  - id: S33
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: 你最好的那次之后会回落，
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: crest
+      kicker: 05 · 海　THE SEA
+      note: 每一个浪头都会落下。
+      label: 最好的一次
+
+  - id: S34
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: ""
+    min_hold: 3.0
+    beats: 2
+    params:
+      mode: sea
+      kicker: 05 · 海　THE SEA
+      note: 但海不会变成平静的水面。
+
+  - id: S35
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: 不是你骄傲了，也不是你松了。
+    min_hold: 3.4
+    beats: 3
+    params:
+      mode: fall
+      word: 骄傲
+      word2: 松懈
+      kicker: 05 · 海　THE SEA
+      note: 浪塌下来，把这两个词带走了。
+
+  - id: S36
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: 最差的那次之后会回升，
+    min_hold: 3.4
+    beats: 2
+    params:
+      mode: trough
+      kicker: 05 · 海　THE SEA
+      note: 谷底会被后一个浪填平。
+      label: 最差的一次
+
+  - id: S37
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: 也不是你终于做对了什么。
+    min_hold: 3.4
+    beats: 3
+    params:
+      mode: trough
+      word: 努力
+      word2: 改正
+      kicker: 05 · 海　THE SEA
+      note: 这两个词，也被浪带走了。
+
+  - id: S38
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: 你只是，回到了自己的那条线。
+    min_hold: 4.2
+    beats: 3
+    params:
+      mode: calm
+      bead: true
+      kicker: 05 · 海　THE SEA
+      note: 每一个浪头都会落下，但海不会变成平静的水面。
+      label: 你只是，回到了自己的那条线
+
+  - id: S39
+    renderer: remotion
+    card: waveField
+    fx: {stardust: false}
+    narration: ""
+    min_hold: 3.0
+    beats: 2
+    params:
+      mode: line
+      kicker: 05 · 海　THE SEA
+      note: 海面退掉之后，剩下的就是它。
+
+  - id: S40
+    renderer: remotion
+    card: regressTitle
+    narration: ""
+    min_hold: 4.8
+    beats: 2
+    params:
+      title: 回归
+      sub: 最好的一次之后，必然是更差的一次
+      latin: REGRESSIO
+      bead: false
+      refs:
+        - F. Galton, «Regression towards mediocrity in hereditary stature», 1886
+        - D. Kahneman, «思考，快与慢», 2012（中信）
+        - 更正：「必然」是口语，严格说是期望上更接近均值；2/3 只对身高成立
+
+  - id: S41
+    renderer: remotion
+    card: galtonBoard
+    fx: {dipOut: 0.6, dipFrames: 14, stardust: false}
+    narration: ""
+    min_hold: 4.8
+    beats: 3
+    params:
+      mode: final
+      kicker: 回归 · 完
+      note: 那颗珠子不知道自己会落在哪。
+      seed: 7

@@ -1,0 +1,17 @@
+# custom 渲染器的示例工程：这一镜的画面由 shots/stripes.py 自己画，
+# 其余流程（配音 → 帧数校验 → 拼接 → 配乐 → 烧字幕 → 预览）完全不变。
+# 说明见同目录 README.md。
+id: custom-demo
+title: 自定义渲染器
+style: styles/demo.yaml
+voice: {name: zh-CN-YunxiNeural, rate: "+8%"}
+aspect: portrait
+fps: 30
+
+scenes:
+  - id: S1
+    renderer: custom
+    script: shots/stripes.py
+    narration: 这一镜的画面，是脚本直接画出来的。
+    params:
+      text: CUSTOM

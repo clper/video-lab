@@ -1,0 +1,16 @@
+name: demo
+palette:
+  bg: "#080a14"
+  bg2: "#121a2e"
+  ink: "#f0f0f5"
+  dim: "#9aa3b2"
+  accent1: "#d4af78"
+  accent2: "#5fb0c8"
+  accent3: "#c86a8a"
+font:
+  family: Source Han Sans CN
+  title_size: 96
+  body_size: 40
+texture:
+  vignette: 0.35
+  grain: 6

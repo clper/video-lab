@@ -13,6 +13,13 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 
+# 渲染器：一个镜头用哪个后端出片。
+#   manim     —— 参数化模板（manim_templates.py），适合图表/文字类
+#   remotion  —— 镜头卡（toolkit/vlab/render/remotion/src/cards），适合高密度动效
+#   glsl      —— 项目内的 .frag，适合粒子/场，走 render/glsl.py
+#   custom    —— 项目自带的 .py 脚本，适合一次性特殊镜头（接口见 build.py 的 custom 分支）
+RENDERERS = {"manim", "remotion", "glsl", "custom"}
+
 # 模板需要的参数（校验用）。模板代码在 manim_templates.py
 TEMPLATE_PARAMS = {
     "title_card": ["title"],
@@ -79,6 +86,12 @@ class Project:
         self.style = load_style(self.style_path) if self.style_path else dict(DEFAULT_STYLE)
         self.scenes = self.data["scenes"]
         self.fps = self.data.get("fps", 30)
+        # 两种叙事模式：
+        #   voice —— 有旁白，时长由配音定（原有做法）
+        #   grid  —— 无旁白，时长由拍格定（写 grid: {bpm, beat}，每镜写 hold=占多少拍）
+        self.grid = self.data.get("grid") or None
+        self.mode = "grid" if self.grid else "voice"
+        self.aspect = self.data.get("aspect", "portrait")
 
     # ----- 路径 -----
     @property
@@ -95,22 +108,66 @@ class Project:
 
     # ----- 校验：渲染前把能发现的错误一次全列出来 -----
     def validate(self) -> list[str]:
-        errs = []
+        audio = self.data.get("audio") if isinstance(self.data.get("audio"), dict) else {}
+        if audio.get("music") and audio.get("music_fn") == "fold_score" and not audio.get("music_segs"):
+            pre = ["audio.music_fn 是 fold_score，但没写 audio.music_segs：段落表要按本片的章节时间写"
+                   "（[[起, 止, {lp/hp/gain}], ...]，例子见 archive/006-fold/project.yaml）"]
+        else:
+            pre = []
+        errs = list(pre)
         ids = [s.get("id") for s in self.scenes]
         if len(ids) != len(set(ids)):
             errs.append(f"镜头 id 重复：{ids}")
         for s in self.scenes:
-            sid, tpl = s.get("id", "?"), s.get("template")
-            if tpl not in TEMPLATE_PARAMS:
-                errs.append(f"[{sid}] 没有模板「{tpl}」，可选：{list(TEMPLATE_PARAMS)}")
+            sid = s.get("id", "?")
+            renderer = s.get("renderer", "manim")
+            if renderer not in RENDERERS:
+                errs.append(f"[{sid}] 渲染器「{renderer}」不认识，可选：{sorted(RENDERERS)}")
                 continue
             params = s.get("params") or {}
-            for p in TEMPLATE_PARAMS[tpl]:
-                if p not in params:
-                    errs.append(f"[{sid}] 模板 {tpl} 缺参数「{p}」")
+            if renderer == "manim":
+                tpl = s.get("template")
+                if tpl not in TEMPLATE_PARAMS:
+                    errs.append(f"[{sid}] 没有模板「{tpl}」，可选：{list(TEMPLATE_PARAMS)}")
+                    continue
+                for p in TEMPLATE_PARAMS[tpl]:
+                    if p not in params:
+                        errs.append(f"[{sid}] 模板 {tpl} 缺参数「{p}」")
+                for c in _colors_in(params) + [o.get("color") for o in (s.get("overrides") or {}).values() if o.get("color")]:
+                    if not c.startswith("#") and c not in self.style["palette"]:
+                        errs.append(f"[{sid}] 颜色名「{c}」不在风格 {self.style['name']} 的色板里")
+            elif renderer == "remotion":
+                card = s.get("card")
+                names = remotion_cards()
+                if s.get("template"):
+                    errs.append(f"[{sid}] renderer 是 remotion 时用 card 字段，不写 template")
+                if not card:
+                    errs.append(f"[{sid}] renderer 是 remotion，但没写 card")
+                elif names and card not in names:
+                    errs.append(f"[{sid}] 没有镜头卡「{card}」，可选：{', '.join(sorted(names))}")
+            elif renderer == "custom":
+                script = s.get("script")
+                if not script:
+                    errs.append(f"[{sid}] renderer 是 custom，但没写 script（相对项目目录的 .py）")
+                elif not (self.dir / script).exists():
+                    errs.append(f"[{sid}] 找不到自定义脚本 {script}")
+            else:  # glsl
+                frag = s.get("frag")
+                if not frag:
+                    errs.append(f"[{sid}] renderer 是 glsl，但没写 frag（相对项目目录的 .frag 路径）")
+                elif not (self.dir / frag).exists():
+                    errs.append(f"[{sid}] 找不到着色器 {frag}")
             narration = s.get("narration", "")
-            if not narration:
-                errs.append(f"[{sid}] 没有旁白 narration")
+            if self.mode == "voice":
+                # 呼吸镜可以不写旁白，但必须写 min_hold —— 不然镜头只有 LEAD+TRAIL=0.6 秒，一闪而过
+                if not narration and not s.get("min_hold"):
+                    errs.append(f"[{sid}] 没有旁白 narration（呼吸镜不写旁白的话，必须写 min_hold 撑住时长）")
+            else:
+                hold = s.get("hold")
+                if not isinstance(hold, (int, float)) or hold <= 0:
+                    errs.append(f"[{sid}] 拍格模式要写 hold（占几拍），现在是 {hold!r}")
+            if self.mode == "grid":
+                continue          # 拍格模式没有词时间点，cues/overrides 的绑定检查不适用
             for el, cue in (s.get("cues") or {}).items():
                 bad = set(cue or {}) - CUE_KEYS
                 if bad:
@@ -124,28 +181,82 @@ class Project:
                 bad = set(o or {}) - OVERRIDE_KEYS
                 if bad:
                     errs.append(f"[{sid}] 元素 {el} 的微调里有不认识的字段 {sorted(map(str, bad))}，可用：{sorted(OVERRIDE_KEYS)}")
-            for c in _colors_in(params) + [o.get("color") for o in (s.get("overrides") or {}).values() if o.get("color")]:
-                if not c.startswith("#") and c not in self.style["palette"]:
-                    errs.append(f"[{sid}] 颜色名「{c}」不在风格 {self.style['name']} 的色板里")
         return errs
 
     # ----- 配音：从工程生成 tts.py 要的稿子 -----
     def content_json(self) -> dict:
+        if self.mode == "grid":
+            g = self.grid or {}
+            bpm = float(g.get("bpm", 100))
+            out = {"id": self.id, "title": self.data.get("title", self.id), "mode": "grid",
+                   "fps": self.fps, "aspect": self.aspect,
+                   "grid": {"bpm": bpm, "beat": float(g.get("beat") or 60.0 / bpm),
+                            "lead": float(g.get("lead", 0.0))},
+                   "scenes": [{"id": s["id"], "text": s.get("text", ""), "hold": s.get("hold"),
+                               "sub_in": s.get("sub_in"), "sub_out": s.get("sub_out")} for s in self.scenes]}
+            if "end_hold" in self.data:
+                out["end_hold"] = self.data["end_hold"]
+            return out
         v = self.data.get("voice", {})
-        return {"id": self.id, "title": self.data.get("title", self.id),
-                "voice": v.get("name", "zh-CN-YunxiNeural"), "rate": v.get("rate", "+8%"),
-                "scenes": [{"id": s["id"], "narration": s["narration"]} for s in self.scenes]}
+        out = {"id": self.id, "title": self.data.get("title", self.id),
+               "voice": v.get("name", "zh-CN-YunxiNeural"), "rate": v.get("rate", "+8%"),
+               "scenes": [{"id": s["id"], "narration": s.get("narration", ""),
+                           "min_hold": s.get("min_hold")} for s in self.scenes]}
+        for k in ("aspect", "end_hold"):      # 可选：画幅、片尾停留（默认竖屏 / 1.6s）
+            if k in self.data:
+                out[k] = self.data[k]
+        return out
 
     def narration_hash(self) -> str:
         return _sha(self.content_json())
 
-    # ----- 镜头指纹：内容 + 风格 + 时间轴上的位置 + 模板代码，任何一项变了就重渲染 -----
+    # ----- 镜头指纹：内容 + 风格 + 时间轴上的位置 + 渲染器代码，任何一项变了就重渲染 -----
     def scene_hash(self, scene: dict, tl_scene: dict) -> str:
-        code = (HERE / "manim_templates.py").read_bytes()
         style = {k: v for k, v in self.style.items() if k not in ("source", "note")}   # 只算影响画面的字段，备注和来源路径变了不必重渲染
-        return _sha({"scene": scene, "style": style, "start": tl_scene["start"], "end": tl_scene["end"],
-                     "words": tl_scene["words"], "code": hashlib.sha1(code).hexdigest(), "fps": self.fps,
+        renderer = scene.get("renderer", "manim")
+        # fx_default 在工程顶层，不在 scene 里：不合并进来的话，改了全局特效（比如关白闪）
+        # 指纹不变，镜头会被“复用”，改了半天等于没改
+        fx = {"_default": self.data.get("fx_default") or {}, **(scene.get("fx") or {})}
+        return _sha({"scene": scene, "style": style, "fx": fx, "start": tl_scene["start"], "end": tl_scene["end"],
+                     "words": tl_scene["words"], "code": _code_hash(self.dir, scene, renderer), "fps": self.fps,
                      "preview": os.environ.get("PREVIEW") == "1"})
+
+
+def _code_hash(project_dir: Path, scene: dict, renderer: str) -> str:
+    """把渲染器代码也算进指纹：改了模板/卡片/着色器，相关镜头才会重渲染。"""
+    if renderer == "manim":
+        return hashlib.sha1((HERE / "manim_templates.py").read_bytes()).hexdigest()
+    if renderer == "glsl":
+        frag = project_dir / (scene.get("frag") or "")
+        return hashlib.sha1(frag.read_bytes()).hexdigest() if frag.exists() else "missing"
+    if renderer == "custom":
+        script = project_dir / (scene.get("script") or "")
+        h = hashlib.sha1(script.read_bytes() if script.exists() else b"missing")
+        h.update(json.dumps(scene.get("args") or [], ensure_ascii=False).encode("utf-8"))
+        return h.hexdigest()
+    # remotion：把 src 下所有 ts/tsx 一起算，改任何一张卡都会让 remotion 镜头失效；
+    # 桥本身（像素格式、帧数算法）也会影响产物，一起算进去
+    root = HERE.parent / "render" / "remotion" / "src"
+    h = hashlib.sha1()
+    bridge = HERE.parent / "render" / "remotion_bridge.py"
+    if bridge.exists():
+        h.update(bridge.read_bytes())
+    for f in sorted(root.rglob("*.ts*")):
+        h.update(f.name.encode("utf-8"))
+        h.update(f.read_bytes())
+    return h.hexdigest()
+
+
+_CARDS: list[str] | None = None
+
+
+def remotion_cards() -> list[str]:
+    """可用镜头卡名（从 TS 注册表解析，避免 Python 侧再维护一份）。"""
+    global _CARDS
+    if _CARDS is None:
+        from vlab.render.remotion_bridge import card_names
+        _CARDS = card_names()
+    return _CARDS
 
 
 def _colors_in(params) -> list[str]:

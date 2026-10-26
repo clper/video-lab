@@ -1,0 +1,24 @@
+{
+  "name": "vlab-remotion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "vlab Remotion 渲染后端：设计系统 + 镜头卡库 + 全局特效栈",
+  "scripts": {
+    "sync-fonts": "node scripts/sync-fonts.mjs",
+    "studio": "remotion studio src/index.ts",
+    "render:sample": "remotion render src/index.ts Sample15s out/sample15s.mp4 --codec=h264",
+    "postinstall": "node scripts/sync-fonts.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/fonts": "^4.0.538",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
+  }
+}

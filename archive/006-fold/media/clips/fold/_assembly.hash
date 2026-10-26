@@ -1,0 +1,53 @@
+4a8d4bb2a80b9c0a|68b35233bb2a4f36|c62775a63725351b|b2944aa64a0b3941|e95920c038cb0f69|05b3ea3a3c59f1b7|eef5646d4430fe21|782dc1436911b4d2|d3dee0b389331312|c482fc17e37193e7|6d4a06efbae2996c|5cdbbd7f17304f74|4545605ce4da2789|cb932e339cac88c3|a66bf5d838eb162a|04d81616afced7d6|5a9447dd0fc8a6d6|9bc336e8f986b8a7|c01d4f3a003a1eca|bcba19b115464d73|364bef0b6bea80ac|01b81942e7ca35db|ac58ecd7545a5545|108e4d99815fb152|796b55ec9e4a7262|91460c995d8d1a3f|9e8c06307e35cbde|99311caef406f31a|c0def13b35cad13a|ed6e74cd3acedab8|5bb68d65c263444a|ce46e592003cb976|7049ff2eea7a5d94|cbdb8dfa2df9d152|f4e8a818a5baa77a|e36c0e1657198d9d|67fba763d66e9786|6cc087e0bd677277|991e3dc2be3ca070|3734cd6f3f7659b1|b6110b5f0573d4a9|879793b66249c846|64ab89bef8c7a66a|3a27dcff00d7e925|9e17c3889d56e735|f0e335d07b55b486|521817930853cb97|b8916863c7fd964b|c96ae89b29d6cdaf|51b8cea445d471de|8c55c6a3e29d42ec|{"grain": 0, "vignette": 0.16}|{"bpm": 100, "duck": false, "lufs": -14, "music": true, "music_db": 0, "music_fn": "fold_score", "music_v": 1, "seed": 11, "sfx": [{"gain": 0.3, "kind": "whoosh", "t": 3.35}, {"gain": 0.32, "kind": "whoosh", "t": 4.55}, {"gain": 0.3, "kind": "whoosh", "t": 6.55}, {"gain": 0.32, "kind": "whoosh", "t": 7.15}, {"gain": 0.34, "kind": "whoosh", "t": 7.75}, {"gain": 0.36, "kind": "whoosh", "t": 8.35}, {"gain": 0.42, "kind": "pop", "t": 9.35}, {"gain": 0.9, "kind": "impact", "t": 18.0}, {"gain": 0.22, "kind": "tick", "t": 23.9}, {"gain": 0.22, "kind": "tick", "t": 24.05}, {"gain": 0.22, "kind": "tick", "t": 24.2}, {"gain": 0.22, "kind": "tick", "t": 24.35}, {"gain": 0.22, "kind": "tick", "t": 24.5}, {"gain": 0.22, "kind": "tick", "t": 24.65}, {"gain": 0.22, "kind": "tick", "t": 24.8}, {"gain": 0.22, "kind": "tick", "t": 24.95}, {"gain": 0.3, "kind": "impact", "t": 28.22}, {"gain": 0.2, "kind": "tick", "t": 31.8}, {"gain": 0.2, "kind": "tick", "t": 32.08}, {"gain": 0.2, "kind": "tick", "t": 32.36}, {"gain": 0.2, "kind": "tick", "t": 32.64}, {"gain": 0.2, "kind": "tick", "t": 32.92}, {"gain": 0.2, "kind": "tick", "t": 33.2}, {"gain": 0.16, "kind": "tick", "t": 35.7}, {"gain": 0.16, "kind": "tick", "t": 35.82}, {"gain": 0.16, "kind": "tick", "t": 35.94}, {"gain": 0.16, "kind": "tick", "t": 36.06}, {"gain": 0.16, "kind": "tick", "t": 36.18}, {"gain": 0.16, "kind": "tick", "t": 36.3}, {"gain": 0.16, "kind": "tick", "t": 36.42}, {"gain": 0.16, "kind": "tick", "t": 36.54}, {"gain": 0.35, "kind": "boing", "t": 38.6}, {"gain": 0.42, "kind": "boing", "t": 39.6}, {"gain": 0.5, "kind": "boing", "t": 40.6}, {"gain": 0.26, "kind": "impact", "t": 42.2}, {"gain": 0.3, "kind": "pop", "t": 45.8}, {"gain": 0.28, "kind": "pop", "t": 46.3}, {"gain": 0.35, "kind": "whoosh", "t": 55.0}, {"gain": 0.25, "kind": "tick", "t": 55.6}, {"gain": 0.5, "kind": "chime", "t": 57.6}, {"gain": 0.45, "kind": "chime", "t": 61.2}, {"gain": 0.5, "kind": "chime", "t": 65.2}, {"gain": 0.5, "kind": "impact", "t": 68.4}, {"gain": 0.4, "kind": "whoosh", "t": 71.8}, {"gain": 0.32, "kind": "riser", "t": 73.0}, {"gain": 0.5, "kind": "chime", "t": 76.8}, {"gain": 0.6, "kind": "impact", "t": 79.8}, {"gain": 0.55, "kind": "chime", "t": 83.4}, {"gain": 0.38, "kind": "impact", "t": 87.0}, {"gain": 0.42, "kind": "riser", "t": 90.6}, {"gain": 0.55, "kind": "riser", "t": 94.4}, {"gain": 0.85, "kind": "impact", "t": 97.2}, {"gain": 0.45, "kind": "shimmer", "t": 98.6}, {"gain": 0.3, "kind": "whoosh", "t": 108.4}, {"gain": 0.4, "kind": "whoosh", "t": 111.6}, {"gain": 0.2, "kind": "tick", "t": 112.2}, {"gain": 0.22, "kind": "key", "t": 115.6}, {"gain": 0.2, "kind": "key", "t": 116.2}, {"gain": 0.5, "kind": "whoosh", "t": 121.8}, {"gain": 0.25, "kind": "whoosh", "t": 128.8}, {"gain": 0.18, "kind": "tick", "t": 131.6}, {"gain": 0.18, "kind": "tick", "t": 132.2}, {"gain": 0.18, "kind": "tick", "t": 132.8}, {"gain": 0.18, "kind": "tick", "t": 133.4}, {"gain": 0.18, "kind": "tick", "t": 134.0}, {"gain": 0.18, "kind": "tick", "t": 134.6}, {"gain": 0.9, "kind": "impact", "t": 136.2}, {"gain": 0.32, "kind": "impact", "t": 140.8}, {"gain": 0.45, "kind": "shimmer", "t": 144.4}, {"gain": 0.16, "kind": "tick", "t": 154.2}, {"gain": 0.16, "kind": "tick", "t": 154.3}, {"gain": 0.16, "kind": "tick", "t": 154.4}, {"gain": 0.16, "kind": "tick", "t": 154.5}, {"gain": 0.16, "kind": "tick", "t": 154.6}, {"gain": 0.16, "kind": "tick", "t": 154.7}, {"gain": 0.16, "kind": "tick", "t": 154.8}, {"gain": 0.16, "kind": "tick", "t": 154.9}, {"gain": 0.16, "kind": "tick", "t": 155.0}, {"gain": 0.16, "kind": "tick", "t": 155.1}, {"gain": 0.16, "kind": "tick", "t": 155.2}, {"gain": 0.16, "kind": "tick", "t": 155.3}, {"gain": 0.5, "kind": "riser", "t": 160.4}, {"gain": 0.45, "kind": "chime", "t": 167.6}, {"gain": 0.45, "kind": "impact", "t": 174.4}], "sfx_db": -4}|25131e86e061f44a|[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Source Han Sans CN,56,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,200,200,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.15,0:00:02.80,Default,,0,0,0,,{\fad(150,150)}一张纸，厚 0.1 毫米。
+Dialogue: 0,0:00:03.15,0:00:05.80,Default,,0,0,0,,{\fad(150,150)}折一次 0.2，两次 0.4。
+Dialogue: 0,0:00:06.15,0:00:09.60,Default,,0,0,0,,{\fad(150,150)}折到第七次，硬得像块木板。
+Dialogue: 0,0:00:14.40,0:00:17.00,Default,,0,0,0,,{\fad(150,150)}一张纸，最多能折几次?
+Dialogue: 0,0:00:23.55,0:00:26.85,Default,,0,0,0,,{\fad(150,150)}传说里，八次就是极限。
+Dialogue: 0,0:00:27.75,0:00:31.00,Default,,0,0,0,,{\fad(150,150)}不是手劲不够，是几何不许。
+Dialogue: 0,0:00:31.35,0:00:34.65,Default,,0,0,0,,{\fad(150,150)}每折一次，要弯的层数翻一倍。
+Dialogue: 0,0:00:37.95,0:00:41.20,Default,,0,0,0,,{\fad(150,150)}第八层以后，纸开始自己弹开。
+Dialogue: 0,0:00:41.55,0:00:44.80,Default,,0,0,0,,{\fad(150,150)}现实里，大多数人停在第七次。
+Dialogue: 0,0:00:45.15,0:00:47.80,Default,,0,0,0,,{\fad(150,150)}换个问法：只算厚度呢?
+Dialogue: 0,0:00:48.15,0:00:50.80,Default,,0,0,0,,{\fad(150,150)}如果折得动，它能长到哪?
+Dialogue: 0,0:00:51.15,0:00:54.40,Default,,0,0,0,,{\fad(150,150)}屏上立一把尺，每一格是一倍。
+Dialogue: 0,0:00:57.15,0:01:00.40,Default,,0,0,0,,{\fad(150,150)}第十次，10.2 厘米 —— 一只手掌。
+Dialogue: 0,0:01:00.75,0:01:03.95,Default,,0,0,0,,{\fad(150,150)}第十七次，13 米 —— 四层楼。
+Dialogue: 0,0:01:04.95,0:01:07.60,Default,,0,0,0,,{\fad(150,150)}第二十三次，839 米。
+Dialogue: 0,0:01:07.95,0:01:11.20,Default,,0,0,0,,{\fad(150,150)}比哈利法塔还高 11 米。
+Dialogue: 0,0:01:16.35,0:01:19.00,Default,,0,0,0,,{\fad(150,150)}第三十次，107 公里。
+Dialogue: 0,0:01:19.35,0:01:22.60,Default,,0,0,0,,{\fad(150,150)}卡门线在 100 公里 —— 出大气层。
+Dialogue: 0,0:01:22.95,0:01:26.20,Default,,0,0,0,,{\fad(150,150)}第三十六次，6,872 公里。
+Dialogue: 0,0:01:26.55,0:01:29.80,Default,,0,0,0,,{\fad(150,150)}比地球半径，高出 501 公里。
+Dialogue: 0,0:01:34.35,0:01:37.60,Default,,0,0,0,,{\fad(150,150)}第四十二次，439,805 公里。
+Dialogue: 0,0:01:37.95,0:01:41.20,Default,,0,0,0,,{\fad(150,150)}月球，平均 384,400 公里。
+Dialogue: 0,0:01:44.55,0:01:47.80,Default,,0,0,0,,{\fad(150,150)}这个数字是算出来的，不是折出来的。
+Dialogue: 0,0:01:48.15,0:01:50.80,Default,,0,0,0,,{\fad(150,150)}真要折，纸得多长?
+Dialogue: 0,0:01:51.15,0:01:54.40,Default,,0,0,0,,{\fad(150,150)}尺子横过来，量长度。
+Dialogue: 0,0:01:54.75,0:01:58.00,Default,,0,0,0,,{\fad(150,150)}2002 年，加州，一个高中生。
+Dialogue: 0,0:01:58.35,0:02:01.00,Default,,0,0,0,,{\fad(150,150)}她叫 Britney Gallivan。
+Dialogue: 0,0:02:01.35,0:02:04.60,Default,,0,0,0,,{\fad(150,150)}折 12 次，用了 1,200 米纸。
+Dialogue: 0,0:02:04.95,0:02:08.20,Default,,0,0,0,,{\fad(150,150)}一卷卫生纸，铺满一条走廊。
+Dialogue: 0,0:02:10.95,0:02:14.60,Default,,0,0,0,,{\fad(150,150)}八小时后，她折到了第十二次。
+Dialogue: 0,0:02:15.75,0:02:19.20,Default,,0,0,0,,{\fad(150,150)}吉尼斯纪录。八次那句话，破了。
+Dialogue: 0,0:02:20.55,0:02:23.20,Default,,0,0,0,,{\fad(150,150)}那 42 次呢? 要 10 万光年。
+Dialogue: 0,0:02:23.55,0:02:26.80,Default,,0,0,0,,{\fad(150,150)}和银河系一样宽的一张纸。
+Dialogue: 0,0:02:27.15,0:02:29.80,Default,,0,0,0,,{\fad(150,150)}所以它折不到，但算得出。
+Dialogue: 0,0:02:33.15,0:02:36.40,Default,,0,0,0,,{\fad(150,150)}翻倍不慢，是我们看不见它慢在哪。
+Dialogue: 0,0:02:36.75,0:02:40.00,Default,,0,0,0,,{\fad(150,150)}前三十次，只走完全程的 0.02%。
+Dialogue: 0,0:02:40.35,0:02:43.60,Default,,0,0,0,,{\fad(150,150)}最后十二次，走完 99.98%。
+Dialogue: 0,0:02:43.95,0:02:47.20,Default,,0,0,0,,{\fad(150,150)}第四十一次，22 万公里。
+Dialogue: 0,0:02:47.55,0:02:50.20,Default,,0,0,0,,{\fad(150,150)}那张纸，还在你手里。
+Dialogue: 0,0:02:50.55,0:02:53.80,Default,,0,0,0,,{\fad(150,150)}0.1 毫米，一折都没多。

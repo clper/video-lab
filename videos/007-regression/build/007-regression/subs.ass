@@ -1,0 +1,72 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Source Han Sans CN,56,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,200,200,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:01.68,Default,,0,0,0,,{\fad(150,150)}一位飞行教官
+Dialogue: 0,0:00:01.68,0:00:03.09,Default,,0,0,0,,{\fad(150,150)}站起来反驳了他
+Dialogue: 0,0:00:04.31,0:00:06.26,Default,,0,0,0,,{\fad(150,150)}他表扬飞得漂亮的学员
+Dialogue: 0,0:00:07.51,0:00:08.59,Default,,0,0,0,,{\fad(150,150)}下一次
+Dialogue: 0,0:00:08.59,0:00:09.91,Default,,0,0,0,,{\fad(150,150)}那个人飞得更差
+Dialogue: 0,0:00:11.13,0:00:12.56,Default,,0,0,0,,{\fad(150,150)}他骂飞得糟糕的
+Dialogue: 0,0:00:12.56,0:00:13.60,Default,,0,0,0,,{\fad(150,150)}下次更好
+Dialogue: 0,0:00:14.83,0:00:15.85,Default,,0,0,0,,{\fad(150,150)}所以他说
+Dialogue: 0,0:00:15.85,0:00:16.93,Default,,0,0,0,,{\fad(150,150)}表扬没用
+Dialogue: 0,0:00:16.93,0:00:17.99,Default,,0,0,0,,{\fad(150,150)}骂才有用
+Dialogue: 0,0:00:19.22,0:00:20.49,Default,,0,0,0,,{\fad(150,150)}他错在哪？
+Dialogue: 0,0:00:27.02,0:00:28.38,Default,,0,0,0,,{\fad(150,150)}先玩一个东西
+Dialogue: 0,0:00:28.38,0:00:29.28,Default,,0,0,0,,{\fad(150,150)}一块板
+Dialogue: 0,0:00:29.28,0:00:30.20,Default,,0,0,0,,{\fad(150,150)}一堆钉子
+Dialogue: 0,0:00:31.44,0:00:33.56,Default,,0,0,0,,{\fad(150,150)}一颗珠子从顶端落下
+Dialogue: 0,0:00:33.56,0:00:34.41,Default,,0,0,0,,{\fad(150,150)}左或右
+Dialogue: 0,0:00:35.64,0:00:36.60,Default,,0,0,0,,{\fad(150,150)}每一层
+Dialogue: 0,0:00:36.60,0:00:37.95,Default,,0,0,0,,{\fad(150,150)}都是一次抛硬币
+Dialogue: 0,0:00:42.59,0:00:43.71,Default,,0,0,0,,{\fad(150,150)}几千颗之后
+Dialogue: 0,0:00:43.71,0:00:44.97,Default,,0,0,0,,{\fad(150,150)}堆出这条曲线
+Dialogue: 0,0:00:46.21,0:00:47.32,Default,,0,0,0,,{\fad(150,150)}中间最多
+Dialogue: 0,0:00:47.32,0:00:48.54,Default,,0,0,0,,{\fad(150,150)}两头最少
+Dialogue: 0,0:00:49.76,0:00:51.17,Default,,0,0,0,,{\fad(150,150)}极端不是本事
+Dialogue: 0,0:00:51.17,0:00:52.07,Default,,0,0,0,,{\fad(150,150)}是运气
+Dialogue: 0,0:00:53.29,0:00:54.47,Default,,0,0,0,,{\fad(150,150)}1886 年
+Dialogue: 0,0:00:54.47,0:00:56.06,Default,,0,0,0,,{\fad(150,150)}高尔顿也画了这条线
+Dialogue: 0,0:00:57.28,0:00:59.70,Default,,0,0,0,,{\fad(150,150)}他量了 928 个成年子女的身高
+Dialogue: 0,0:01:03.92,0:01:05.22,Default,,0,0,0,,{\fad(150,150)}高个父母的孩子
+Dialogue: 0,0:01:05.22,0:01:06.38,Default,,0,0,0,,{\fad(150,150)}平均更矮
+Dialogue: 0,0:01:07.60,0:01:08.88,Default,,0,0,0,,{\fad(150,150)}矮个父母的孩子
+Dialogue: 0,0:01:08.88,0:01:10.04,Default,,0,0,0,,{\fad(150,150)}平均更高
+Dialogue: 0,0:01:11.27,0:01:12.54,Default,,0,0,0,,{\fad(150,150)}偏离的那部分
+Dialogue: 0,0:01:12.54,0:01:13.98,Default,,0,0,0,,{\fad(150,150)}只回来三分之二
+Dialogue: 0,0:01:15.23,0:01:17.30,Default,,0,0,0,,{\fad(150,150)}他给这件事起了个名字
+Dialogue: 0,0:01:17.30,0:01:18.16,Default,,0,0,0,,{\fad(150,150)}回归
+Dialogue: 0,0:01:22.38,0:01:23.48,Default,,0,0,0,,{\fad(150,150)}不是退步
+Dialogue: 0,0:01:23.48,0:01:25.10,Default,,0,0,0,,{\fad(150,150)}是回到自己的那条线
+Dialogue: 0,0:01:26.78,0:01:28.11,Default,,0,0,0,,{\fad(150,150)}那次飞得漂亮
+Dialogue: 0,0:01:28.11,0:01:29.45,Default,,0,0,0,,{\fad(150,150)}是超常发挥
+Dialogue: 0,0:01:30.69,0:01:32.41,Default,,0,0,0,,{\fad(150,150)}下次就算什么都不做
+Dialogue: 0,0:01:32.41,0:01:33.36,Default,,0,0,0,,{\fad(150,150)}也会下来
+Dialogue: 0,0:01:34.58,0:01:36.12,Default,,0,0,0,,{\fad(150,150)}那次摔得难看
+Dialogue: 0,0:01:36.12,0:01:36.94,Default,,0,0,0,,{\fad(150,150)}也一样
+Dialogue: 0,0:01:41.18,0:01:44.39,Default,,0,0,0,,{\fad(150,150)}所以有了二年级墙、封面魔咒
+Dialogue: 0,0:01:45.62,0:01:46.85,Default,,0,0,0,,{\fad(150,150)}去年销冠
+Dialogue: 0,0:01:46.85,0:01:48.25,Default,,0,0,0,,{\fad(150,150)}今年多半不是他
+Dialogue: 0,0:01:49.46,0:01:51.13,Default,,0,0,0,,{\fad(150,150)}上一次考砸的孩子
+Dialogue: 0,0:01:51.13,0:01:52.26,Default,,0,0,0,,{\fad(150,150)}这次会好点
+Dialogue: 0,0:01:53.47,0:01:55.65,Default,,0,0,0,,{\fad(150,150)}和谁夸他、谁骂他
+Dialogue: 0,0:01:55.65,0:01:56.67,Default,,0,0,0,,{\fad(150,150)}都没关系
+Dialogue: 0,0:01:57.91,0:01:59.18,Default,,0,0,0,,{\fad(150,150)}这条规律冷
+Dialogue: 0,0:01:59.18,0:02:00.34,Default,,0,0,0,,{\fad(150,150)}但它有个好处
+Dialogue: 0,0:02:01.58,0:02:03.88,Default,,0,0,0,,{\fad(150,150)}你最好的那次之后会回落
+Dialogue: 0,0:02:08.11,0:02:09.29,Default,,0,0,0,,{\fad(150,150)}不是你骄傲了
+Dialogue: 0,0:02:09.29,0:02:10.38,Default,,0,0,0,,{\fad(150,150)}也不是你松了
+Dialogue: 0,0:02:11.59,0:02:13.90,Default,,0,0,0,,{\fad(150,150)}最差的那次之后会回升
+Dialogue: 0,0:02:15.14,0:02:17.06,Default,,0,0,0,,{\fad(150,150)}也不是你终于做对了什么
+Dialogue: 0,0:02:18.54,0:02:20.01,Default,,0,0,0,,{\fad(150,150)}你只是
+Dialogue: 0,0:02:20.01,0:02:34.94,Default,,0,0,0,,{\fad(150,150)}回到了自己的那条线

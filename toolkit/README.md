@@ -13,4 +13,5 @@
 
 - 被两个以上项目用到、或在 `research/` 里验证成熟的代码，才提升进 `vlab/`。
 - 改了 `vlab/` 之后跑一遍 `uv run vlab-check`。
+- `vlab/tools/script_gate.py` 是剧本闸门：`videos/` 下的正式项目没有项目负责人的剧本确认记录时，`vlab-tts` 和 `vlab-build` 拒绝执行。不要削弱或绕过它（流程见 `process/SCRIPT-REVIEW.md`）。
 - 改 `vlab/videokit/manim_templates.py` 会让视频工程的缓存全部失效（它的内容参与镜头指纹），改之前想清楚。

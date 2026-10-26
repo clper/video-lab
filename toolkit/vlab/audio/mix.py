@@ -53,52 +53,64 @@ def _measure(cmd_inputs, graph):
     return json.loads(blob)
 
 
-def _graph(first_audio_idx, has_music, has_sfx, opt, measured=None):
-    """拼 ffmpeg 滤镜：输入顺序 = 配音、配乐（可选）、音效（可选）"""
+def _graph(first_audio_idx, has_voice, has_music, has_sfx, opt, measured=None):
+    """拼 ffmpeg 滤镜：输入顺序 = 配音（可无）、配乐（可无）、音效（可无）
+
+    无人声时（纯音乐 + 字幕的片子）没有 sidechain 的 key，避让自动关掉，音乐走满电平。
+    """
     i = first_audio_idx
     parts, labels = [], []
-    if has_music and opt["duck"]:
-        parts.append(f"[{i}:a]aresample=48000,asplit=2[voice][key]")
-    else:
-        parts.append(f"[{i}:a]aresample=48000[voice]")
-    labels.append("[voice]")
-    j = i + 1
+    if has_voice:
+        if has_music and opt["duck"]:
+            parts.append(f"[{i}:a]aresample=48000,asplit=2[voice][key]")
+        else:
+            parts.append(f"[{i}:a]aresample=48000[voice]")
+        labels.append("[voice]")
+        i += 1
     if has_music:
-        parts.append(f"[{j}:a]aresample=48000,volume={opt['music_db']}dB[m0]")
-        if opt["duck"]:
+        parts.append(f"[{i}:a]aresample=48000,volume={opt['music_db']}dB[m0]")
+        if has_voice and opt["duck"]:
             parts.append(f"[m0][key]{_duck(opt)}[mus]")
         else:
             parts.append("[m0]anull[mus]")
         labels.append("[mus]")
-        j += 1
+        i += 1
     if has_sfx:
-        parts.append(f"[{j}:a]aresample=48000,volume={opt['sfx_db']}dB[fx]")
+        parts.append(f"[{i}:a]aresample=48000,volume={opt['sfx_db']}dB[fx]")
         labels.append("[fx]")
+    if not labels:
+        raise ValueError("没有任何音频输入：至少要给配音、配乐或音效")
     parts.append(f"{''.join(labels)}amix=inputs={len(labels)}:normalize=0:duration=first,"
-                 f"pan=stereo|c0=c0|c1=c0,{_loudnorm(opt, measured)},aresample=48000[a]")
+                 f"pan=stereo|c0=c0|c1=c0,{_loudnorm(opt, measured)},"
+                 # loudnorm 输出 192kHz 且不带声道布局，后面接 aresample 会报
+                 # “Cannot select channel layout”而整条导出失败，这里用 aformat 把格式写死
+                 f"aformat=sample_rates=48000:channel_layouts=stereo[a]")
     return ";".join(parts)
 
 
 def mux(video, narration, out, music=None, sfx=None, duration=None, **override):
-    """画面（无声）+ 配音 + 配乐 + 音效 → 成片 mp4"""
+    """画面（无声）+ 配音（可省）+ 配乐 + 音效 → 成片 mp4"""
     opt = {**MIX, **override}
     Path(out).parent.mkdir(parents=True, exist_ok=True)
-    ins = ["-i", str(video), "-i", str(narration)] + (["-i", str(music)] if music else []) + (["-i", str(sfx)] if sfx else [])
-    measured = _measure(ins, _graph(1, bool(music), bool(sfx), opt))
-    cmd = [FF, "-y", "-v", "error", *ins, "-filter_complex", _graph(1, bool(music), bool(sfx), opt, measured),
+    ins = ["-i", str(video)] + (["-i", str(narration)] if narration else []) \
+        + (["-i", str(music)] if music else []) + (["-i", str(sfx)] if sfx else [])
+    measured = _measure(ins, _graph(1, bool(narration), bool(music), bool(sfx), opt))
+    cmd = [FF, "-y", "-v", "error", *ins, "-filter_complex", _graph(1, bool(narration), bool(music), bool(sfx), opt, measured),
            "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
            *(["-t", f"{duration:.3f}"] if duration else []), "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True)
 
 
 def mix_audio(narration, out, music=None, sfx=None, duration=None, **override):
-    """只混音频（试听、对比用），输出 .wav 或 .m4a"""
+    """只混音频（试听、对比用），输出 .wav 或 .m4a；narration 传 None 就是纯音乐版"""
     opt = {**MIX, **override}
     Path(out).parent.mkdir(parents=True, exist_ok=True)
-    ins = ["-i", str(narration)] + (["-i", str(music)] if music else []) + (["-i", str(sfx)] if sfx else [])
+    ins = (["-i", str(narration)] if narration else []) + (["-i", str(music)] if music else []) \
+        + (["-i", str(sfx)] if sfx else [])
     codec = ["-c:a", "aac", "-b:a", "192k"] if str(out).endswith(".m4a") else []
-    measured = _measure(ins, _graph(0, bool(music), bool(sfx), opt))
-    cmd = [FF, "-y", "-v", "error", *ins, "-filter_complex", _graph(0, bool(music), bool(sfx), opt, measured), "-map", "[a]",
+    measured = _measure(ins, _graph(0, bool(narration), bool(music), bool(sfx), opt))
+    cmd = [FF, "-y", "-v", "error", *ins, "-filter_complex",
+           _graph(0, bool(narration), bool(music), bool(sfx), opt, measured), "-map", "[a]",
            *codec, *(["-t", f"{duration:.3f}"] if duration else []), str(out)]
     subprocess.run(cmd, check=True)
 

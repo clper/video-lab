@@ -25,7 +25,7 @@
 | **HyperFrames**     | 浏览器能画的都能用：排版、渐变、遮罩、字幕逐词高亮 | 数据卡、标题动效、图文混排             | 中 · ★★★（自带 lint 检查） | Node +`npm i hyperframes@0.8.174`；首次渲染下载约 270MB Chrome | **已验证**：000、001 HTML 版。onUpdate 不触发，数字滚动做不了；1.5–2× 实时                 |
 | **Pillow 图文卡片** | 模板化量产，换稿子就出片                           | 资讯卡、语录卡                         | 低 · ★★★                   | 已在环境                                                       | **已验证**：000/1_cards。动画弱，像 PPT                                                      |
 | **Python 文字动效**（Pillow + numpy） | 每个字单独运动：弹出回弹、数字滚动、沿圆弧排字、遮罩揭示、故障撕裂；每个动作卡在配音的词上 | 金句、歌词、数字冲击开场、标题转场 | 中 · ★★★（`--still` 秒出单帧自检） | 已在环境 | **已验证**：research/visual/12-kinetic-type《光有多快》20 秒，配 71 个自动音效。HyperFrames 做不了的数字滚动这里能做 |
-| **Remotion**        | React 组件生态，企业级模板化                       | 产品发布、品牌模板视频                 | 中 · ★★★                   | Node + npm                                                     | **待验证**。3 人以上公司需买授权                                                             |
+| **Remotion**        | React 组件生态，企业级模板化                       | 产品发布、品牌模板视频                 | 中 · ★★★                   | Node + npm                                                     | **已验证**：research/visual/13、005–007 的镜头卡库。3 人以上公司需买授权；本项目单人使用，适用免费授权（项目负责人确认，2026-10-26）                                                             |
 
 ### B. 程序化与生成艺术类（风景、氛围、空镜）
 
@@ -103,7 +103,9 @@
 ### 流程概览
 
 ```
-选题 → 写剧本 (content/xxx.json)
+选题 → 写剧本 (SCRIPT.md + content/xxx.json)
+       ↓
+     项目负责人逐条审核、讨论打磨，明确确认（剧本闸门，process/SCRIPT-REVIEW.md）
        ↓
      配音 (uv run vlab-tts)
        ↓
@@ -196,7 +198,8 @@ videos/        【项目结果】正式视频
 research/      【开发测试】visual/ 画面技术、audio/ 音频、frontier/ 前沿视频生成、content/ 创作内容
 toolkit/       【工具】vlab/ 公共代码包（uv sync 后 vlab-* 命令在任意目录可用）；bin/ 本机可选的 ffmpeg 等程序
 docs/          【文档】TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
-archive/       【存档】000 参考项目的只读快照
+process/       【流程】内容路线、剧本审核、传播与节奏规范、发布清单、入库与提交（必须遵守）
+archive/       【存档】000 参考项目的只读快照；001–006 归档的探索作品
 ```
 
 依赖方向：`videos/`、`research/` 只依赖 `toolkit/vlab/`，彼此不互相引用；可复用的东西先提升进 `toolkit/vlab/` 再用。
@@ -298,7 +301,8 @@ ffmpeg -i input.wav -af "pan=stereo|c0=c0|c1=c0" output.wav
 
 | 类型     | 格式                   | 示例                   |
 | -------- | ---------------------- | ---------------------- |
-| 正式视频 | `videos/三位编号-英文 slug` | `videos/001-float-precision`  |
+| 正式视频 | `videos/三位编号-英文 slug` | `videos/007-regression`  |
+| 归档视频 | `archive/三位编号-英文 slug` | `archive/004-green-star`  |
 | 存档     | `archive/000-claude-xxx`    | `archive/000-claude-video-lab` |
 | 技术测试 | `research/visual/两位编号-英文用途`     | `research/visual/07-shader-raymarch`      |
 | 音频研究 | `research/audio/两位编号-英文用途`   | `research/audio/02-mix-ducking`            |

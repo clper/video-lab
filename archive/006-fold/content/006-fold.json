@@ -1,0 +1,371 @@
+{
+  "id": "006-fold",
+  "title": "对折",
+  "mode": "grid",
+  "fps": 30,
+  "aspect": "landscape",
+  "grid": {
+    "bpm": 100.0,
+    "beat": 0.6,
+    "lead": 0.0
+  },
+  "scenes": [
+    {
+      "id": "S01",
+      "text": "一张纸，厚 0.1 毫米。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S02",
+      "text": "折一次 0.2，两次 0.4。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S03",
+      "text": "折到第七次，硬得像块木板。",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": 1.2
+    },
+    {
+      "id": "S04",
+      "text": "",
+      "hold": 4,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S05",
+      "text": "一张纸，最多能折几次?",
+      "hold": 8,
+      "sub_in": 1.2,
+      "sub_out": 1.0
+    },
+    {
+      "id": "S06",
+      "text": "",
+      "hold": 9,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S07",
+      "text": "传说里，八次就是极限。",
+      "hold": 7,
+      "sub_in": null,
+      "sub_out": 0.75
+    },
+    {
+      "id": "S08",
+      "text": "不是手劲不够，是几何不许。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S09",
+      "text": "每折一次，要弯的层数翻一倍。",
+      "hold": 7,
+      "sub_in": null,
+      "sub_out": 0.75
+    },
+    {
+      "id": "S10",
+      "text": "",
+      "hold": 4,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S11",
+      "text": "第八层以后，纸开始自己弹开。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S12",
+      "text": "现实里，大多数人停在第七次。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S13",
+      "text": "换个问法：只算厚度呢?",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S14",
+      "text": "如果折得动，它能长到哪?",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S15",
+      "text": "屏上立一把尺，每一格是一倍。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S16",
+      "text": "",
+      "hold": 4,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S17",
+      "text": "第十次，10.2 厘米 —— 一只手掌。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S18",
+      "text": "第十七次，13 米 —— 四层楼。",
+      "hold": 7,
+      "sub_in": null,
+      "sub_out": 0.85
+    },
+    {
+      "id": "S19",
+      "text": "第二十三次，839 米。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S20",
+      "text": "比哈利法塔还高 11 米。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S21",
+      "text": "",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S22",
+      "text": "第三十次，107 公里。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S23",
+      "text": "卡门线在 100 公里 —— 出大气层。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S24",
+      "text": "第三十六次，6,872 公里。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S25",
+      "text": "比地球半径，高出 501 公里。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S26",
+      "text": "",
+      "hold": 7,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S27",
+      "text": "第四十二次，439,805 公里。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S28",
+      "text": "月球，平均 384,400 公里。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S29",
+      "text": "",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S30",
+      "text": "这个数字是算出来的，不是折出来的。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S31",
+      "text": "真要折，纸得多长?",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S32",
+      "text": "尺子横过来，量长度。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S33",
+      "text": "2002 年，加州，一个高中生。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S34",
+      "text": "她叫 Britney Gallivan。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S35",
+      "text": "折 12 次，用了 1,200 米纸。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S36",
+      "text": "一卷卫生纸，铺满一条走廊。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S37",
+      "text": "",
+      "hold": 4,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S38",
+      "text": "八小时后，她折到了第十二次。",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": 1.0
+    },
+    {
+      "id": "S39",
+      "text": "吉尼斯纪录。八次那句话，破了。",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": 1.2
+    },
+    {
+      "id": "S40",
+      "text": "那 42 次呢? 要 10 万光年。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S41",
+      "text": "和银河系一样宽的一张纸。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S42",
+      "text": "所以它折不到，但算得出。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S43",
+      "text": "",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S44",
+      "text": "翻倍不慢，是我们看不见它慢在哪。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S45",
+      "text": "前三十次，只走完全程的 0.02%。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S46",
+      "text": "最后十二次，走完 99.98%。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S47",
+      "text": "第四十一次，22 万公里。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S48",
+      "text": "那张纸，还在你手里。",
+      "hold": 5,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S49",
+      "text": "0.1 毫米，一折都没多。",
+      "hold": 6,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S50",
+      "text": "",
+      "hold": 7,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S51",
+      "text": "",
+      "hold": 3,
+      "sub_in": null,
+      "sub_out": null
+    }
+  ]
+}

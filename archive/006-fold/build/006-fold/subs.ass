@@ -1,0 +1,53 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Source Han Sans CN,56,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,200,200,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.15,0:00:02.80,Default,,0,0,0,,{\fad(150,150)}一张纸，厚 0.1 毫米。
+Dialogue: 0,0:00:03.15,0:00:05.80,Default,,0,0,0,,{\fad(150,150)}折一次 0.2，两次 0.4。
+Dialogue: 0,0:00:06.15,0:00:09.60,Default,,0,0,0,,{\fad(150,150)}折到第七次，硬得像块木板。
+Dialogue: 0,0:00:14.40,0:00:17.00,Default,,0,0,0,,{\fad(150,150)}一张纸，最多能折几次?
+Dialogue: 0,0:00:23.55,0:00:26.85,Default,,0,0,0,,{\fad(150,150)}传说里，八次就是极限。
+Dialogue: 0,0:00:27.75,0:00:31.00,Default,,0,0,0,,{\fad(150,150)}不是手劲不够，是几何不许。
+Dialogue: 0,0:00:31.35,0:00:34.65,Default,,0,0,0,,{\fad(150,150)}每折一次，要弯的层数翻一倍。
+Dialogue: 0,0:00:37.95,0:00:41.20,Default,,0,0,0,,{\fad(150,150)}第八层以后，纸开始自己弹开。
+Dialogue: 0,0:00:41.55,0:00:44.80,Default,,0,0,0,,{\fad(150,150)}现实里，大多数人停在第七次。
+Dialogue: 0,0:00:45.15,0:00:47.80,Default,,0,0,0,,{\fad(150,150)}换个问法：只算厚度呢?
+Dialogue: 0,0:00:48.15,0:00:50.80,Default,,0,0,0,,{\fad(150,150)}如果折得动，它能长到哪?
+Dialogue: 0,0:00:51.15,0:00:54.40,Default,,0,0,0,,{\fad(150,150)}屏上立一把尺，每一格是一倍。
+Dialogue: 0,0:00:57.15,0:01:00.40,Default,,0,0,0,,{\fad(150,150)}第十次，10.2 厘米 —— 一只手掌。
+Dialogue: 0,0:01:00.75,0:01:03.95,Default,,0,0,0,,{\fad(150,150)}第十七次，13 米 —— 四层楼。
+Dialogue: 0,0:01:04.95,0:01:07.60,Default,,0,0,0,,{\fad(150,150)}第二十三次，839 米。
+Dialogue: 0,0:01:07.95,0:01:11.20,Default,,0,0,0,,{\fad(150,150)}比哈利法塔还高 11 米。
+Dialogue: 0,0:01:16.35,0:01:19.00,Default,,0,0,0,,{\fad(150,150)}第三十次，107 公里。
+Dialogue: 0,0:01:19.35,0:01:22.60,Default,,0,0,0,,{\fad(150,150)}卡门线在 100 公里 —— 出大气层。
+Dialogue: 0,0:01:22.95,0:01:26.20,Default,,0,0,0,,{\fad(150,150)}第三十六次，6,872 公里。
+Dialogue: 0,0:01:26.55,0:01:29.80,Default,,0,0,0,,{\fad(150,150)}比地球半径，高出 501 公里。
+Dialogue: 0,0:01:34.35,0:01:37.60,Default,,0,0,0,,{\fad(150,150)}第四十二次，439,805 公里。
+Dialogue: 0,0:01:37.95,0:01:41.20,Default,,0,0,0,,{\fad(150,150)}月球，平均 384,400 公里。
+Dialogue: 0,0:01:44.55,0:01:47.80,Default,,0,0,0,,{\fad(150,150)}这个数字是算出来的，不是折出来的。
+Dialogue: 0,0:01:48.15,0:01:50.80,Default,,0,0,0,,{\fad(150,150)}真要折，纸得多长?
+Dialogue: 0,0:01:51.15,0:01:54.40,Default,,0,0,0,,{\fad(150,150)}尺子横过来，量长度。
+Dialogue: 0,0:01:54.75,0:01:58.00,Default,,0,0,0,,{\fad(150,150)}2002 年，加州，一个高中生。
+Dialogue: 0,0:01:58.35,0:02:01.00,Default,,0,0,0,,{\fad(150,150)}她叫 Britney Gallivan。
+Dialogue: 0,0:02:01.35,0:02:04.60,Default,,0,0,0,,{\fad(150,150)}折 12 次，用了 1,200 米纸。
+Dialogue: 0,0:02:04.95,0:02:08.20,Default,,0,0,0,,{\fad(150,150)}一卷卫生纸，铺满一条走廊。
+Dialogue: 0,0:02:10.95,0:02:14.60,Default,,0,0,0,,{\fad(150,150)}八小时后，她折到了第十二次。
+Dialogue: 0,0:02:15.75,0:02:19.20,Default,,0,0,0,,{\fad(150,150)}吉尼斯纪录。八次那句话，破了。
+Dialogue: 0,0:02:20.55,0:02:23.20,Default,,0,0,0,,{\fad(150,150)}那 42 次呢? 要 10 万光年。
+Dialogue: 0,0:02:23.55,0:02:26.80,Default,,0,0,0,,{\fad(150,150)}和银河系一样宽的一张纸。
+Dialogue: 0,0:02:27.15,0:02:29.80,Default,,0,0,0,,{\fad(150,150)}所以它折不到，但算得出。
+Dialogue: 0,0:02:33.15,0:02:36.40,Default,,0,0,0,,{\fad(150,150)}翻倍不慢，是我们看不见它慢在哪。
+Dialogue: 0,0:02:36.75,0:02:40.00,Default,,0,0,0,,{\fad(150,150)}前三十次，只走完全程的 0.02%。
+Dialogue: 0,0:02:40.35,0:02:43.60,Default,,0,0,0,,{\fad(150,150)}最后十二次，走完 99.98%。
+Dialogue: 0,0:02:43.95,0:02:47.20,Default,,0,0,0,,{\fad(150,150)}第四十一次，22 万公里。
+Dialogue: 0,0:02:47.55,0:02:50.20,Default,,0,0,0,,{\fad(150,150)}那张纸，还在你手里。
+Dialogue: 0,0:02:50.55,0:02:53.80,Default,,0,0,0,,{\fad(150,150)}0.1 毫米，一折都没多。

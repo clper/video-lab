@@ -37,7 +37,7 @@ def probe_duration(video: Path) -> float:
 
 def grab(video: Path, t: float, width: int) -> Image.Image:
     # 跳到视频最末尾附近时 ffmpeg 偶尔取不到帧：往前退一点重试
-    for back in (0.0, 0.05, 0.1, 0.2):
+    for back in (0.0, 0.05, 0.1, 0.2, 0.4, 0.8):
         png = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{max(0.0, t - back):.3f}", "-i", str(video),
                               "-frames:v", "1", "-vf", f"scale={width}:-2", "-f", "image2pipe", "-vcodec", "png", "-"],
                              capture_output=True, check=True).stdout
@@ -56,7 +56,8 @@ def pick_times(args, duration: float) -> list[tuple[float, str]]:
             if args.scenes in ("mid", "both"):
                 out.append(((s["start"] + s["end"]) / 2, f"{s['id']} 中"))
             if args.scenes in ("end", "both"):
-                out.append((max(s["start"], s["end"] - 0.12), s["id"]))
+                # 分镜末尾按帧对齐后会比时间轴短几毫秒，再留 0.15s 余量，免得最后一镜永远取不到帧
+                out.append((max(s["start"], min(s["end"] - 0.12, duration - 0.15)), s["id"]))
         return out
     n = int(duration // args.every) + 1
     return [(min(i * args.every + 0.05, duration - 0.1), "") for i in range(n)]

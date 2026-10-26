@@ -1,0 +1,839 @@
+﻿# 006《对折》：16:9 · 纯音乐 + 字幕 · 无旁白
+#
+# 拍格时间轴：100 BPM → 一拍 0.6 秒，4/4。全片 300 拍 = 180.0 秒。
+#   写 grid: {bpm} —— 时长由拍子定，每镜写 hold=占几拍（不写 narration）
+#   写 text —— 这一句字幕；不写就是"让画面自己演"的留白
+#   sub_in / sub_out —— 字幕在镜内进出各晚多少秒（默认 0.15 / 0.20），长镜要往后压
+#
+# 这一版是全片 0–180.0s：钩子 + 片名 + 章一 + 章二 + 章三 + 章四 + 回场，
+# 共 51 镜 300 拍。
+#
+# 分镜原则（导演笔记）：
+#   1. 每镜只让一件事发生，落点踩在整拍上
+#   2. 连续三镜不用同一张卡、同一个构图
+#   3. 每 20–30 秒必须有一镜"没有字幕，画面自己演"
+
+id: 006-fold
+title: 对折
+brand: VIBE / 对折
+style: styles/fold.yaml
+aspect: landscape
+fps: 30
+
+# 全局特效默认值（build 会把它和每一镜的 fx 合并，本镜优先）
+#   flash 必须关：每个镜头都闪一次白，51 镜就是 51 次频闪 —— 暗场里整屏被推成灰白，
+#         观众看到的就是“一闪一闪”。章节切换改用 dip（压暗），人眼对变暗才宽容。
+#   dip   是“从暗里浮起”：4 帧 0.12 看不见，但能把硬切磨圆；
+#         章节首镜 / 末镜在各自的 fx 里覆盖成 9 帧 0.55（一次“翻页”，不是一记闪光）。
+fx_default:
+  flash: false
+  dipIn: 0.12
+  dipFrames: 4
+
+grid:
+  bpm: 100
+
+audio:
+  music: true
+  music_fn: fold_score      # 带段落的铺底：闷 → 全开 → 抽低频 → 全停 → 只剩底
+  music_segs:               # 段落表按本片章节写（起秒, 止秒, 频带与电平）；原来写死在公共库里，2026-10-26 搬过来
+    - [0.0, 18.0, {lp: 900, gain: 0.92}]       # 钩子：闷在纸里
+    - [18.0, 23.4, {gain: 1.0}]                 # 片名：全开
+    - [23.4, 45.0, {gain: 0.96}]                # 章一 · 手
+    - [45.0, 104.4, {gain: 1.0}]                # 章二 · 尺
+    - [104.4, 125.4, {hp: 300, gain: 0.95}]     # 章三 · 墙：拿走鼓
+    - [125.4, 140.4, {lp: 2200, gain: 0.95}]    # 走廊 / 八小时：闷
+    - [140.4, 164.6, {gain: 1.0}]               # 章四 · 平
+    - [164.6, 167.2, {gain: 0.0}]               # 全停
+    - [167.2, 99999.0, {lp: 1500, gain: 0.78}]  # 回场：只剩底
+  music_v: 1
+  bpm: 100
+  seed: 11
+  music_db: 0        # 没有人声让位，音乐走满电平
+  sfx_db: -4         # 音效压在铺底之上、但别顶到天花板（顶了 loudnorm 就会冲红）
+  duck: false
+  lufs: -14
+  # 音效点：写在拍子上，跟画面里的动作对齐（t 是秒）
+  sfx:
+    # 钩子
+    - {t: 3.35, kind: whoosh, gain: 0.30}
+    - {t: 4.55, kind: whoosh, gain: 0.32}
+    - {t: 6.55, kind: whoosh, gain: 0.30}
+    - {t: 7.15, kind: whoosh, gain: 0.32}
+    - {t: 7.75, kind: whoosh, gain: 0.34}
+    - {t: 8.35, kind: whoosh, gain: 0.36}
+    - {t: 9.35, kind: pop, gain: 0.42}          # 折不动那一下
+    - {t: 18.0, kind: impact, gain: 0.90}       # 片名
+    # 章一 · 手
+    - {t: 23.90, kind: tick, gain: 0.22}
+    - {t: 24.05, kind: tick, gain: 0.22}
+    - {t: 24.20, kind: tick, gain: 0.22}
+    - {t: 24.35, kind: tick, gain: 0.22}
+    - {t: 24.50, kind: tick, gain: 0.22}
+    - {t: 24.65, kind: tick, gain: 0.22}
+    - {t: 24.80, kind: tick, gain: 0.22}
+    - {t: 24.95, kind: tick, gain: 0.22}
+    - {t: 28.22, kind: impact, gain: 0.30}
+    - {t: 31.80, kind: tick, gain: 0.20}
+    - {t: 32.08, kind: tick, gain: 0.20}
+    - {t: 32.36, kind: tick, gain: 0.20}
+    - {t: 32.64, kind: tick, gain: 0.20}
+    - {t: 32.92, kind: tick, gain: 0.20}
+    - {t: 33.20, kind: tick, gain: 0.20}
+    - {t: 35.70, kind: tick, gain: 0.16}
+    - {t: 35.82, kind: tick, gain: 0.16}
+    - {t: 35.94, kind: tick, gain: 0.16}
+    - {t: 36.06, kind: tick, gain: 0.16}
+    - {t: 36.18, kind: tick, gain: 0.16}
+    - {t: 36.30, kind: tick, gain: 0.16}
+    - {t: 36.42, kind: tick, gain: 0.16}
+    - {t: 36.54, kind: tick, gain: 0.16}
+    - {t: 38.60, kind: boing, gain: 0.35}
+    - {t: 39.60, kind: boing, gain: 0.42}
+    - {t: 40.60, kind: boing, gain: 0.50}
+    - {t: 42.20, kind: impact, gain: 0.26}      # 纸块落桌
+    - {t: 45.80, kind: pop, gain: 0.30}
+    - {t: 46.30, kind: pop, gain: 0.28}
+    # 章二 · 尺
+    - {t: 55.00, kind: whoosh, gain: 0.35}      # 尺子立起
+    - {t: 55.60, kind: tick, gain: 0.25}
+    - {t: 57.60, kind: chime, gain: 0.50}       # 10 次 · 手掌
+    - {t: 61.20, kind: chime, gain: 0.45}       # 17 次 · 四层楼
+    - {t: 65.20, kind: chime, gain: 0.50}       # 23 次 · 839 米
+    - {t: 68.40, kind: impact, gain: 0.50}      # 哈利法塔
+    - {t: 71.80, kind: whoosh, gain: 0.40}      # 沿尺急上
+    - {t: 73.00, kind: riser, gain: 0.32}
+    - {t: 76.80, kind: chime, gain: 0.50}       # 30 次 · 107 公里
+    - {t: 79.80, kind: impact, gain: 0.60}      # 卡门线
+    - {t: 83.40, kind: chime, gain: 0.55}       # 36 次 · 地球半径
+    - {t: 87.00, kind: impact, gain: 0.38}
+    - {t: 90.60, kind: riser, gain: 0.42}       # 地球缩成小珠
+    - {t: 94.40, kind: riser, gain: 0.55}
+    - {t: 97.20, kind: impact, gain: 0.85}      # 42 次 · 439,805 公里
+    - {t: 98.60, kind: shimmer, gain: 0.45}     # 月球
+    # 章三 · 墙
+    - {t: 108.40, kind: whoosh, gain: 0.30}     # 线横过来
+    - {t: 111.60, kind: whoosh, gain: 0.40}     # 尺子拉开
+    - {t: 112.20, kind: tick, gain: 0.20}
+    - {t: 115.60, kind: key, gain: 0.22}        # 铅笔
+    - {t: 116.20, kind: key, gain: 0.20}
+    - {t: 121.80, kind: whoosh, gain: 0.50}     # 1,200 米冲出画框
+    - {t: 128.80, kind: whoosh, gain: 0.25}     # 开始折
+    - {t: 131.60, kind: tick, gain: 0.18}
+    - {t: 132.20, kind: tick, gain: 0.18}
+    - {t: 132.80, kind: tick, gain: 0.18}
+    - {t: 133.40, kind: tick, gain: 0.18}
+    - {t: 134.00, kind: tick, gain: 0.18}
+    - {t: 134.60, kind: tick, gain: 0.18}
+    - {t: 136.20, kind: impact, gain: 0.90}     # 12 次 · 砸下去
+    # 章四 · 平
+    - {t: 140.80, kind: impact, gain: 0.32}
+    - {t: 144.40, kind: shimmer, gain: 0.45}    # 银河
+    - {t: 154.20, kind: tick, gain: 0.16}
+    - {t: 154.30, kind: tick, gain: 0.16}
+    - {t: 154.40, kind: tick, gain: 0.16}
+    - {t: 154.50, kind: tick, gain: 0.16}
+    - {t: 154.60, kind: tick, gain: 0.16}
+    - {t: 154.70, kind: tick, gain: 0.16}
+    - {t: 154.80, kind: tick, gain: 0.16}
+    - {t: 154.90, kind: tick, gain: 0.16}
+    - {t: 155.00, kind: tick, gain: 0.16}
+    - {t: 155.10, kind: tick, gain: 0.16}
+    - {t: 155.20, kind: tick, gain: 0.16}
+    - {t: 155.30, kind: tick, gain: 0.16}
+    - {t: 160.40, kind: riser, gain: 0.50}      # 99.98%
+    # 回场
+    - {t: 167.60, kind: chime, gain: 0.45}
+    - {t: 174.40, kind: impact, gain: 0.45}     # 片尾
+
+fx: {handheld: true, sweep: true, flash: true, breathing: true, grain: true, stardust: true, subtitleBar: false}
+
+scenes:
+  # ── 钩子 0–18.0（0–30 拍）────────────────────────────────────────
+  - id: S01
+    renderer: remotion
+    card: foldPage
+    fx: {dipIn: 0.75, dipOut: 0.55, dipFrames: 10}   # 开片从黑里浮出；收尾压暗，别从亮纸直接跳暗场
+    hold: 5
+    text: 一张纸，厚 0.1 毫米。
+    beats: 2
+    params:
+      kicker: 一张纸 · 80 克复印纸
+      note: 0.1 毫米 —— 比头发丝还薄一点
+      mm: 0.1
+      layers: 1
+
+  - id: S02
+    renderer: remotion
+    card: foldSheet
+    hold: 5
+    text: 折一次 0.2，两次 0.4。
+    beats: 3
+    params:
+      folds: 2
+      kicker: 对折两次
+      note: 厚度 = 0.1 mm × 2ⁿ
+
+  - id: S03
+    renderer: remotion
+    card: foldSheet
+    fx: {dipOut: 0.35, dipFrames: 10}     # 亮纸 → 暗场，末尾先压暗再切
+    hold: 8
+    text: 折到第七次，硬得像块木板。
+    sub_out: 1.2
+    beats: 5
+    params:
+      folds: 7
+      fail: true
+      kicker: 第七次
+      note: 128 层 —— 一张 80 克纸变成了 12.8 毫米
+
+  - id: S04
+    renderer: remotion
+    card: foldSheet
+    fx: {dipOut: 0.48, dipFrames: 10}     # 同理：42 → 7 的落差让小下去，不是砸下去
+    hold: 4
+    beats: 2
+    params:
+      folds: 7
+      kicker: 128 张纸
+      readout: true
+      zoom: 1.12
+      note: 厚度 = 0.1 mm × 2⁷ = 12.8 mm
+
+  - id: S05
+    renderer: remotion
+    card: foldPage
+    fx: {dipOut: 0.65, dipFrames: 10}     # 钩子收束，接片名的黑
+    hold: 8
+    text: 一张纸，最多能折几次?
+    sub_in: 1.2
+    sub_out: 1.0
+    beats: 4
+    params:
+      kicker: 同一个问题
+      note: 手折的纪录是 12 次 —— 但在那之前，纸已经不听手了
+      readout: false
+      stamp: "?"
+
+  # ── 片名 18.0–23.4（30–39 拍）────────────────────────────────────
+  - id: S06
+    renderer: remotion
+    card: foldTitle
+    fx: {dipOut: 0.55, dipFrames: 9}      # 片名 → 章一，用压暗做标点
+    hold: 9
+    beats: 2
+    params:
+      title: 对折
+      sub: 从 0.1 毫米到月球
+      latin: BISECTIO
+
+  # ── 章一 · 手 23.4–45.0（39–75 拍）───────────────────────────────
+  - id: S07
+    renderer: remotion
+    card: foldLimit
+    fx: {dipIn: 0.55, dipOut: 0.40, dipFrames: 10}   # 章一首镜；末尾接 S08 暗场
+    hold: 7
+    text: 传说里，八次就是极限。
+    sub_out: 0.75
+    beats: 9
+    params:
+      slots: 9
+      lit: 8
+      kicker: 章一 · 手
+      note: 每折一次，层数翻一倍；第九次没有层数可以给了
+
+  - id: S08
+    renderer: remotion
+    card: foldCross
+    hold: 6
+    text: 不是手劲不够，是几何不许。
+    beats: 4
+    params:
+      kicker: 一次对折 · 剖面
+      thickness: 96
+      note: 层数越多，外圈要包的路越长；包不动的那一下，就是极限。
+
+  - id: S09
+    renderer: remotion
+    card: foldCount
+    hold: 7
+    text: 每折一次，要弯的层数翻一倍。
+    sub_out: 0.75
+    beats: 5
+    params:
+      to: 4
+      kicker: 章一 · 手
+      note: 第 4 折要同时弯 16 层；第 7 折要弯 128 层。
+
+  - id: S10
+    renderer: remotion
+    card: foldCount
+    fx: {dipOut: 0.88, dipFrames: 10}     # 全屏白计数切星空（90 → 8）：不压暗就是一次闪光
+    hold: 4
+    beats: 3
+    params:
+      from: 4            # 接 S09 的 16 层往上数，不能从 1 重来
+      to: 7
+      zoom: true
+      kicker: 128 层
+      note: 到这个密度，纸已经不是"层层叠着"，是一整块
+
+  - id: S11
+    renderer: remotion
+    card: foldSheet
+    fx: {dipOut: 0.38, dipFrames: 10}
+    hold: 6
+    text: 第八层以后，纸开始自己弹开。
+    beats: 5
+    params:
+      folds: 7
+      fail: true
+      kicker: 回弹
+      note: 压下去的不是手劲，是纸的弹性
+
+  - id: S12
+    renderer: remotion
+    card: foldPile
+    fx: {dipOut: 0.55, dipFrames: 9}      # 章一末镜
+    hold: 6
+    text: 现实里，大多数人停在第七次。
+    beats: 4
+    params:
+      count: 7
+      kicker: 章一 · 手
+      note: 七块折废的纸。第八个位置，空着。
+
+  # ── 章二 · 尺 45.0–104.4（75–174 拍）─────────────────────────────
+  - id: S13
+    renderer: remotion
+    card: foldSheet
+    fx: {dipIn: 0.55, dipOut: 0.38, dipFrames: 10}   # 章二首镜
+    hold: 5
+    text: 换个问法：只算厚度呢?
+    beats: 2
+    params:
+      folds: 7
+      kicker: 换个问法
+      readout: false
+      note: 先不管折不折得动 —— 只算 0.1 mm × 2ⁿ
+
+  - id: S14
+    renderer: remotion
+    card: foldRuler
+    hold: 5
+    text: 如果折得动，它能长到哪?
+    beats: 2
+    params:
+      total: 42
+      fold: 0
+      landmarks: []
+      kicker: 只算厚度
+      note: 纵轴是折数，每一格 = 厚度 ×2
+
+  - id: S15
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 屏上立一把尺，每一格是一倍。
+    beats: 3
+    params:
+      total: 42
+      fold: 0
+      landmarks: []
+      kicker: 02 · 尺　THE RULER
+      note: 每一格 = 厚度翻一倍。格子等距，因为纵轴取了对数。
+
+  - id: S16
+    renderer: remotion
+    card: foldRuler
+    hold: 4
+    beats: 1
+    params:
+      total: 42
+      fold: 2
+      landmarks: []
+      kicker: 02 · 尺　THE RULER
+      note: 七折以下，尺上几乎看不出高度 —— 四毫米。
+
+  - id: S17
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 第十次，10.2 厘米 —— 一只手掌。
+    beats: 3
+    params:
+      total: 42
+      fold: 10
+      kicker: 02 · 尺　THE RULER
+      note: 第 10 折 = 1,024 层 = 102.4 毫米
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+
+  - id: S18
+    renderer: remotion
+    card: foldRuler
+    hold: 7
+    text: 第十七次，13 米 —— 四层楼。
+    sub_out: 0.85
+    beats: 3
+    params:
+      total: 42
+      fold: 17
+      kicker: 02 · 尺　THE RULER
+      note: 第 17 折 = 131,072 层 = 13.1 米
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+
+  - id: S19
+    renderer: remotion
+    card: foldRuler
+    hold: 5
+    text: 第二十三次，839 米。
+    beats: 2
+    params:
+      total: 42
+      fold: 23
+      kicker: 02 · 尺　THE RULER
+      note: 第 23 折 = 838.9 米
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+        - {fold: 23, label: 838.9 米, sub: 一座摩天楼的高度, kind: tower}
+
+  - id: S20
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 比哈利法塔还高 11 米。
+    beats: 3
+    params:
+      total: 42
+      fold: 23
+      kicker: 02 · 尺　THE RULER
+      note: 哈利法塔 828 米 —— 第 23 折叠起来高出一层楼
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+        - {fold: 23, label: 838.9 米, sub: 哈利法塔 828 米, kind: tower}
+
+  - id: S21
+    renderer: remotion
+    card: foldRuler
+    fx: {dipOut: 0.10, dipFrames: 10}
+    hold: 8
+    beats: 4
+    params:
+      total: 42
+      fold: 30
+      sky: true
+      kicker: 02 · 尺　THE RULER
+      note: 云、客机、积雨云 —— 纸柱一直在头顶
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+        - {fold: 23, label: 838.9 米, sub: 哈利法塔 828 米, kind: tower}
+
+  - id: S22
+    renderer: remotion
+    card: foldRuler
+    hold: 5
+    text: 第三十次，107 公里。
+    beats: 2
+    params:
+      total: 42
+      fold: 30
+      kicker: 02 · 尺　THE RULER
+      note: 第 30 折 = 107.4 公里
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+        - {fold: 23, label: 838.9 米, sub: 哈利法塔 828 米, kind: tower}
+        - {fold: 30, label: 107.4 公里, sub: 卡门线在这里, kind: dash}
+
+  - id: S23
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 卡门线在 100 公里 —— 出大气层。
+    beats: 3
+    params:
+      total: 42
+      fold: 30
+      kicker: 02 · 尺　THE RULER
+      note: 卡门线 100 公里 · FAI 定义的太空边界
+      landmarks:
+        - {fold: 10, label: 10.2 厘米, sub: 一只手掌, kind: hand}
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+        - {fold: 23, label: 838.9 米, sub: 哈利法塔 828 米, kind: tower}
+        - {fold: 30, label: 107.4 公里, sub: 卡门线 100 公里, kind: dash}
+
+  - id: S24
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 第三十六次，6,872 公里。
+    beats: 3
+    params:
+      total: 42
+      fold: 36
+      kicker: 02 · 尺　THE RULER
+      note: 第 36 折 = 6,872 公里
+      landmarks:
+        - {fold: 17, label: 13.1 米, sub: 四层楼, kind: building}
+        - {fold: 23, label: 838.9 米, sub: 哈利法塔 828 米, kind: tower}
+        - {fold: 30, label: 107.4 公里, sub: 卡门线 100 公里, kind: dash}
+        - {fold: 36, label: "6,872 公里", sub: "地球半径 6,371", kind: earth}
+
+  - id: S25
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 比地球半径，高出 501 公里。
+    beats: 3
+    params:
+      total: 42
+      fold: 36
+      kicker: 02 · 尺　THE RULER
+      note: 地球平均半径 6,371 公里 —— 第 36 折已经高出 501 公里
+      landmarks:
+        - {fold: 23, label: 838.9 米, sub: 哈利法塔 828 米, kind: tower}
+        - {fold: 30, label: 107.4 公里, sub: 卡门线 100 公里, kind: dash}
+        - {fold: 36, label: "6,872 公里", sub: "地球半径 6,371", kind: earth}
+
+  - id: S26
+    renderer: remotion
+    card: foldRuler
+    hold: 7
+    beats: 4
+    params:
+      total: 42
+      fold: 42
+      kicker: 02 · 尺　THE RULER
+      note: 地球只剩画面里的一颗小珠，纸柱还在往上
+      landmarks:
+        - {fold: 30, label: 107.4 公里, sub: 卡门线 100 公里, kind: dash}
+        - {fold: 36, label: "6,872 公里", sub: "地球半径 6,371", kind: earth}
+
+  - id: S27
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 第四十二次，439,805 公里。
+    beats: 3
+    params:
+      total: 42
+      fold: 42
+      kicker: 02 · 尺　THE RULER
+      note: 0.1 mm × 2⁴² = 439,804.65 公里
+      landmarks:
+        - {fold: 36, label: "6,872 公里", sub: "地球半径 6,371", kind: earth}
+        - {fold: 42, label: "439,805 公里", sub: "月球在 384,400", kind: moon}
+
+  - id: S28
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 月球，平均 384,400 公里。
+    beats: 2
+    params:
+      total: 42
+      fold: 42
+      kicker: 02 · 尺　THE RULER
+      note: 地月平均距离 384,400 公里 · 近地 363,300 / 远地 405,500
+      landmarks:
+        - {fold: 36, label: "6,872 公里", sub: "地球半径 6,371", kind: earth}
+        - {fold: 42, label: "439,805 公里", sub: "月球 384,400", kind: moon}
+
+  - id: S29
+    renderer: remotion
+    card: foldRuler
+    fx: {dipOut: 0.55, dipFrames: 9}      # 章二末镜
+    hold: 5
+    beats: 1
+    params:
+      total: 42
+      fold: 42
+      kicker: 02 · 尺　THE RULER
+      note: 算得出来，折不下去。
+      landmarks:
+        - {fold: 36, label: "6,872 公里", sub: "地球半径 6,371", kind: earth}
+        - {fold: 42, label: "439,805 公里", sub: "月球 384,400", kind: moon}
+
+  # ── 章三 · 墙 104.4–140.4（174–234 拍）─────────────────────────────
+  # 这里从“算得出来”转到“折不下去”：先把纸柱压成一条线，再把线横过来当尺，
+  # 然后交给一个人（2002 / 加州 / 16 岁 / 1200 米 / 8 小时 / 12 折）。
+  - id: S30
+    renderer: remotion
+    card: foldFormula
+    fx: {dipIn: 0.55, dipFrames: 9}       # 章三首镜
+    hold: 6
+    text: 这个数字是算出来的，不是折出来的。
+    beats: 3
+    params:
+      kicker: 03 · 墙　THE WALL
+      note: 没有任何一只手折到过这里 —— 这是算式给的数。
+
+  - id: S31
+    renderer: remotion
+    card: foldFormula
+    hold: 5
+    text: 真要折，纸得多长?
+    beats: 2
+    params:
+      turn: true
+      kicker: 03 · 墙　THE WALL
+      note: 只算长度，先不管折不折得动。
+
+  - id: S32
+    renderer: remotion
+    card: paperLength
+    hold: 6
+    text: 尺子横过来，量长度。
+    beats: 3
+    params:
+      meters: 1200
+      folds: 12
+      formula: true
+      kicker: 03 · 墙　THE WALL
+      note: 算一次要多少纸，就把「折不折得动」换成了「买不买得起」。
+
+  - id: S33
+    renderer: remotion
+    card: gallivan
+    hold: 6
+    text: 2002 年，加州，一个高中生。
+    beats: 3
+    params:
+      stage: room
+      kicker: 03 · 墙　THE WALL
+      note: 没有实验室。一卷卫生纸，一条走廊。
+
+  - id: S34
+    renderer: remotion
+    card: gallivan
+    hold: 5
+    text: 她叫 Britney Gallivan。
+    beats: 2
+    params:
+      stage: name
+      name: Britney Gallivan
+      sub: 16 岁 · 加州
+      kicker: 03 · 墙　THE WALL
+      note: 那篇论文写在 2001 年，题目就叫「折纸几何」。
+
+  - id: S35
+    renderer: remotion
+    card: paperLength
+    hold: 6
+    text: 折 12 次，用了 1,200 米纸。
+    beats: 3
+    params:
+      meters: 1200
+      folds: 12
+      formula: false
+      kicker: 03 · 墙　THE WALL
+      note: 1,200 米不是估的 —— 是她按公式算出来的下限。
+
+  - id: S36
+    renderer: remotion
+    card: paperRoll
+    hold: 6
+    text: 一卷卫生纸，铺满一条走廊。
+    beats: 3
+    params:
+      stage: roll
+      kicker: 03 · 墙　THE WALL
+      note: 1,200 米 —— 一条走廊的长度。
+
+  - id: S37
+    renderer: remotion
+    card: paperRoll
+    hold: 4
+    beats: 2
+    params:
+      stage: fold
+      kicker: 03 · 墙　THE WALL
+      note: 每一次对折，都要把整条纸带一起压过去。
+
+  - id: S38
+    renderer: remotion
+    card: paperRoll
+    hold: 8
+    text: 八小时后，她折到了第十二次。
+    sub_out: 1.0
+    beats: 4
+    params:
+      stage: done
+      timer: "8:00:00"
+      kicker: 03 · 墙　THE WALL
+      note: 12 折 —— 手上那一块，比一本书还沉。
+
+  - id: S39
+    renderer: remotion
+    card: stampStrike
+    fx: {dipOut: 0.55, dipFrames: 9}      # 章三末镜
+    hold: 8
+    text: 吉尼斯纪录。八次那句话，破了。
+    sub_out: 1.2
+    beats: 4
+    params:
+      text: 八次就是极限
+      stamp: 12 次
+      sub: GUINNESS · 2002
+
+  # ── 章四 · 平 140.4–167.4（234–279 拍）───────────────────────────
+  # 回到那把尺：42 折要 10 万光年的纸（和银河一样宽）；
+  # 然后退成一张折线图 —— 前 30 折只占 0.02%，后 12 折吃掉 99.98%。
+  - id: S40
+    renderer: remotion
+    card: foldRuler
+    fx: {dipIn: 0.55, dipFrames: 9}       # 章四首镜
+    hold: 5
+    text: 那 42 次呢? 要 10 万光年。
+    beats: 2
+    params:
+      total: 42
+      fold: 42
+      kicker: 04 · 平　THE FLAT PART
+      note: 0.1 mm × 2⁴² 的厚度我们算过；现在算它的长度。
+      landmarks: []
+
+  - id: S41
+    renderer: remotion
+    card: foldGalaxy
+    hold: 6
+    text: 和银河系一样宽的一张纸。
+    beats: 3
+    params:
+      lightYears: 100000
+      folds: 42
+      kicker: 04 · 平　THE FLAT PART
+      note: 银河系直径约 10 万光年（估计）。42 折叠起来，和它一样宽。
+
+  - id: S42
+    renderer: remotion
+    card: foldCurve
+    hold: 5
+    text: 所以它折不到，但算得出。
+    beats: 2
+    params:
+      stop: 42
+      fill: none
+      kicker: 04 · 平　THE FLAT PART
+      note: 纵轴 0 → 439,805 公里，线性。
+
+  - id: S43
+    renderer: remotion
+    card: foldCurve
+    hold: 5
+    beats: 3
+    params:
+      stop: 42
+      fill: none
+      kicker: 04 · 平　THE FLAT PART
+      note: 一条线从头画到尾：前面贴着底边，最后一小段突然竖起。
+
+  - id: S44
+    renderer: remotion
+    card: foldCurve
+    hold: 6
+    text: 翻倍不慢，是我们看不见它慢在哪。
+    beats: 3
+    params:
+      stop: 42
+      fill: none
+      inset: true
+      kicker: 04 · 平　THE FLAT PART
+      note: 把贴底那一段放大 40 倍，每一格仍然 ×2。
+
+  - id: S45
+    renderer: remotion
+    card: foldCurve
+    hold: 6
+    text: 前三十次，只走完全程的 0.02%。
+    beats: 3
+    params:
+      stop: 30
+      fill: first30
+      kicker: 04 · 平　THE FLAT PART
+      note: 30 折 = 107.4 公里，相对 439,805 公里就是一条头发丝。
+
+  - id: S46
+    renderer: remotion
+    card: foldCurve
+    hold: 6
+    text: 最后十二次，走完 99.98%。
+    beats: 3
+    params:
+      stop: 42
+      fill: last12
+      kicker: 04 · 平　THE FLAT PART
+      note: 第 30 折到第 42 折，图上就是那根竖起来的线。
+
+  - id: S47
+    renderer: remotion
+    card: foldCurve
+    fx: {dipOut: 0.55, dipFrames: 9}      # 章四末镜
+    hold: 6
+    text: 第四十一次，22 万公里。
+    beats: 3
+    params:
+      stop: 41
+      fill: gap
+      kicker: 04 · 平　THE FLAT PART
+      note: 41 折 = 219,902 公里，正好一半；再折一次才够到月球。
+
+  # ── 回场 167.4–180.0（279–300 拍）────────────────────────────────
+  - id: S48
+    renderer: remotion
+    card: foldPage
+    fx: {dipIn: 0.55, dipOut: 0.55, dipFrames: 10}   # 回场首镜
+    hold: 5
+    text: 那张纸，还在你手里。
+    beats: 2
+    params:
+      kicker: 回到手里
+      note: 0.1 毫米。一折都没多。
+      mm: 0.1
+      layers: 1
+
+  - id: S49
+    renderer: remotion
+    card: foldRuler
+    hold: 6
+    text: 0.1 毫米，一折都没多。
+    beats: 2
+    params:
+      total: 42
+      fold: 0
+      kicker: 回到手里
+      note: 尺子走了，纸还是那张纸。
+      landmarks: []
+
+  - id: S50
+    renderer: remotion
+    card: foldTitle
+    hold: 7
+    beats: 2
+    params:
+      title: 对折
+      sub: 从 0.1 毫米到月球
+      latin: BISECTIO
+      refs:
+        - Britney Gallivan, «Folding Paper in Half Twelve Times», 2001
+        - Guinness World Records, 2002
+        - 卡门线：FAI 100 km / 地月平均距离：384,400 km
+
+  - id: S51
+    renderer: remotion
+    card: foldPage
+    hold: 3
+    beats: 1
+    params:
+      kicker: 对折 · 完
+      note: 0.1 毫米
+      mm: 0.1
+      layers: 1
+      readout: false

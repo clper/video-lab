@@ -1,0 +1,83 @@
+{
+  "id": "custom-demo",
+  "title": "自定义渲染器",
+  "aspect": "portrait",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 5.8,
+  "scenes": [
+    {
+      "id": "S1",
+      "narration": "这一镜的画面，是脚本直接画出来的。",
+      "start": 0.0,
+      "end": 5.8,
+      "voice_start": 0.25,
+      "voice_end": 3.85,
+      "words": [
+        {
+          "text": "这",
+          "start": 0.346,
+          "end": 0.531
+        },
+        {
+          "text": "一",
+          "start": 0.531,
+          "end": 0.647
+        },
+        {
+          "text": "镜",
+          "start": 0.647,
+          "end": 0.751
+        },
+        {
+          "text": "的",
+          "start": 0.751,
+          "end": 0.821
+        },
+        {
+          "text": "画面",
+          "start": 0.832,
+          "end": 1.342
+        },
+        {
+          "text": "是",
+          "start": 1.573,
+          "end": 1.77
+        },
+        {
+          "text": "脚本",
+          "start": 1.77,
+          "end": 2.14
+        },
+        {
+          "text": "直接",
+          "start": 2.163,
+          "end": 2.418
+        },
+        {
+          "text": "画",
+          "start": 2.43,
+          "end": 2.626
+        },
+        {
+          "text": "出来",
+          "start": 2.626,
+          "end": 2.858
+        },
+        {
+          "text": "的",
+          "start": 2.858,
+          "end": 3.031
+        }
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.346,
+      "end": 5.7,
+      "text": "这一镜的画面，是脚本直接画出来的"
+    }
+  ]
+}

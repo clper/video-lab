@@ -17,6 +17,8 @@ from vlab import fonts
 def finalize(video: Path, build_dir: Path, out: Path, burn_subs: bool = True) -> None:
     duration = json.loads((build_dir / "timeline.json").read_text(encoding="utf-8"))["duration"]
     out.parent.mkdir(parents=True, exist_ok=True)
+    # 拍格模式（纯音乐 + 字幕）没有配音：这里只烧字幕、不带音轨，音频交给 mix 那一步
+    has_voice = (build_dir / "narration.wav").exists()
     # 在 build 目录里运行，字幕文件和字体目录都用相对路径，省掉 Windows 盘符在滤镜里的转义麻烦。
     # fontsdir 指向仓库自带的思源黑体，libass 不再依赖系统装没装字体。
     vf = []
@@ -30,12 +32,12 @@ def finalize(video: Path, build_dir: Path, out: Path, burn_subs: bool = True) ->
     cmd = [
         "ffmpeg", "-y", "-v", "error",
         "-i", str(video.resolve()),
-        "-i", "narration.wav",
+        *(["-i", "narration.wav"] if has_voice else []),
         *vf,
-        "-map", "0:v:0", "-map", "1:a:0",
+        "-map", "0:v:0",
+        *(["-map", "1:a:0", "-c:a", "aac", "-b:a", "160k",
+           "-af", "pan=stereo|c0=c0|c1=c0"] if has_voice else ["-an"]),
         "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "160k",
-        "-af", "pan=stereo|c0=c0|c1=c0",  # 单声道原样复制成左右声道（-ac 2 会乘 0.707），和 HyperFrames 的输出一致
         "-t", f"{duration:.3f}",
         "-movflags", "+faststart",
         str(out.resolve()),

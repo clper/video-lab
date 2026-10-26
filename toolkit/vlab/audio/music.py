@@ -87,3 +87,53 @@ def ambient_pulse(duration, bpm=100, seed=0, chords=CHORDS):
     out[:fade_in] *= np.linspace(0, 1, fade_in)
     out[-fade_out:] *= np.linspace(1, 0, fade_out)
     return out / (np.abs(out).max() + 1e-9) * 0.6
+
+
+# ── 有段落的配乐 ────────────────────────────────────────────────────
+# ambient_pulse 是一条从头到尾一个密度的铺底——两分钟后就听不出“在走路”。
+# fold_score 不动和声与动机，只在同一条铺底上按段落改频带与电平：
+# 闷（纸里）→ 全开（片名）→ 抽掉低频（墙：折不动的空）→ 闷（走廊）→
+# 全停（一句留白）→ 只剩一点木头味的底（回场）。
+# 边界用 0.4 秒交叉淡化，所以听不到开关声。
+#
+#   segs = [(起, 止, {lp/hp/gain}), ...]，单位秒。lp/hp 是 FFT 一阶拱形滤波的分频点。
+#   段落表跟着每条片子的章节走，写在项目的 project.yaml（audio.music_segs），这里不给默认值：
+#   以前这里写死了 006 的章节时间，007 直接复用，配乐就在 006 的节点上变化，和 007 的叙事对不上。
+
+def _band(x, lp=None, hp=None):
+    y = x
+    if hp:
+        y = y - _lowpass(y, hp)      # 一阶高通：拿掉低频，保留 pad 与铃声
+    if lp:
+        y = _lowpass(y, lp)
+    return y
+
+
+def fold_score(duration, bpm=100, seed=0, segs=None, xf=0.4):
+    """带段落的铺底：同一套和声，按段落换频带与电平（长片用）。
+
+    segs 必须给，按本片的章节时间写（project.yaml 的 audio.music_segs），例子见 archive/006-fold/project.yaml。
+    """
+    if not segs:
+        raise ValueError("fold_score 需要段落表 segs：按本片的章节时间写在 project.yaml 的 audio.music_segs")
+    n = int(duration * SR)
+    base = ambient_pulse(duration + 1.0, bpm=bpm, seed=seed)[:n]
+    out = np.zeros(n)
+    for t0, t1, kw in segs:
+        a = max(0, int((t0 - xf) * SR))
+        b = min(n, int((t1 + xf) * SR))
+        if b <= a:
+            continue
+        y = _band(base[a:b], kw.get("lp"), kw.get("hp")) * kw.get("gain", 1.0)
+        env = np.ones(b - a)
+        f = int(xf * SR)
+        if a > 0:
+            m = min(f, b - a)
+            env[:m] = np.linspace(0, 1, m)
+        if b < n:
+            m = min(f, b - a)
+            env[-m:] = np.minimum(env[-m:], np.linspace(1, 0, m))
+        out[a:b] += y * env
+    tail = int(min(3.5, duration * 0.2) * SR)
+    out[-tail:] *= np.linspace(1, 0, tail) ** 0.8
+    return out / (np.abs(out).max() + 1e-9) * 0.6

@@ -129,12 +129,30 @@ texture: {vignette: 0.3, grain: 6}      # 后期质感，拼接时用 ffmpeg 统
 ```
 project.yaml ─► 校验 ─► 配音（旁白没变就跳过）─► 逐镜头渲染（指纹没变就跳过）─► 帧数校验 ─► 拼接 + 质感 ─► 合配音字幕
 ```
-
 - **校验**（渲染前）：模板存在、必填参数齐全、cue 绑定的词在旁白里、颜色名在风格里。错误一次全列出来。
 - **镜头指纹** = 该镜头的工程内容 + 风格 + 它在时间轴上的起止和词 + 模板代码的哈希。
   指纹没变就复用上次的片段；改一个镜头的数字，只有这个镜头重渲染。
 - **帧数**：每个镜头的帧数 = round(结束×fps) − round(开始×fps)，拼起来正好等于配音长度（沿用 003 的做法）。
 - 风格不同的片段分目录缓存，两种风格可以并存、来回切换不用重渲染。
+
+### 渲染器分派
+
+一个镜头用哪个后端出片，由 `renderer` 字段决定（校验和分派在两处各只有一份）：
+
+| `renderer` | 字段 | 代码位置 | 适合 |
+|---|---|---|---|
+| `manim`（默认） | `template` + `params` | `videokit/manim_templates.py` | 图表、文字、公式类 |
+| `remotion` | `card` + `params` | `toolkit/vlab/render/remotion/src/cards/` | 高密度动效、排版 |
+| `glsl` | `frag` + `uniforms` | 项目内的 `.frag` | 粒子、场、背景 |
+| `custom` | `script`（+ `args`） | 项目内的 `.py` | 卡库和模板都盖不住的一次性镜头 |
+
+`custom` 的脚本契约：`vlab-build` 以 `python <script> --scene <临时json>` 调用，
+JSON 里有 `out`（必须写出的 mp4）、`frames`（用它，不要自己按秒数取整）、`fps`、
+`width`/`height`、`start`/`end`、`params`、`words`；退出码非 0 或没写出 `out` 都算失败。
+例子见 `research/visual/14-custom-renderer/`。
+
+指纹按渲染器分别算：manim 看模板文件，glsl 看 `.frag`，remotion 看整个 `src/` 加桥脚本，
+custom 看脚本本身加 `args`。所以改一张卡会让所有 remotion 镜头失效，改一个 `.frag` 只影响用到它的镜头。
 
 ## 七、AI 在这套结构里怎么工作
 
@@ -154,7 +172,7 @@ project.yaml ─► 校验 ─► 配音（旁白没变就跳过）─► 逐镜
 | 阶段 | 内容 | 状态 |
 |---|---|---|
 | Phase 1 | 工程文件 + 校验、3 个 Manim 模板、按词出场、位置微调、风格文件、增量渲染、风格提取工具、演示 | ✅ 本次完成 |
-| Phase 2 | 定制镜头接入（着色器、程序化风景作为 `custom` 渲染器）；把 003 改写成工程文件；再加 4–5 个模板 | 待做 |
+| Phase 2 | 定制镜头接入（着色器与项目脚本分别作为 `glsl` / `custom` 渲染器）；把 003 改写成工程文件；再加 4–5 个模板 | ✅ 已完成（003 未回溯改写） |
 | Phase 3 | 自动抠图分层（开源抠图模型）+ `image_parallax` 模板；参考视频的动效节奏更细的提取 | 待做 |
 | Phase 4 | 轻量可视化编辑：网页里看时间轴 + 每个镜头的预览图，改参数后回写 `project.yaml` | 视需要 |
 

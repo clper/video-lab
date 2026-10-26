@@ -18,6 +18,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]      # toolkit/vlab/tools/check_env.py → 仓库根
 
 
+def _marks() -> tuple[str, str]:
+    """勾叉只在控制台能编码时才用：Windows 默认 GBK 控制台里 ✓（U+2713）不在码表，
+    直接 print 会抛 UnicodeEncodeError，整份自检结果全看不到。"""
+    enc = sys.stdout.encoding or "utf-8"
+    try:
+        "✓".encode(enc)
+        return "✓", "✗"
+    except (UnicodeEncodeError, LookupError):
+        return "OK", "NG"
+
+
 def main() -> None:
     global results
     results = []          # (级别, 是否通过, 项目, 说明/修复办法)
@@ -82,22 +93,33 @@ def main() -> None:
               f"{str(e)[:80]}；只影响重渲染 003 hook/noon/sunset 和 research/visual/07，拼接成片不需要")
 
     node = shutil.which("node")
-    check("按需", "Node.js（000 的 HyperFrames 版）", bool(node),
-          subprocess.run(["node", "--version"], capture_output=True, text=True).stdout.strip() if node else "没装；只影响 archive/000 的 2_hyperframes")
+    check("按需", "Node.js（Remotion 镜头、000 的 HyperFrames 版）", bool(node),
+          subprocess.run(["node", "--version"], capture_output=True, text=True).stdout.strip() if node
+          else "没装；重渲 remotion 镜头（007 在用）要它，Windows 可 `winget install OpenJS.NodeJS.LTS`")
+    rm = ROOT / "toolkit" / "vlab" / "render" / "remotion"
+    check("按需", "Remotion 的 node_modules（重渲 remotion 镜头）", (rm / "node_modules").exists(),
+          "已安装" if (rm / "node_modules").exists()
+          else f"在 {rm.relative_to(ROOT)} 里运行 `npm.cmd install`（只装一次；拼接已有片段不需要）")
     hf = ROOT / "archive" / "000-claude-video-lab" / "2_hyperframes"
     check("按需", "000 的 node_modules", (hf / "node_modules").exists(),
           "已安装" if (hf / "node_modules").exists() else f"在 {hf.relative_to(ROOT)} 里运行 `npm ci`（PowerShell 下用 `npm.cmd ci`）")
 
-    # ---------- 成果是否齐全（克隆是否完整） ----------
-    expect = ["videos/001-float-precision/renders/float-precision_final.mp4",
-              "videos/002-mobius-strip/renders/mobius-strip_final.mp4",
-              "videos/003-sunset-red/renders/sunset-red_final.mp4", "videos/003-sunset-red/media/clips/hook.mp4",
-              "videos/003-sunset-red/build/sunset-red/timeline.json", "research/visual/08-video-spec/media/clips/landscape/intro.hash",
-              "videos/004-green-star/renders/green-star.mp4", "videos/004-green-star/media/clips/s01_sky.mp4"]
+    # ---------- 重生成成片需要的输入是否齐全（克隆是否完整） ----------
+    # 成片不入库（见 .gitignore），但重生成它们需要的配音、时间轴、分镜片段都在仓库里，
+    # 有 ffmpeg 就能用各片子的总装命令重新拼出来。这里抽查每条片子的关键输入。
+    expect = ["archive/001-float-precision/build/float-precision/narration.wav",
+              "archive/001-float-precision/media/videos/scene/1920p30/FloatPrecision.mp4",
+              "archive/002-mobius-strip/build/mobius-strip/narration.wav",
+              "archive/002-mobius-strip/media/videos/scene/1920p30/MobiusStrip.mp4",
+              "archive/003-sunset-red/build/sunset-red/narration.wav", "archive/003-sunset-red/media/clips/hook.mp4",
+              "archive/004-green-star/build/green-star/narration.wav", "archive/004-green-star/media/clips/s01_sky.mp4",
+              "research/visual/08-video-spec/media/clips/landscape/intro.hash"]
     missing = [e for e in expect if not (ROOT / e).exists()]
-    check("必需", "仓库里的成片和分镜片段", not missing, "齐全" if not missing else f"缺：{missing}（克隆不完整，或用了 Git LFS 但没 `git lfs pull`）")
+    check("必需", "重生成成片需要的配音和分镜片段", not missing,
+          "齐全" if not missing else f"缺：{missing}（克隆不完整，或用了 Git LFS 但没 `git lfs pull`）")
 
     # ---------- 输出 ----------
+    yes, no = _marks()
     width = max(len(r[2]) for r in results)
     bad_required = False
     for level in ("必需", "按需"):
@@ -105,7 +127,7 @@ def main() -> None:
         for lv, ok, name, detail in results:
             if lv != level:
                 continue
-            print(f"  {'✓' if ok else '✗'} {name.ljust(width)}  {detail}")
+            print(f"  {yes if ok else no} {name.ljust(width)}  {detail}")
             bad_required |= (lv == "必需" and not ok)
     print("\n结论：" + ("必需项有缺失，按上面的提示补齐后再跑一次" if bad_required else "必需项全部通过，可以构建"))
     sys.exit(1 if bad_required else 0)
