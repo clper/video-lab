@@ -192,7 +192,11 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
     return [];
   })();
   const dim = (() => {
-    if (mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze") return new Array(N_SONGS).fill(0.12).map((v, i) => (i === 27 ? 0.5 : v));
+    // 落点四镜：板面不能压成一团黑（实测整帧边缘占比 0.0006，观众看到的是空屏而不是"一万个世界"）。
+    // 底噪抬到 0.32 —— 一万个点要看得见，金点才谈得上"只有你亮着"。
+    // freeze 整板还要再被 boardDraw 压暗一层，这里给它更高的底噪，压完仍看得见。
+    if (mode === "freeze") return new Array(N_SONGS).fill(0.46).map((v, i) => (i === 27 ? 1 : v));
+    if (mode === "alone" || mode === "edge" || mode === "missed") return new Array(N_SONGS).fill(0.32).map((v, i) => (i === 27 ? 0.9 : v));
     if (mode === "digit") return new Array(N_SONGS).fill(0.3).map((v, i) => (i === 19 ? 1 : v));
     return undefined;
   })();
@@ -243,7 +247,7 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
   const ghostPhone = mode === "digit" ? Math.sin(Math.PI * span(p, 0.6, 0.84)) : 0;
 
   const frozen = mode === "freeze" ? ease(span(p, 0.25, 0.95)) : 0;
-  const panelOpacity = mode === "alone" ? 0.55 : mode === "edge" || mode === "missed" ? 0.7 : mode === "freeze" ? 0.7 : 1;
+  const panelOpacity = mode === "alone" ? 0.72 : mode === "edge" || mode === "missed" ? 0.82 : mode === "freeze" ? 0.8 : 1;
   const termP = mode === "term" ? ease(span(p, 0.08, 0.45)) : 0;
   const term2P = mode === "term" && label2 ? ease(span(p, 0.3, 0.7)) : 0;
 
@@ -329,6 +333,64 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
               </div>
             ) : null}
           </div>
+        ) : null}
+
+        {/* 落点四镜（alone/edge/missed/freeze）：那颗没被点开的光点必须是主角。
+            板上的点 dim 到 0.12 后几乎看不见（实测整帧边缘占比 0.0006），相机已把 27 号点放在屏幕 (960,520)，
+            这里在屏幕空间叠一颗呼吸的光点：alone 缓慢明灭，freeze 跟着全板一起暗下去 */}
+        {mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze" ? (
+          (() => {
+            const pulse = 0.62 + 0.2 * Math.sin(frame * 0.14);
+            // freeze：全板定格、暗下去，但金点要留成一颗余烬（压到 0.38 会让整帧边缘掉到 0.0009，等于死帧）
+            const dimmer = mode === "freeze" ? 1 - 0.3 * frozen : 1;
+            const o = pulse * dimmer;
+            const rr = 24;
+            return (
+              <>
+                {/* 光晕：一团大范围的暖光，让"只剩它"有重量 */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 960 - 150,
+                    top: 520 - 150,
+                    width: 300,
+                    height: 300,
+                    borderRadius: 150,
+                    background:
+                      "radial-gradient(circle, rgba(243,193,75,0.16) 0%, rgba(243,193,75,0.05) 46%, rgba(243,193,75,0) 70%)",
+                    opacity: o,
+                  }}
+                />
+                {/* 一圈细环：它是被点名的那颗 */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 960 - 56,
+                    top: 520 - 56,
+                    width: 112,
+                    height: 112,
+                    borderRadius: 56,
+                    border: "1.5px solid rgba(243,193,75,0.42)",
+                    opacity: o * 0.9,
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 960 - rr,
+                    top: 520 - rr,
+                    width: rr * 2,
+                    height: rr * 2,
+                    borderRadius: rr,
+                    background:
+                      "radial-gradient(circle at 38% 32%, rgba(255,240,205,0.98) 0%, rgba(243,193,75,0.9) 45%, rgba(122,92,28,0.6) 100%)",
+                    boxShadow: "0 0 60px rgba(243,193,75,0.55), 0 0 180px rgba(243,193,75,0.25)",
+                    opacity: o,
+                  }}
+                />
+              </>
+            );
+          })()
         ) : null}
 
         <Note text={note} p={span(p, 0.2, 0.45)} />

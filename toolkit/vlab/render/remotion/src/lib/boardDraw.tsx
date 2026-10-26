@@ -138,7 +138,9 @@ export const Panel: React.FC<PanelProps> = ({
     : [];
 
   return (
-    <g style={{ opacity, filter: frozen > 0 ? `grayscale(${clamp(frozen)}) brightness(${1 - 0.55 * clamp(frozen)})` : undefined }}>
+    // freeze（板定格、变暗）：原来压到 brightness 0.45 + 全灰，再叠镜头 dipOut 就成死帧
+    // （D4 实测尾帧边缘占比 0.0000）。改成"冷下来"而不是"熄掉"：灰度留 0.7，亮度只掉 0.28。
+    <g style={{ opacity, filter: frozen > 0 ? `grayscale(${clamp(frozen) * 0.7}) brightness(${1 - 0.28 * clamp(frozen)})` : undefined }}>
       <defs>
         <linearGradient id={`${id}-g`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={t.glass} />

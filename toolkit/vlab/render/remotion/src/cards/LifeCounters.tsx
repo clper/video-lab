@@ -84,16 +84,21 @@ export const LifeCounters: React.FC<Props> = ({ mode = "takeout", label = "", va
         {mode === "city" ? (
           <>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #05070f 0%, #0b1024 55%, #1a1a30 100%)" }} />
+            {/* 地平线的城市辉光：楼还没长起来时，这一层先把画面撑住（实测前 25% 整帧边缘占比 0.0000 = 空屏） */}
+            <div style={{ position: "absolute", left: 0, right: 0, top: 620, height: 340, background: "radial-gradient(1200px 320px at 50% 100%, rgba(255,196,120,0.30) 0%, rgba(255,170,110,0.13) 45%, rgba(255,150,90,0) 78%)", opacity: 0.45 + 0.35 * ease(span(p, 0.05, 0.6)) }} />
             <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0 }}>
               {city.map((b, i) => {
-                const rise = ease(span(p, 0.02 + (i % 7) * 0.03, 0.4 + (i % 7) * 0.03));
+                // 楼不从 0 长起：留 45% 起步，前 0.3s 就不是一片黑（原来首帧边缘占比 0.0000）
+                const rise = 0.45 + 0.55 * ease(span(p, 0.0 + (i % 7) * 0.02, 0.3 + (i % 7) * 0.02));
                 const top = 900 - b.bh * rise;
                 return (
                   <g key={i}>
-                    <rect x={b.bx} y={top} width={b.bw} height={900 - top} fill="#070a14" stroke="rgba(255,255,255,0.05)" />
+                    <rect x={b.bx} y={top} width={b.bw} height={900 - top} fill="#070a14" stroke="rgba(255,220,170,0.16)" strokeWidth={1.5} />
+                    {/* 楼顶被城市光照亮的一道轮廓：既是夜景的真实感，也给暗场立结构 */}
+                    <rect x={b.bx} y={top} width={b.bw} height={3} fill="rgba(255,205,130,0.5)" opacity={rise} />
                     {b.wins.map((w, k) => {
                       if (!w.on) return null;
-                      const on = ease(span(p, 0.3 + w.delay * 0.6, 0.38 + w.delay * 0.6)) * rise;
+                      const on = ease(span(p, 0.06 + w.delay * 0.5, 0.22 + w.delay * 0.5)) * rise;
                       return <rect key={k} x={b.bx + 8 + w.c * 22} y={top + 14 + w.r * 28} width={10} height={14} fill={w.warm ? "rgba(255,205,130,0.9)" : "rgba(170,210,255,0.8)"} opacity={on * 0.9} />;
                     })}
                   </g>

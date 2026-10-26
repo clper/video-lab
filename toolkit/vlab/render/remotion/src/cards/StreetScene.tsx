@@ -70,7 +70,7 @@ export const StreetScene: React.FC<Props> = ({ mode = "queue", line = "", title 
   const t = frame / fps;
 
   const night = mode === "title" || mode === "callback" || mode === "visitor" ? 1 : mode === "shadow" ? 0.25 : mode === "dark" ? 0.4 : 0;
-  const darkOut = mode === "dark" ? ease(span(p, 0.25, 0.85)) : 0;
+  const darkOut = mode === "dark" ? ease(span(p, 0.22, 0.78)) : 0;
 
   // 队伍：14 个人从左边那家的门口排到街头，微微挪动
   const queue = React.useMemo(() => {
@@ -109,8 +109,9 @@ export const StreetScene: React.FC<Props> = ({ mode = "queue", line = "", title 
   const vX = lerp(1900, SHOP_R.x + SHOP_R.w - 110, vK);
   const vBob = Math.abs(Math.sin(t * 7)) * 3 * (1 - vK);
 
-  // dark：8 个光点亮起
-  const pointsP = mode === "dark" ? ease(span(p, 0.6, 0.98)) : 0;
+  // dark：8 个光点亮起 —— 这 8 个点是这一镜的正主（"让世界重来八次"），
+  // 14px 的小点在成片里等于没有（实测中帧边缘占比 0.0005），改成带光晕的世界点，并在 p=0.9 前全部点满。
+  const pointsP = mode === "dark" ? ease(span(p, 0.34, 0.92)) : 0;
 
   return (
     <AbsoluteFill>
@@ -171,10 +172,39 @@ export const StreetScene: React.FC<Props> = ({ mode = "queue", line = "", title 
 
         {/* dark：暗场里的 8 个光点 */}
         {mode === "dark"
-          ? Array.from({ length: 8 }, (_, i) => {
-              const k = ease(span(pointsP, i / 8, i / 8 + 0.35));
-              return <div key={i} style={{ position: "absolute", left: 560 + i * 114, top: 520, width: 14, height: 14, borderRadius: 7, background: C.gold, opacity: k, boxShadow: `0 0 ${20 * k}px ${C.gold}` }} />;
-            })
+          ? (() => {
+              const lineK = ease(span(p, 0.26, 0.6));
+              const PW = 8;
+              const step = 114;
+              const x0 = 560;
+              return (
+                <>
+                  {/* 八个世界共用的一条很淡的基线：把 8 个点串成"八次重来"，也给暗场留结构 */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: x0 - 60,
+                      top: 527,
+                      width: (PW - 1) * step + 120,
+                      height: 2,
+                      background: `linear-gradient(90deg, rgba(243,193,75,0) 0%, rgba(243,193,75,${0.34 * lineK}) 16%, rgba(243,193,75,${0.34 * lineK}) 84%, rgba(243,193,75,0) 100%)`,
+                    }}
+                  />
+                  {Array.from({ length: PW }, (_, i) => {
+                    const k = ease(span(pointsP, (i / 9) * 0.45, (i / 9) * 0.45 + 0.55));
+                    const pulse = 0.86 + 0.14 * Math.sin(t * 1.6 + i * 0.8);
+                    const o = k * pulse;
+                    return (
+                      <div key={i} style={{ position: "absolute", left: x0 + i * step + 7, top: 527, width: 0, height: 0 }}>
+                        <div style={{ position: "absolute", left: -70, top: -70, width: 140, height: 140, borderRadius: 70, background: "radial-gradient(circle, rgba(243,193,75,0.20) 0%, rgba(243,193,75,0.06) 45%, rgba(243,193,75,0) 70%)", opacity: o }} />
+                        <div style={{ position: "absolute", left: -34, top: -34, width: 68, height: 68, borderRadius: 34, border: "1.5px solid rgba(243,193,75,0.45)", opacity: o * 0.9 }} />
+                        <div style={{ position: "absolute", left: -15, top: -15, width: 30, height: 30, borderRadius: 15, background: "radial-gradient(circle at 38% 32%, rgba(255,240,205,0.98) 0%, rgba(243,193,75,0.92) 45%, rgba(122,92,28,0.6) 100%)", boxShadow: `0 0 ${34 * o}px rgba(243,193,75,0.6), 0 0 ${90 * o}px rgba(243,193,75,0.28)`, opacity: o }} />
+                      </div>
+                    );
+                  })}
+                </>
+              );
+            })()
           : null}
 
         {/* 大字 */}

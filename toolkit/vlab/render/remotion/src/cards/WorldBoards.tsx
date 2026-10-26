@@ -79,7 +79,8 @@ export const WorldBoards: React.FC<Props> = ({
     if (mode === "inflow" || mode === "songs") return 0;
     if (mode === "boards") return ease(span(p, 0.02 + w * 0.05, 0.3 + w * 0.05));
     if (focus >= 0) return w === focus ? 1 : 0.14;
-    if (mode === "youdot") return 0.42 * ease(span(p, 0, 0.5));
+    // youdot：八块板淡入。原来从 0 起，前 0.3s 是空屏（首帧边缘 0.0010）；给一个起始底再淡入
+    if (mode === "youdot") return 0.42 * (0.42 + 0.58 * ease(span(p, 0, 0.3)));
     return 1;
   };
 

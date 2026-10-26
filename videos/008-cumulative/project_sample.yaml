@@ -1,0 +1,140 @@
+# 008《你没火，可能只是没被选中》样片：12 个代表镜，先验收 4 张新卡
+#   streetScene（H1/H3/T1/D7）· worldBoards（E1/E3/R2）· worldBoard（E4/M6/Q7）· lifeCounters（L2）· regressTitle（END）
+# 文字和 project.yaml 完全一致（剧本 v1.1 已确认，一字不改）；只改了 min_hold（见 project.yaml 注释）。
+
+id: 008-sample
+title: 你没火（样片）
+brand: VIBE / 选中
+style: styles/select.yaml
+aspect: landscape
+fps: 30
+
+fx_default:
+  flash: false
+  dipIn: 0.12
+  dipFrames: 4
+
+voice: {name: zh-CN-YunxiNeural, rate: "+10%", lead: 0.12, trail: 0.22}
+
+audio:
+  music: false
+
+fx: {handheld: true, sweep: true, flash: false, breathing: true, grain: true, stardust: true, dip: true, subtitleBar: false}
+
+scenes:
+
+  - id: H1
+    renderer: remotion
+    card: streetScene
+    fx: {dipIn: 0.75, dipFrames: 12, stardust: false}
+    narration: 两家店，一家门口排长队，一家空着。
+    min_hold: 4.1
+    beats: 3
+    params: {mode: queue}
+
+  - id: H3
+    renderer: remotion
+    card: streetScene
+    fx: {stardust: false}
+    narration: 可是，排队的那家，真的更好吃吗？
+    no_sub: true
+    min_hold: 4.2
+    beats: 3
+    params: {mode: shadow, line: 排队的那家，真的更好吃吗？}
+
+  - id: T1
+    renderer: remotion
+    card: streetScene
+    fx: {dipIn: 0.55, dipOut: 0.55, dipFrames: 10, stardust: false}
+    narration: ""
+    min_hold: 4.8
+    beats: 3
+    params: {mode: title, title: 你没火，可能只是没被选中}
+
+  # ── 实验：48 首歌、8 个世界、一个数字 ───────────────────────────
+
+  - id: E1
+    renderer: remotion
+    card: worldBoards
+    fx: {dipIn: 0.55, dipFrames: 10}
+    narration: 研究者找来一万四千多人，
+    min_hold: 2.8
+    beats: 3
+    params: {mode: inflow, count: 14341, note: 多数招募自一个青少年网站}
+
+  - id: E3
+    renderer: remotion
+    card: worldBoards
+    narration: 这些人被随机分进八个一模一样的世界，
+    min_hold: 3.3
+    beats: 3
+    params: {mode: boards, note: 实验共两轮，这里合在一起讲}
+
+  - id: E4
+    renderer: remotion
+    card: worldBoard
+    narration: 在这里，你能看到每首歌被下载了几次。
+    min_hold: 3.4
+    beats: 3
+    params: {mode: counting}
+
+  - id: R2
+    renderer: remotion
+    card: worldBoards
+    narration: 有一首中等的歌，在一个世界里是冠军，
+    min_hold: 3.5
+    beats: 3
+    params: {mode: champion, badge: 第 1 名}
+
+  - id: M6
+    renderer: remotion
+    card: worldBoard
+    narration: 这叫累积优势。
+    min_hold: 2.0
+    beats: 2
+    params: {mode: term, label: 累积优势, sub: Cumulative Advantage}
+
+  - id: L2
+    renderer: remotion
+    card: lifeCounters
+    fx: {stardust: false}
+    narration: 点外卖，先看销量；
+    min_hold: 2.4
+    beats: 2
+    params: {mode: takeout, count: 2863, unit: 已售}
+
+  - id: Q7
+    renderer: remotion
+    card: worldBoard
+    narration: 最不受欢迎的歌，被标成了第一。
+    min_hold: 3.0
+    beats: 3
+    params: {mode: fakebadge, badge: 「第 1 名」}
+
+  - id: D7
+    renderer: remotion
+    card: streetScene
+    fx: {dipIn: 0.55, dipFrames: 10, stardust: false}
+    narration: 你没火，可能只是这个世界没选中你。
+    no_sub: true
+    min_hold: 3.8
+    beats: 2
+    params: {mode: callback, line: 你没火，可能只是这个世界没选中你——}
+
+  - id: END
+    renderer: remotion
+    card: regressTitle
+    fx: {dipIn: 0.55, dipFrames: 10}
+    narration: ""
+    min_hold: 4.8
+    beats: 2
+    params:
+      title: 你没火，可能只是没被选中
+      size: 112
+      sub: ""
+      latin: ""
+      bead: false
+      refs:
+        - "参考：Salganik, Dodds & Watts, Science 2006 · Salganik & Watts, Social Psychology Quarterly 2008"
+        - "局限：研究者认为，现实里营销和媒体的影响，比实验里强得多"
+        - "中间的模拟是简化模型，只用来演示原理"

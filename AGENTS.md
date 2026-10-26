@@ -95,6 +95,7 @@ archive/     【存档】000 参考项目的只读快照（不要改，它自带
 | 几条片子 A/B | `uv run vlab-ab <成片1> <成片2> <成片3> --out <输出.png>`（每条一行，同列是同一叙事位置） |
 | 看有哪些镜头卡 | `uv run python -m vlab.render.remotion_bridge --list` |
 | 看每张卡长什么样 | `uv run vlab-cards --out <输出.png>`（每张卡渲 3.2s 抽一帧拼图） |
+| 只重渲几个镜头 | `uv run python -m vlab.tools.redo <项目>/project.yaml H4 D1 D2` —— 改了一张卡以后，remotion 指纹算的是整个 `src/**/*.ts*`，全片会判成要重渲；这个只重渲指定镜头，其余回写 `.hash`（旧片段移到 `media/_trash/`） |
 | 单独渲染一张卡 | `uv run python -m vlab.render.remotion_bridge <卡名> <输出.mp4> --seconds 4 --params '{"title":"…"}'` |
 | 分析参考视频的风格 | `uv run vlab-style <视频> <输出目录>` |
 | 环境自检 | `uv run vlab-check` |
@@ -128,6 +129,11 @@ archive/     【存档】000 参考项目的只读快照（不要改，它自带
 
 ## 已知坑
 
+- **总装最后一步会被批量删除保护拦下来**：`vlab-build` 收尾要删一批临时文件，一轮里删过 50 个就会中止，
+  现象是日志停在「合配音 + 烧字幕…」、`silent_*.mp4` 和 `premix_*.mp4` 生成了但 `renders/` 里那张成片没更新。
+  不是构建失败——**换一轮再跑一次就行**（会复用所有片段，只重做拼接和混音）。
+  自己写脚本时要避开删除：`remotion_bridge.render_shot` 会 `out.unlink()`，先把旧片段 `os.replace` 改名移走它就不删了
+  （`vlab.tools.redo` 就是这么做的）。
 - **仓库路径含中文括号【】**：Python 3.11 在中文 Windows 上按 GBK 读 `.pth`（开 UTF-8 模式也一样），
   可编辑安装写进 `.pth` 的仓库路径会被读坏。已在 `pyproject.toml` 里另装一个纯 ASCII 的 `_vlab_root.pth` 解决；
   如果 `import vlab` 失败，先 `uv sync --reinstall-package video-lab`。

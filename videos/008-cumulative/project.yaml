@@ -26,26 +26,30 @@ fx_default:
   dipFrames: 4
 
 # 占位声音（见上）。换声音时只改 name / rate。
-# lead / trail：每镜开口前、说完后的静音。52 个镜头，默认的 0.25 + 0.35 一共是 31 秒空白，这里收到 0.12 + 0.22
-voice: {name: zh-CN-YunxiNeural, rate: "+10%", lead: 0.12, trail: 0.22}
+# lead / trail：每镜开口前、说完后的静音。52 镜的固定开销 = (lead+trail+TTS首尾静音0.9s)×52，
+# 0.08+0.12 是实测压到 ≤170s 的取值（2026-10-26 两轮实测：0.34→186s，0.22+rate14%→约 167s）。
+voice: {name: zh-CN-YunxiNeural, rate: "+14%", lead: 0.08, trail: 0.12}
 
 audio:
   music: true
   music_fn: fold_score      # 带段落的铺底，段落表按本片章节写（时间来自 build/008-cumulative/timeline.json）
+  # 段落边界按镜号对齐新时间轴（166.61s，52 镜）。改配音后时间轴会变，这张表要跟着重排，
+  # 否则配乐会和章节错位。镜号 → 秒：H4=13.99 T1=18.19 E7=42.39 I2=49.10 B1=69.07
+  # M7=89.57 L6=107.04 Q4=116.90 B2=135.97 D4=148.91 D6=155.61 D8=162.21 END=166.61
   music_segs:
-    - [0.00, 15.54, {lp: 1200, gain: 0.82}]   # 钩子：街上，闷一点
-    - [15.54, 20.34, {gain: 1.0}]   # 片名：全开
-    - [20.34, 46.92, {gain: 0.88}]   # 实验：铺底
-    - [46.92, 54.13, {lp: 2600, gain: 0.85}]   # 直觉：收一点，等反转
-    - [54.13, 75.74, {gain: 1.0}]   # 反转 1：全开
-    - [75.74, 99.13, {hp: 220, gain: 0.9}]   # 原理：抽掉低频，看清机制
-    - [99.13, 118.50, {gain: 1.0}]   # 生活：回到全开
-    - [118.50, 139.74, {gain: 0.92}]   # 运气还是实力
-    - [139.74, 151.01, {gain: 1.0}]   # 倒置实验：假人气变真、最好的爬回来
-    - [151.01, 165.76, {lp: 1800, gain: 0.78}]   # 落点：贴近，闷
-    - [165.76, 173.16, {gain: 1.0}]   # 云海：打开
-    - [173.16, 181.56, {lp: 2200, gain: 0.8}]   # 回场：收
-    - [181.56, 99999.00, {lp: 1500, gain: 0.7}]   # 片尾：只剩底
+    - [0.00, 13.99, {lp: 1200, gain: 0.82}]   # 钩子 H1–H4：街上，闷一点
+    - [13.99, 18.19, {gain: 1.0}]   # 片名 T1：全开
+    - [18.19, 42.39, {gain: 0.88}]   # 实验 E1–E7：铺底
+    - [42.39, 49.10, {lp: 2600, gain: 0.85}]   # 直觉 I1–I2：收一点，等反转
+    - [49.10, 69.07, {gain: 1.0}]   # 反转 R1–R5+B1：全开
+    - [69.07, 89.57, {hp: 220, gain: 0.9}]   # 原理 M1–M7：抽掉低频，看清机制
+    - [89.57, 107.04, {gain: 1.0}]   # 生活 L1–L6：回到全开
+    - [107.04, 116.90, {gain: 0.92}]   # 运气还是实力 Q1–Q4
+    - [116.90, 135.97, {gain: 1.0}]   # 倒置实验 Q5–Q9+B2：假人气变真、最好的爬回来
+    - [135.97, 148.91, {lp: 1800, gain: 0.78}]   # 落点 D1–D4：贴近，闷
+    - [148.91, 155.61, {gain: 1.0}]   # 新世界 D5–D6：8 块板从 0 重新开始、各长各的；从定格里打开
+    - [155.61, 162.21, {lp: 2200, gain: 0.8}]   # 回场 D7–D8：收
+    - [162.21, 99999.00, {lp: 1500, gain: 0.7}]   # 片尾 END：只剩底
   music_v: 1
   bpm: 96
   seed: 31
@@ -63,7 +67,7 @@ scenes:
     card: streetScene
     fx: {dipIn: 0.75, dipFrames: 12, stardust: false}
     narration: 两家店，一家门口排长队，一家空着。
-    min_hold: 3.4
+    min_hold: 4.1
     beats: 3
     params: {mode: queue}
 
@@ -72,7 +76,7 @@ scenes:
     card: streetScene
     fx: {stardust: false}
     narration: 你会进哪家？
-    min_hold: 3.0
+    min_hold: 1.8
     beats: 2
     params: {mode: doors}
 
@@ -82,7 +86,7 @@ scenes:
     fx: {stardust: false}
     narration: 可是，排队的那家，真的更好吃吗？
     no_sub: true
-    min_hold: 3.8
+    min_hold: 4.2
     beats: 3
     params: {mode: shadow, line: 排队的那家，真的更好吃吗？}
 
@@ -91,7 +95,7 @@ scenes:
     card: streetScene
     fx: {dipOut: 0.55, dipFrames: 10, stardust: false}
     narration: 有人做过一个实验：让世界重来八次。
-    min_hold: 3.8
+    min_hold: 3.5
     beats: 3
     params: {mode: dark, note: Salganik, Dodds & Watts · Science 2006}
 
@@ -101,7 +105,7 @@ scenes:
     card: streetScene
     fx: {dipIn: 0.55, dipOut: 0.55, dipFrames: 10, stardust: false}
     narration: ""
-    min_hold: 4.8
+    min_hold: 4.2
     beats: 3
     params: {mode: title, title: 你没火，可能只是没被选中}
 
@@ -111,7 +115,7 @@ scenes:
     card: worldBoards
     fx: {dipIn: 0.55, dipFrames: 10}
     narration: 研究者找来一万四千多人，
-    min_hold: 3.2
+    min_hold: 2.8
     beats: 3
     params: {mode: inflow, count: 14341, note: 多数招募自一个青少年网站}
 
@@ -119,7 +123,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 和四十八首没人听过的歌。
-    min_hold: 3.2
+    min_hold: 2.3
     beats: 2
     params: {mode: songs, label: "48"}
 
@@ -127,7 +131,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 这些人被随机分进八个一模一样的世界，
-    min_hold: 3.6
+    min_hold: 3.3
     beats: 3
     params: {mode: boards, note: 实验共两轮，这里合在一起讲}
 
@@ -135,7 +139,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 在这里，你能看到每首歌被下载了几次。
-    min_hold: 3.6
+    min_hold: 3.4
     beats: 3
     params: {mode: counting}
 
@@ -143,7 +147,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 就一个数字，像门口的队，像网上的销量。
-    min_hold: 3.6
+    min_hold: 4.0
     beats: 3
     params: {mode: digit}
 
@@ -168,7 +172,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 你猜，八个世界的榜单会差不多吗？
-    min_hold: 3.6
+    min_hold: 3.5
     beats: 2
     params: {mode: grow}
 
@@ -176,7 +180,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 直觉说：好歌在哪儿都会火。
-    min_hold: 3.2
+    min_hold: 2.9
     beats: 2
     params: {mode: guess}
 
@@ -185,7 +189,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 结果，不同的世界，火起来的歌不一样。
-    min_hold: 3.8
+    min_hold: 3.6
     beats: 3
     params: {mode: diverge}
 
@@ -193,7 +197,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 有一首中等的歌，在一个世界里是冠军，
-    min_hold: 3.8
+    min_hold: 3.5
     beats: 3
     params: {mode: champion, badge: 第 1 名}
 
@@ -201,7 +205,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 在另一个世界里，排在很后面。
-    min_hold: 3.4
+    min_hold: 2.9
     beats: 3
     params: {mode: loser, badge: 第 40 名 / 48}
 
@@ -217,7 +221,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 谁会火，也更难猜了。
-    min_hold: 3.0
+    min_hold: 2.8
     beats: 2
     params: {mode: unpredictable}
 
@@ -225,7 +229,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: ""
-    min_hold: 2.5
+    min_hold: 2.2
     beats: 2
     params: {mode: glide}
 
@@ -235,7 +239,7 @@ scenes:
     card: worldBoard
     fx: {dipIn: 0.4, dipFrames: 8}
     narration: 为什么？
-    min_hold: 2.6
+    min_hold: 1.8
     beats: 2
     params: {mode: sim0}
 
@@ -243,7 +247,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 开头几个人点哪首，多少带点随机。
-    min_hold: 3.6
+    min_hold: 3.1
     beats: 3
     params: {mode: sim1, note: 示意 · 简化模型，不是实验数据}
 
@@ -251,7 +255,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 一首歌刚好多被点了几下，
-    min_hold: 3.0
+    min_hold: 2.7
     beats: 2
     params: {mode: sim2, note: 示意 · 简化模型，不是实验数据}
 
@@ -259,7 +263,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 后来的人看到数字，更愿意点开它。
-    min_hold: 3.6
+    min_hold: 3.1
     beats: 3
     params: {mode: sim3, note: 示意 · 简化模型，不是实验数据}
 
@@ -267,7 +271,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 领先一点，就被放大一点。
-    min_hold: 3.2
+    min_hold: 2.7
     beats: 2
     params: {mode: sim4, note: 示意 · 简化模型，不是实验数据}
 
@@ -275,7 +279,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 这叫累积优势。
-    min_hold: 2.8
+    min_hold: 2.0
     beats: 2
     params: {mode: term, label: 累积优势, sub: Cumulative Advantage}
 
@@ -284,7 +288,7 @@ scenes:
     card: worldBoard
     fx: {dipOut: 0.4, dipFrames: 8}
     narration: 社会学家默顿，把这类现象叫做马太效应。
-    min_hold: 3.8
+    min_hold: 4.2
     beats: 2
     params: {mode: term, label: 累积优势, sub: Cumulative Advantage, label2: 马太效应, note: Merton 1968}
 
@@ -292,9 +296,9 @@ scenes:
   - id: L1
     renderer: remotion
     card: lifeCounters
-    fx: {dipIn: 0.4, dipFrames: 8, stardust: false}
+    fx: {dipIn: 0.3, dipFrames: 5, stardust: false}
     narration: 这不只发生在音乐里。
-    min_hold: 3.0
+    min_hold: 2.2
     beats: 2
     params: {mode: city}
 
@@ -303,9 +307,9 @@ scenes:
     card: lifeCounters
     fx: {stardust: false}
     narration: 点外卖，先看销量；
-    min_hold: 2.8
+    min_hold: 2.4
     beats: 2
-    params: {mode: takeout, count: 2863, unit: 已售}
+    params: {mode: takeout, value: 2863, suffix: 已售}
 
   - id: L3
     renderer: remotion
@@ -314,22 +318,22 @@ scenes:
     narration: 刷视频，先点播放多的；
     min_hold: 2.8
     beats: 2
-    params: {mode: video, count: 412000, unit: 播放}
+    params: {mode: video, value: 412000, suffix: 播放}
 
   - id: L4
     renderer: remotion
     card: lifeCounters
     fx: {stardust: false}
     narration: 选电影，先看票房。
-    min_hold: 2.8
+    min_hold: 2.5
     beats: 2
-    params: {mode: movie, count: 9.6, unit: 亿票房}
+    params: {mode: movie, value: 9.6, suffix: 亿票房, decimals: 1}
 
   - id: L5
     renderer: remotion
     card: worldBoards
     narration: 你每天，都在这个实验里。
-    min_hold: 3.2
+    min_hold: 2.7
     beats: 2
     params: {mode: youdot}
 
@@ -338,7 +342,7 @@ scenes:
     card: worldBoard
     fx: {dipOut: 0.4, dipFrames: 8}
     narration: 你随手一点，也在帮领先的，再领先一点。
-    min_hold: 3.8
+    min_hold: 3.7
     beats: 3
     params: {mode: tap}
 
@@ -348,7 +352,7 @@ scenes:
     card: worldBoards
     fx: {dipIn: 0.4, dipFrames: 8}
     narration: 那是不是全靠运气？
-    min_hold: 2.8
+    min_hold: 2.0
     beats: 2
     params: {mode: final}
 
@@ -356,7 +360,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 也不是。
-    min_hold: 2.4
+    min_hold: 1.8
     beats: 2
     params: {mode: final, push: true}
 
@@ -364,7 +368,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 最好的歌，很少垫底；
-    min_hold: 3.0
+    min_hold: 2.6
     beats: 2
     params: {mode: best, note: 按对照组排名}
 
@@ -372,7 +376,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 最差的歌，很少夺冠。
-    min_hold: 3.0
+    min_hold: 2.8
     beats: 2
     params: {mode: worst}
 
@@ -380,7 +384,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 后来，他们又做了一次更狠的：
-    min_hold: 3.2
+    min_hold: 3.1
     beats: 2
     params: {mode: fresh, note: Salganik & Watts · 2008}
 
@@ -388,7 +392,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 把排行榜整个倒过来，
-    min_hold: 3.0
+    min_hold: 2.1
     beats: 2
     params: {mode: flip}
 
@@ -396,7 +400,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 最不受欢迎的歌，被标成了第一。
-    min_hold: 3.4
+    min_hold: 3.0
     beats: 3
     params: {mode: fakebadge, badge: 「第 1 名」}
 
@@ -404,7 +408,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 结果，大多数歌，假的人气慢慢变成了真的。
-    min_hold: 4.2
+    min_hold: 4.5
     beats: 2
     params: {mode: selffulfil}
 
@@ -412,7 +416,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 但最好的那几首，又慢慢爬了回来。
-    min_hold: 3.8
+    min_hold: 3.3
     beats: 2
     params: {mode: recover}
 
@@ -421,7 +425,7 @@ scenes:
     card: worldBoard
     fx: {dipOut: 0.5, dipFrames: 10}
     narration: ""
-    min_hold: 2.5
+    min_hold: 2.2
     beats: 2
     params: {mode: glide}
 
@@ -431,7 +435,7 @@ scenes:
     card: worldBoard
     fx: {dipIn: 0.5, dipFrames: 10}
     narration: 所以，如果你的视频、你的小店、你的文章没火，
-    min_hold: 4.4
+    min_hold: 4.9
     beats: 2
     params: {mode: alone}
 
@@ -439,7 +443,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 可能不是它不够好。
-    min_hold: 2.8
+    min_hold: 1.9
     beats: 2
     params: {mode: edge}
 
@@ -447,39 +451,42 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 只是开头那几个人，刚好没点开它。
-    min_hold: 3.6
+    min_hold: 3.4
     beats: 3
     params: {mode: missed}
 
   - id: D4
     renderer: remotion
     card: worldBoard
-    fx: {dipOut: 0.7, dipFrames: 12}
+    # freeze 本身就已经"板定格、变暗"，再叠 dipOut 会把尾帧压成死黑（实测边缘 0.0000）。
+    # D4→D5 是暗切暗（云海自带 fade_in 0.6），不存在"亮切暗发亮"，只留一点点收尾。
+    fx: {dipOut: 0.15, dipFrames: 12}
     narration: 世界没法重来。
-    min_hold: 2.8
+    min_hold: 2.0
     beats: 2
     params: {mode: freeze}
 
-  # 云海：公共着色器，两镜连飞（D6 的 t0 = D5 的时长，配音后填）
+  # 原来是公共着色器的云海（cloudsea.frag）：全片唯一的高亮低饱和写实画面
+  # （亮度 158–160 vs 全片 13–40，饱和度只有三分之一），夹在落点中间像换了部片子。
+  # 项目负责人 2026-10-26 定：不放。改用板面自己的语言，两句各回扣一次实验段：
+  #   D5 → E3 的"8 块板第一次出现"（全都从 0 开始）= 重新开始
+  #   D6 → R1 的"各板长出不同的最高柱" = 每个新世界长成它自己的样子
+  # 顺带把 Q5–D4 那 10 连 worldBoard 打断（worldBoards 是另一张卡）。
   - id: D5
-    renderer: glsl
-    frag: ../../toolkit/vlab/scenes/shaders/cloudsea.frag
-    ss: 1
-    t0: 0.0
-    fade_in: 0.6
+    renderer: remotion
+    card: worldBoards
     narration: 但你可以再做一个，再发一次。
-    min_hold: 3.6
-    beats: 2
+    min_hold: 3.1
+    beats: 3
+    params: {mode: boards}
 
   - id: D6
-    renderer: glsl
-    frag: ../../toolkit/vlab/scenes/shaders/cloudsea.frag
-    ss: 1
-    t0: 3.60
-    fade_out: 0.5
+    renderer: remotion
+    card: worldBoards
     narration: 每一次重新开始，都是一个新的世界。
-    min_hold: 3.8
-    beats: 2
+    min_hold: 3.6
+    beats: 3
+    params: {mode: diverge}
 
   - id: D7
     renderer: remotion
@@ -487,7 +494,7 @@ scenes:
     fx: {dipIn: 0.55, dipFrames: 10, stardust: false}
     narration: 你没火，可能只是这个世界没选中你。
     no_sub: true
-    min_hold: 4.2
+    min_hold: 3.8
     beats: 2
     params: {mode: callback, line: 你没火，可能只是这个世界没选中你——}
 
@@ -497,7 +504,7 @@ scenes:
     fx: {dipOut: 0.55, dipFrames: 10, stardust: false}
     narration: 那就，多去几个世界。
     no_sub: true
-    min_hold: 4.2
+    min_hold: 2.8
     beats: 2
     params: {mode: visitor, line: 那就，多去几个世界。}
 
@@ -507,7 +514,7 @@ scenes:
     card: regressTitle
     fx: {dipIn: 0.55, dipFrames: 10}
     narration: ""
-    min_hold: 4.8
+    min_hold: 4.4
     beats: 2
     params:
       title: 你没火，可能只是没被选中

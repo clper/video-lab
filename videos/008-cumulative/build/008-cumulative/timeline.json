@@ -5,525 +5,525 @@
   "width": 1920,
   "height": 1080,
   "fps": 30,
-  "duration": 186.36,
+  "duration": 166.612,
   "scenes": [
     {
       "id": "H1",
       "narration": "两家店，一家门口排长队，一家空着。",
-      "min_hold": 3.4,
+      "min_hold": 4.1,
       "start": 0.0,
-      "end": 4.42,
+      "end": 4.136,
       "width": 1920,
       "height": 1080,
-      "voice_start": 0.12,
-      "voice_end": 4.2,
+      "voice_start": 0.08,
+      "voice_end": 4.016,
       "words": [
         {
           "text": "两家",
-          "start": 0.215,
-          "end": 0.568
+          "start": 0.174,
+          "end": 0.514
         },
         {
           "text": "店",
-          "start": 0.568,
-          "end": 0.84
+          "start": 0.514,
+          "end": 0.777
         },
         {
           "text": "一家",
-          "start": 1.181,
-          "end": 1.431
+          "start": 1.106,
+          "end": 1.347
         },
         {
           "text": "门口",
-          "start": 1.443,
-          "end": 1.806
+          "start": 1.358,
+          "end": 1.709
         },
         {
           "text": "排长队",
-          "start": 1.829,
-          "end": 2.409
+          "start": 1.731,
+          "end": 2.29
         },
         {
           "text": "一家",
-          "start": 2.772,
-          "end": 3.0
+          "start": 2.641,
+          "end": 2.86
         },
         {
           "text": "空",
-          "start": 3.011,
-          "end": 3.238
+          "start": 2.871,
+          "end": 3.09
         },
         {
           "text": "着",
-          "start": 3.238,
-          "end": 3.409
+          "start": 3.091,
+          "end": 3.255
         }
       ]
     },
     {
       "id": "H2",
       "narration": "你会进哪家？",
-      "min_hold": 3.0,
-      "start": 4.42,
-      "end": 7.42,
+      "min_hold": 1.8,
+      "start": 4.136,
+      "end": 6.136,
       "width": 1920,
       "height": 1080,
-      "voice_start": 4.54,
-      "voice_end": 6.388,
+      "voice_start": 4.216,
+      "voice_end": 6.016,
       "words": [
         {
           "text": "你",
-          "start": 4.635,
-          "end": 4.885
+          "start": 4.31,
+          "end": 4.551
         },
         {
           "text": "会",
-          "start": 4.897,
-          "end": 5.045
+          "start": 4.562,
+          "end": 4.705
         },
         {
           "text": "进",
-          "start": 5.045,
-          "end": 5.147
+          "start": 4.705,
+          "end": 4.803
         },
         {
           "text": "哪",
-          "start": 5.158,
-          "end": 5.283
+          "start": 4.814,
+          "end": 4.935
         },
         {
           "text": "家",
-          "start": 5.283,
-          "end": 5.601
+          "start": 4.935,
+          "end": 5.242
         }
       ]
     },
     {
       "id": "H3",
       "narration": "可是，排队的那家，真的更好吃吗？",
-      "min_hold": 3.8,
+      "min_hold": 4.2,
       "no_sub": true,
-      "start": 7.42,
-      "end": 11.624,
+      "start": 6.136,
+      "end": 10.336,
       "width": 1920,
       "height": 1080,
-      "voice_start": 7.54,
-      "voice_end": 11.404,
+      "voice_start": 6.216,
+      "voice_end": 9.96,
       "words": [
         {
           "text": "可是",
-          "start": 7.635,
-          "end": 8.135
+          "start": 6.31,
+          "end": 6.792
         },
         {
           "text": "排队",
-          "start": 8.567,
-          "end": 8.931
+          "start": 7.209,
+          "end": 7.56
         },
         {
           "text": "的",
-          "start": 8.931,
-          "end": 8.988
+          "start": 7.56,
+          "end": 7.615
         },
         {
           "text": "那",
-          "start": 8.999,
-          "end": 9.124
+          "start": 7.626,
+          "end": 7.746
         },
         {
           "text": "家",
-          "start": 9.124,
-          "end": 9.488
+          "start": 7.746,
+          "end": 8.097
         },
         {
           "text": "真的",
-          "start": 9.749,
-          "end": 9.988
+          "start": 8.349,
+          "end": 8.58
         },
         {
           "text": "更",
-          "start": 9.999,
-          "end": 10.09
+          "start": 8.591,
+          "end": 8.678
         },
         {
           "text": "好吃",
-          "start": 10.09,
-          "end": 10.408
+          "start": 8.678,
+          "end": 8.985
         },
         {
           "text": "吗",
-          "start": 10.408,
-          "end": 10.624
+          "start": 8.985,
+          "end": 9.194
         }
       ]
     },
     {
       "id": "H4",
       "narration": "有人做过一个实验：让世界重来八次。",
-      "min_hold": 3.8,
-      "start": 11.624,
-      "end": 15.54,
+      "min_hold": 3.5,
+      "start": 10.336,
+      "end": 13.992,
       "width": 1920,
       "height": 1080,
-      "voice_start": 11.744,
-      "voice_end": 15.32,
+      "voice_start": 10.416,
+      "voice_end": 13.872,
       "words": [
         {
           "text": "有人",
-          "start": 11.839,
-          "end": 12.101
+          "start": 10.51,
+          "end": 10.762
         },
         {
           "text": "做",
-          "start": 12.124,
-          "end": 12.237
+          "start": 10.784,
+          "end": 10.894
         },
         {
           "text": "过",
-          "start": 12.237,
-          "end": 12.305
+          "start": 10.894,
+          "end": 10.959
         },
         {
           "text": "一个",
-          "start": 12.317,
-          "end": 12.453
+          "start": 10.97,
+          "end": 11.102
         },
         {
           "text": "实验",
-          "start": 12.464,
-          "end": 12.896
+          "start": 11.113,
+          "end": 11.53
         },
         {
           "text": "让",
-          "start": 13.237,
-          "end": 13.385
+          "start": 11.859,
+          "end": 12.001
         },
         {
           "text": "世界",
-          "start": 13.396,
-          "end": 13.817
+          "start": 12.012,
+          "end": 12.418
         },
         {
           "text": "重来",
-          "start": 13.817,
-          "end": 14.124
+          "start": 12.418,
+          "end": 12.714
         },
         {
           "text": "八次",
-          "start": 14.135,
-          "end": 14.51
+          "start": 12.725,
+          "end": 13.087
         }
       ]
     },
     {
       "id": "T1",
       "narration": "",
-      "min_hold": 4.8,
-      "start": 15.54,
-      "end": 20.34,
+      "min_hold": 4.2,
+      "start": 13.992,
+      "end": 18.192,
       "width": 1920,
       "height": 1080,
-      "voice_start": 15.66,
-      "voice_end": 15.66,
+      "voice_start": 14.072,
+      "voice_end": 14.072,
       "words": []
     },
     {
       "id": "E1",
       "narration": "研究者找来一万四千多人，",
-      "min_hold": 3.2,
-      "start": 20.34,
-      "end": 23.54,
+      "min_hold": 2.8,
+      "start": 18.192,
+      "end": 21.008,
       "width": 1920,
       "height": 1080,
-      "voice_start": 20.46,
-      "voice_end": 23.172,
+      "voice_start": 18.272,
+      "voice_end": 20.888,
       "words": [
         {
           "text": "研究者",
-          "start": 20.555,
-          "end": 21.112
+          "start": 18.366,
+          "end": 18.903
         },
         {
           "text": "找来",
-          "start": 21.135,
-          "end": 21.362
+          "start": 18.925,
+          "end": 19.144
         },
         {
           "text": "一万四千",
-          "start": 21.385,
-          "end": 22.021
+          "start": 19.166,
+          "end": 19.78
         },
         {
           "text": "多",
-          "start": 22.033,
-          "end": 22.146
+          "start": 19.791,
+          "end": 19.901
         },
         {
           "text": "人",
-          "start": 22.146,
-          "end": 22.385
+          "start": 19.901,
+          "end": 20.131
         }
       ]
     },
     {
       "id": "E2",
       "narration": "和四十八首没人听过的歌。",
-      "min_hold": 3.2,
-      "start": 23.54,
-      "end": 26.74,
+      "min_hold": 2.3,
+      "start": 21.008,
+      "end": 23.56,
       "width": 1920,
       "height": 1080,
-      "voice_start": 23.66,
-      "voice_end": 26.084,
+      "voice_start": 21.088,
+      "voice_end": 23.44,
       "words": [
         {
           "text": "和",
-          "start": 23.755,
-          "end": 23.903
+          "start": 21.182,
+          "end": 21.324
         },
         {
           "text": "四十八",
-          "start": 23.915,
-          "end": 24.301
+          "start": 21.335,
+          "end": 21.708
         },
         {
           "text": "首",
-          "start": 24.301,
-          "end": 24.46
+          "start": 21.708,
+          "end": 21.862
         },
         {
           "text": "没",
-          "start": 24.483,
-          "end": 24.63
+          "start": 21.884,
+          "end": 22.026
         },
         {
           "text": "人",
-          "start": 24.63,
-          "end": 24.721
+          "start": 22.026,
+          "end": 22.114
         },
         {
           "text": "听",
-          "start": 24.733,
-          "end": 24.88
+          "start": 22.125,
+          "end": 22.267
         },
         {
           "text": "过",
-          "start": 24.88,
-          "end": 24.971
+          "start": 22.267,
+          "end": 22.355
         },
         {
           "text": "的",
-          "start": 24.971,
-          "end": 25.051
+          "start": 22.355,
+          "end": 22.432
         },
         {
           "text": "歌",
-          "start": 25.051,
-          "end": 25.301
+          "start": 22.432,
+          "end": 22.673
         }
       ]
     },
     {
       "id": "E3",
       "narration": "这些人被随机分进八个一模一样的世界，",
-      "min_hold": 3.6,
-      "start": 26.74,
-      "end": 30.44,
+      "min_hold": 3.3,
+      "start": 23.56,
+      "end": 27.0,
       "width": 1920,
       "height": 1080,
-      "voice_start": 26.86,
-      "voice_end": 30.22,
+      "voice_start": 23.64,
+      "voice_end": 26.88,
       "words": [
         {
           "text": "这些",
-          "start": 26.955,
-          "end": 27.251
+          "start": 23.734,
+          "end": 24.019
         },
         {
           "text": "人",
-          "start": 27.251,
-          "end": 27.41
+          "start": 24.019,
+          "end": 24.172
         },
         {
           "text": "被",
-          "start": 27.433,
-          "end": 27.524
+          "start": 24.194,
+          "end": 24.282
         },
         {
           "text": "随机",
-          "start": 27.535,
-          "end": 27.876
+          "start": 24.293,
+          "end": 24.622
         },
         {
           "text": "分进",
-          "start": 27.887,
-          "end": 28.194
+          "start": 24.633,
+          "end": 24.929
         },
         {
           "text": "八个",
-          "start": 28.194,
-          "end": 28.444
+          "start": 24.929,
+          "end": 25.17
         },
         {
           "text": "一模一样",
-          "start": 28.467,
-          "end": 28.967
+          "start": 25.192,
+          "end": 25.675
         },
         {
           "text": "的",
-          "start": 28.967,
-          "end": 29.024
+          "start": 25.675,
+          "end": 25.729
         },
         {
           "text": "世界",
-          "start": 29.035,
-          "end": 29.421
+          "start": 25.74,
+          "end": 26.113
         }
       ]
     },
     {
       "id": "E4",
       "narration": "在这里，你能看到每首歌被下载了几次。",
-      "min_hold": 3.6,
-      "start": 30.44,
-      "end": 34.284,
+      "min_hold": 3.4,
+      "start": 27.0,
+      "end": 30.584,
       "width": 1920,
       "height": 1080,
-      "voice_start": 30.56,
-      "voice_end": 34.064,
+      "voice_start": 27.08,
+      "voice_end": 30.464,
       "words": [
         {
           "text": "在",
-          "start": 30.655,
-          "end": 30.803
+          "start": 27.174,
+          "end": 27.316
         },
         {
           "text": "这里",
-          "start": 30.803,
-          "end": 31.178
+          "start": 27.316,
+          "end": 27.678
         },
         {
           "text": "你",
-          "start": 31.53,
-          "end": 31.792
+          "start": 28.018,
+          "end": 28.27
         },
         {
           "text": "能",
-          "start": 31.792,
-          "end": 31.871
+          "start": 28.27,
+          "end": 28.347
         },
         {
           "text": "看到",
-          "start": 31.883,
-          "end": 32.076
+          "start": 28.358,
+          "end": 28.544
         },
         {
           "text": "每",
-          "start": 32.099,
-          "end": 32.235
+          "start": 28.566,
+          "end": 28.698
         },
         {
           "text": "首",
-          "start": 32.235,
-          "end": 32.405
+          "start": 28.698,
+          "end": 28.862
         },
         {
           "text": "歌",
-          "start": 32.405,
-          "end": 32.496
+          "start": 28.862,
+          "end": 28.95
         },
         {
           "text": "被",
-          "start": 32.519,
-          "end": 32.587
+          "start": 28.972,
+          "end": 29.038
         },
         {
           "text": "下载",
-          "start": 32.599,
-          "end": 32.837
+          "start": 29.049,
+          "end": 29.279
         },
         {
           "text": "了",
-          "start": 32.837,
-          "end": 32.905
+          "start": 29.279,
+          "end": 29.345
         },
         {
           "text": "几",
-          "start": 32.917,
-          "end": 33.042
+          "start": 29.356,
+          "end": 29.476
         },
         {
           "text": "次",
-          "start": 33.042,
-          "end": 33.269
+          "start": 29.476,
+          "end": 29.696
         }
       ]
     },
     {
       "id": "E5",
       "narration": "就一个数字，像门口的队，像网上的销量。",
-      "min_hold": 3.6,
-      "start": 34.284,
-      "end": 38.704,
+      "min_hold": 4.0,
+      "start": 30.584,
+      "end": 34.72,
       "width": 1920,
       "height": 1080,
-      "voice_start": 34.404,
-      "voice_end": 38.484,
+      "voice_start": 30.664,
+      "voice_end": 34.6,
       "words": [
         {
           "text": "就",
-          "start": 34.499,
-          "end": 34.681
+          "start": 30.758,
+          "end": 30.933
         },
         {
           "text": "一个",
-          "start": 34.693,
-          "end": 34.84
+          "start": 30.944,
+          "end": 31.087
         },
         {
           "text": "数字",
-          "start": 34.852,
-          "end": 35.363
+          "start": 31.098,
+          "end": 31.591
         },
         {
           "text": "像",
-          "start": 35.545,
-          "end": 35.749
+          "start": 31.767,
+          "end": 31.964
         },
         {
           "text": "门口",
-          "start": 35.761,
-          "end": 36.045
+          "start": 31.975,
+          "end": 32.249
         },
         {
           "text": "的",
-          "start": 36.045,
-          "end": 36.136
+          "start": 32.249,
+          "end": 32.337
         },
         {
           "text": "队",
-          "start": 36.136,
-          "end": 36.397
+          "start": 32.337,
+          "end": 32.589
         },
         {
           "text": "像",
-          "start": 36.647,
-          "end": 36.874
+          "start": 32.83,
+          "end": 33.049
         },
         {
           "text": "网上",
-          "start": 36.886,
-          "end": 37.215
+          "start": 33.06,
+          "end": 33.378
         },
         {
           "text": "的",
-          "start": 37.215,
-          "end": 37.272
+          "start": 33.378,
+          "end": 33.433
         },
         {
           "text": "销量",
-          "start": 37.284,
-          "end": 37.67
+          "start": 33.444,
+          "end": 33.817
         }
       ]
     },
@@ -531,77 +531,77 @@
       "id": "E6",
       "narration": "另有一组人看不到数字，只凭耳朵选。",
       "min_hold": 3.6,
-      "start": 38.704,
-      "end": 42.74,
+      "start": 34.72,
+      "end": 38.472,
       "width": 1920,
       "height": 1080,
-      "voice_start": 38.824,
-      "voice_end": 42.52,
+      "voice_start": 34.8,
+      "voice_end": 38.352,
       "words": [
         {
           "text": "另",
-          "start": 38.919,
-          "end": 39.135
+          "start": 34.894,
+          "end": 35.102
         },
         {
           "text": "有",
-          "start": 39.135,
-          "end": 39.26
+          "start": 35.102,
+          "end": 35.223
         },
         {
           "text": "一",
-          "start": 39.272,
-          "end": 39.397
+          "start": 35.234,
+          "end": 35.354
         },
         {
           "text": "组",
-          "start": 39.397,
-          "end": 39.567
+          "start": 35.354,
+          "end": 35.519
         },
         {
           "text": "人",
-          "start": 39.567,
-          "end": 39.772
+          "start": 35.519,
+          "end": 35.716
         },
         {
           "text": "看",
-          "start": 39.794,
-          "end": 39.976
+          "start": 35.738,
+          "end": 35.914
         },
         {
           "text": "不",
-          "start": 39.976,
-          "end": 40.044
+          "start": 35.914,
+          "end": 35.979
         },
         {
           "text": "到",
-          "start": 40.044,
-          "end": 40.135
+          "start": 35.979,
+          "end": 36.067
         },
         {
           "text": "数字",
-          "start": 40.147,
-          "end": 40.59
+          "start": 36.078,
+          "end": 36.506
         },
         {
           "text": "只",
-          "start": 40.851,
-          "end": 41.056
+          "start": 36.758,
+          "end": 36.955
         },
         {
           "text": "凭",
-          "start": 41.056,
-          "end": 41.204
+          "start": 36.955,
+          "end": 37.098
         },
         {
           "text": "耳朵",
-          "start": 41.226,
-          "end": 41.465
+          "start": 37.12,
+          "end": 37.35
         },
         {
           "text": "选",
-          "start": 41.465,
-          "end": 41.715
+          "start": 37.35,
+          "end": 37.591
         }
       ]
     },
@@ -609,367 +609,367 @@
       "id": "E7",
       "narration": "他们选出来的，就当作这些歌本来有多好。",
       "min_hold": 3.8,
-      "start": 42.74,
-      "end": 46.92,
+      "start": 38.472,
+      "end": 42.392,
       "width": 1920,
       "height": 1080,
-      "voice_start": 42.86,
-      "voice_end": 46.7,
+      "voice_start": 38.552,
+      "voice_end": 42.272,
       "words": [
         {
           "text": "他们",
-          "start": 42.955,
-          "end": 43.16
+          "start": 38.646,
+          "end": 38.843
         },
         {
           "text": "选",
-          "start": 43.171,
-          "end": 43.376
+          "start": 38.854,
+          "end": 39.052
         },
         {
           "text": "出来",
-          "start": 43.376,
-          "end": 43.592
+          "start": 39.052,
+          "end": 39.26
         },
         {
           "text": "的",
-          "start": 43.592,
-          "end": 43.853
+          "start": 39.26,
+          "end": 39.512
         },
         {
           "text": "就",
-          "start": 44.137,
-          "end": 44.308
+          "start": 39.786,
+          "end": 39.951
         },
         {
           "text": "当作",
-          "start": 44.308,
-          "end": 44.535
+          "start": 39.951,
+          "end": 40.17
         },
         {
           "text": "这些",
-          "start": 44.558,
-          "end": 44.728
+          "start": 40.192,
+          "end": 40.356
         },
         {
           "text": "歌本",
-          "start": 44.74,
-          "end": 45.171
+          "start": 40.367,
+          "end": 40.784
         },
         {
           "text": "来",
-          "start": 45.262,
-          "end": 45.387
+          "start": 40.872,
+          "end": 40.992
         },
         {
           "text": "有",
-          "start": 45.387,
-          "end": 45.467
+          "start": 40.992,
+          "end": 41.069
         },
         {
           "text": "多",
-          "start": 45.478,
-          "end": 45.671
+          "start": 41.08,
+          "end": 41.266
         },
         {
           "text": "好",
-          "start": 45.671,
-          "end": 45.91
+          "start": 41.266,
+          "end": 41.497
         }
       ]
     },
     {
       "id": "I1",
       "narration": "你猜，八个世界的榜单会差不多吗？",
-      "min_hold": 3.6,
-      "start": 46.92,
-      "end": 50.86,
+      "min_hold": 3.5,
+      "start": 42.392,
+      "end": 46.072,
       "width": 1920,
       "height": 1080,
-      "voice_start": 47.04,
-      "voice_end": 50.64,
+      "voice_start": 42.472,
+      "voice_end": 45.952,
       "words": [
         {
           "text": "你",
-          "start": 47.135,
-          "end": 47.295
+          "start": 42.566,
+          "end": 42.719
         },
         {
           "text": "猜",
-          "start": 47.295,
-          "end": 47.613
+          "start": 42.719,
+          "end": 43.026
         },
         {
           "text": "八",
-          "start": 48.022,
-          "end": 48.215
+          "start": 43.421,
+          "end": 43.608
         },
         {
           "text": "个",
-          "start": 48.215,
-          "end": 48.272
+          "start": 43.608,
+          "end": 43.662
         },
         {
           "text": "世界",
-          "start": 48.283,
-          "end": 48.499
+          "start": 43.673,
+          "end": 43.882
         },
         {
           "text": "的",
-          "start": 48.499,
-          "end": 48.556
+          "start": 43.882,
+          "end": 43.936
         },
         {
           "text": "榜单",
-          "start": 48.567,
-          "end": 48.999
+          "start": 43.947,
+          "end": 44.364
         },
         {
           "text": "会",
-          "start": 49.101,
-          "end": 49.215
+          "start": 44.463,
+          "end": 44.572
         },
         {
           "text": "差不多",
-          "start": 49.226,
-          "end": 49.545
+          "start": 44.583,
+          "end": 44.89
         },
         {
           "text": "吗",
-          "start": 49.545,
-          "end": 49.84
+          "start": 44.89,
+          "end": 45.175
         }
       ]
     },
     {
       "id": "I2",
       "narration": "直觉说：好歌在哪儿都会火。",
-      "min_hold": 3.2,
-      "start": 50.86,
-      "end": 54.128,
+      "min_hold": 2.9,
+      "start": 46.072,
+      "end": 49.104,
       "width": 1920,
       "height": 1080,
-      "voice_start": 50.98,
-      "voice_end": 53.908,
+      "voice_start": 46.152,
+      "voice_end": 48.984,
       "words": [
         {
           "text": "直觉",
-          "start": 51.075,
-          "end": 51.405
+          "start": 46.246,
+          "end": 46.564
         },
         {
           "text": "说",
-          "start": 51.405,
-          "end": 51.712
+          "start": 46.564,
+          "end": 46.86
         },
         {
           "text": "好",
-          "start": 51.985,
-          "end": 52.246
+          "start": 47.123,
+          "end": 47.375
         },
         {
           "text": "歌",
-          "start": 52.246,
-          "end": 52.337
+          "start": 47.375,
+          "end": 47.463
         },
         {
           "text": "在哪儿",
-          "start": 52.348,
-          "end": 52.632
+          "start": 47.474,
+          "end": 47.748
         },
         {
           "text": "都",
-          "start": 52.655,
-          "end": 52.757
+          "start": 47.77,
+          "end": 47.869
         },
         {
           "text": "会",
-          "start": 52.757,
-          "end": 52.848
+          "start": 47.869,
+          "end": 47.956
         },
         {
           "text": "火",
-          "start": 52.848,
-          "end": 53.132
+          "start": 47.956,
+          "end": 48.23
         }
       ]
     },
     {
       "id": "R1",
       "narration": "结果，不同的世界，火起来的歌不一样。",
-      "min_hold": 3.8,
-      "start": 54.128,
-      "end": 58.188,
+      "min_hold": 3.6,
+      "start": 49.104,
+      "end": 52.904,
       "width": 1920,
       "height": 1080,
-      "voice_start": 54.248,
-      "voice_end": 57.968,
+      "voice_start": 49.184,
+      "voice_end": 52.784,
       "words": [
         {
           "text": "结果",
-          "start": 54.343,
-          "end": 54.832
+          "start": 49.278,
+          "end": 49.749
         },
         {
           "text": "不同",
-          "start": 55.162,
-          "end": 55.457
+          "start": 50.067,
+          "end": 50.352
         },
         {
           "text": "的",
-          "start": 55.457,
-          "end": 55.525
+          "start": 50.352,
+          "end": 50.418
         },
         {
           "text": "世界",
-          "start": 55.537,
-          "end": 55.957
+          "start": 50.429,
+          "end": 50.835
         },
         {
           "text": "火",
-          "start": 56.162,
-          "end": 56.389
+          "start": 51.032,
+          "end": 51.252
         },
         {
           "text": "起来",
-          "start": 56.389,
-          "end": 56.571
+          "start": 51.252,
+          "end": 51.427
         },
         {
           "text": "的",
-          "start": 56.571,
-          "end": 56.639
+          "start": 51.427,
+          "end": 51.493
         },
         {
           "text": "歌",
-          "start": 56.65,
-          "end": 56.775
+          "start": 51.504,
+          "end": 51.624
         },
         {
           "text": "不",
-          "start": 56.798,
-          "end": 56.889
+          "start": 51.646,
+          "end": 51.734
         },
         {
           "text": "一样",
-          "start": 56.889,
-          "end": 57.173
+          "start": 51.734,
+          "end": 52.008
         }
       ]
     },
     {
       "id": "R2",
       "narration": "有一首中等的歌，在一个世界里是冠军，",
-      "min_hold": 3.8,
-      "start": 58.188,
-      "end": 62.152,
+      "min_hold": 3.5,
+      "start": 52.904,
+      "end": 56.584,
       "width": 1920,
       "height": 1080,
-      "voice_start": 58.308,
-      "voice_end": 61.932,
+      "voice_start": 52.984,
+      "voice_end": 56.464,
       "words": [
         {
           "text": "有",
-          "start": 58.403,
-          "end": 58.563
+          "start": 53.078,
+          "end": 53.231
         },
         {
           "text": "一",
-          "start": 58.574,
-          "end": 58.653
+          "start": 53.242,
+          "end": 53.319
         },
         {
           "text": "首",
-          "start": 58.653,
-          "end": 58.813
+          "start": 53.319,
+          "end": 53.473
         },
         {
           "text": "中等",
-          "start": 58.835,
-          "end": 59.108
+          "start": 53.495,
+          "end": 53.758
         },
         {
           "text": "的",
-          "start": 59.108,
-          "end": 59.188
+          "start": 53.758,
+          "end": 53.834
         },
         {
           "text": "歌",
-          "start": 59.188,
-          "end": 59.472
+          "start": 53.834,
+          "end": 54.109
         },
         {
           "text": "在",
-          "start": 59.756,
-          "end": 59.915
+          "start": 54.383,
+          "end": 54.536
         },
         {
           "text": "一个世界",
-          "start": 59.926,
-          "end": 60.369
+          "start": 54.547,
+          "end": 54.975
         },
         {
           "text": "里",
-          "start": 60.369,
-          "end": 60.506
+          "start": 54.975,
+          "end": 55.106
         },
         {
           "text": "是",
-          "start": 60.528,
-          "end": 60.653
+          "start": 55.128,
+          "end": 55.249
         },
         {
           "text": "冠军",
-          "start": 60.665,
-          "end": 61.119
+          "start": 55.26,
+          "end": 55.698
         }
       ]
     },
     {
       "id": "R3",
       "narration": "在另一个世界里，排在很后面。",
-      "min_hold": 3.4,
-      "start": 62.152,
-      "end": 65.552,
+      "min_hold": 2.9,
+      "start": 56.584,
+      "end": 59.688,
       "width": 1920,
       "height": 1080,
-      "voice_start": 62.272,
-      "voice_end": 65.272,
+      "voice_start": 56.664,
+      "voice_end": 59.568,
       "words": [
         {
           "text": "在",
-          "start": 62.367,
-          "end": 62.549
+          "start": 56.758,
+          "end": 56.933
         },
         {
           "text": "另一个世界",
-          "start": 62.561,
-          "end": 63.106
+          "start": 56.944,
+          "end": 57.471
         },
         {
           "text": "里",
-          "start": 63.106,
-          "end": 63.356
+          "start": 57.471,
+          "end": 57.712
         },
         {
           "text": "排",
-          "start": 63.652,
-          "end": 63.811
+          "start": 57.997,
+          "end": 58.15
         },
         {
           "text": "在",
-          "start": 63.811,
-          "end": 63.902
+          "start": 58.15,
+          "end": 58.238
         },
         {
           "text": "很",
-          "start": 63.924,
-          "end": 64.072
+          "start": 58.26,
+          "end": 58.403
         },
         {
           "text": "后面",
-          "start": 64.072,
-          "end": 64.481
+          "start": 58.403,
+          "end": 58.797
         }
       ]
     },
@@ -977,554 +977,554 @@
       "id": "R4",
       "narration": "八个世界无一例外：火的更火，冷的更冷。",
       "min_hold": 4.2,
-      "start": 65.552,
-      "end": 70.02,
+      "start": 59.688,
+      "end": 63.888,
       "width": 1920,
       "height": 1080,
-      "voice_start": 65.672,
-      "voice_end": 69.8,
+      "voice_start": 59.768,
+      "voice_end": 63.752,
       "words": [
         {
           "text": "八",
-          "start": 65.767,
-          "end": 65.972
+          "start": 59.862,
+          "end": 60.059
         },
         {
           "text": "个",
-          "start": 65.972,
-          "end": 66.029
+          "start": 60.059,
+          "end": 60.114
         },
         {
           "text": "世界",
-          "start": 66.04,
-          "end": 66.381
+          "start": 60.125,
+          "end": 60.454
         },
         {
           "text": "无一例外",
-          "start": 66.404,
-          "end": 67.006
+          "start": 60.476,
+          "end": 61.057
         },
         {
           "text": "火",
-          "start": 67.336,
-          "end": 67.517
+          "start": 61.375,
+          "end": 61.55
         },
         {
           "text": "的",
-          "start": 67.517,
-          "end": 67.597
+          "start": 61.55,
+          "end": 61.627
         },
         {
           "text": "更",
-          "start": 67.608,
-          "end": 67.802
+          "start": 61.638,
+          "end": 61.825
         },
         {
           "text": "火",
-          "start": 67.802,
-          "end": 68.097
+          "start": 61.825,
+          "end": 62.11
         },
         {
           "text": "冷",
-          "start": 68.324,
-          "end": 68.529
+          "start": 62.329,
+          "end": 62.526
         },
         {
           "text": "的",
-          "start": 68.529,
-          "end": 68.608
+          "start": 62.526,
+          "end": 62.603
         },
         {
           "text": "更",
-          "start": 68.62,
-          "end": 68.824
+          "start": 62.614,
+          "end": 62.811
         },
         {
           "text": "冷",
-          "start": 68.824,
-          "end": 69.006
+          "start": 62.811,
+          "end": 62.987
         }
       ]
     },
     {
       "id": "R5",
       "narration": "谁会火，也更难猜了。",
-      "min_hold": 3.0,
-      "start": 70.02,
-      "end": 73.24,
+      "min_hold": 2.8,
+      "start": 63.888,
+      "end": 66.872,
       "width": 1920,
       "height": 1080,
-      "voice_start": 70.14,
-      "voice_end": 73.02,
+      "voice_start": 63.968,
+      "voice_end": 66.752,
       "words": [
         {
           "text": "谁",
-          "start": 70.235,
-          "end": 70.497
+          "start": 64.062,
+          "end": 64.314
         },
         {
           "text": "会",
-          "start": 70.497,
-          "end": 70.645
+          "start": 64.314,
+          "end": 64.457
         },
         {
           "text": "火",
-          "start": 70.645,
-          "end": 71.076
+          "start": 64.457,
+          "end": 64.873
         },
         {
           "text": "也",
-          "start": 71.372,
-          "end": 71.508
+          "start": 65.158,
+          "end": 65.29
         },
         {
           "text": "更",
-          "start": 71.52,
-          "end": 71.679
+          "start": 65.301,
+          "end": 65.454
         },
         {
           "text": "难",
-          "start": 71.679,
-          "end": 71.826
+          "start": 65.454,
+          "end": 65.597
         },
         {
           "text": "猜",
-          "start": 71.826,
-          "end": 72.065
+          "start": 65.597,
+          "end": 65.827
         },
         {
           "text": "了",
-          "start": 72.065,
-          "end": 72.224
+          "start": 65.827,
+          "end": 65.981
         }
       ]
     },
     {
       "id": "B1",
       "narration": "",
-      "min_hold": 2.5,
-      "start": 73.24,
-      "end": 75.74,
+      "min_hold": 2.2,
+      "start": 66.872,
+      "end": 69.072,
       "width": 1920,
       "height": 1080,
-      "voice_start": 73.36,
-      "voice_end": 73.36,
+      "voice_start": 66.952,
+      "voice_end": 66.952,
       "words": []
     },
     {
       "id": "M1",
       "narration": "为什么？",
-      "min_hold": 2.6,
-      "start": 75.74,
-      "end": 78.34,
+      "min_hold": 1.8,
+      "start": 69.072,
+      "end": 70.872,
       "width": 1920,
       "height": 1080,
-      "voice_start": 75.86,
-      "voice_end": 77.3,
+      "voice_start": 69.152,
+      "voice_end": 70.544,
       "words": [
         {
           "text": "为什么",
-          "start": 75.955,
-          "end": 76.501
+          "start": 69.246,
+          "end": 69.772
         }
       ]
     },
     {
       "id": "M2",
       "narration": "开头几个人点哪首，多少带点随机。",
-      "min_hold": 3.6,
-      "start": 78.34,
-      "end": 81.94,
+      "min_hold": 3.1,
+      "start": 70.872,
+      "end": 74.192,
       "width": 1920,
       "height": 1080,
-      "voice_start": 78.46,
-      "voice_end": 81.7,
+      "voice_start": 70.952,
+      "voice_end": 74.072,
       "words": [
         {
           "text": "开头",
-          "start": 78.555,
-          "end": 78.874
+          "start": 71.046,
+          "end": 71.353
         },
         {
           "text": "几个",
-          "start": 78.885,
-          "end": 79.044
+          "start": 71.364,
+          "end": 71.517
         },
         {
           "text": "人",
-          "start": 79.044,
-          "end": 79.169
+          "start": 71.517,
+          "end": 71.638
         },
         {
           "text": "点",
-          "start": 79.169,
-          "end": 79.271
+          "start": 71.638,
+          "end": 71.737
         },
         {
           "text": "哪",
-          "start": 79.283,
-          "end": 79.442
+          "start": 71.748,
+          "end": 71.901
         },
         {
           "text": "首",
-          "start": 79.442,
-          "end": 79.726
+          "start": 71.901,
+          "end": 72.175
         },
         {
           "text": "多少",
-          "start": 79.999,
-          "end": 80.271
+          "start": 72.438,
+          "end": 72.702
         },
         {
           "text": "带",
-          "start": 80.283,
-          "end": 80.396
+          "start": 72.713,
+          "end": 72.822
         },
         {
           "text": "点",
-          "start": 80.396,
-          "end": 80.487
+          "start": 72.822,
+          "end": 72.91
         },
         {
           "text": "随机",
-          "start": 80.499,
-          "end": 80.896
+          "start": 72.921,
+          "end": 73.305
         }
       ]
     },
     {
       "id": "M3",
       "narration": "一首歌刚好多被点了几下，",
-      "min_hold": 3.0,
-      "start": 81.94,
-      "end": 85.04,
+      "min_hold": 2.7,
+      "start": 74.192,
+      "end": 77.056,
       "width": 1920,
       "height": 1080,
-      "voice_start": 82.06,
-      "voice_end": 84.82,
+      "voice_start": 74.272,
+      "voice_end": 76.936,
       "words": [
         {
           "text": "一",
-          "start": 82.155,
-          "end": 82.303
+          "start": 74.366,
+          "end": 74.508
         },
         {
           "text": "首",
-          "start": 82.303,
-          "end": 82.508
+          "start": 74.508,
+          "end": 74.706
         },
         {
           "text": "歌",
-          "start": 82.508,
-          "end": 82.78
+          "start": 74.706,
+          "end": 74.969
         },
         {
           "text": "刚好",
-          "start": 82.871,
-          "end": 83.235
+          "start": 75.057,
+          "end": 75.408
         },
         {
           "text": "多",
-          "start": 83.246,
-          "end": 83.36
+          "start": 75.418,
+          "end": 75.528
         },
         {
           "text": "被",
-          "start": 83.36,
-          "end": 83.462
+          "start": 75.528,
+          "end": 75.627
         },
         {
           "text": "点",
-          "start": 83.474,
-          "end": 83.587
+          "start": 75.638,
+          "end": 75.747
         },
         {
           "text": "了",
-          "start": 83.587,
-          "end": 83.655
+          "start": 75.747,
+          "end": 75.813
         },
         {
           "text": "几",
-          "start": 83.667,
-          "end": 83.78
+          "start": 75.824,
+          "end": 75.934
         },
         {
           "text": "下",
-          "start": 83.78,
-          "end": 84.019
+          "start": 75.934,
+          "end": 76.164
         }
       ]
     },
     {
       "id": "M4",
       "narration": "后来的人看到数字，更愿意点开它。",
-      "min_hold": 3.6,
-      "start": 85.04,
-      "end": 88.64,
+      "min_hold": 3.1,
+      "start": 77.056,
+      "end": 80.352,
       "width": 1920,
       "height": 1080,
-      "voice_start": 85.16,
-      "voice_end": 88.352,
+      "voice_start": 77.136,
+      "voice_end": 80.232,
       "words": [
         {
           "text": "后来",
-          "start": 85.255,
-          "end": 85.551
+          "start": 77.23,
+          "end": 77.515
         },
         {
           "text": "的",
-          "start": 85.551,
-          "end": 85.63
+          "start": 77.515,
+          "end": 77.592
         },
         {
           "text": "人",
-          "start": 85.63,
-          "end": 85.733
+          "start": 77.592,
+          "end": 77.69
         },
         {
           "text": "看到",
-          "start": 85.755,
-          "end": 85.937
+          "start": 77.712,
+          "end": 77.888
         },
         {
           "text": "数字",
-          "start": 85.949,
-          "end": 86.392
+          "start": 77.899,
+          "end": 78.326
         },
         {
           "text": "更",
-          "start": 86.687,
-          "end": 86.869
+          "start": 78.611,
+          "end": 78.787
         },
         {
           "text": "愿意",
-          "start": 86.869,
-          "end": 87.062
+          "start": 78.787,
+          "end": 78.973
         },
         {
           "text": "点开",
-          "start": 87.085,
-          "end": 87.369
+          "start": 78.995,
+          "end": 79.269
         },
         {
           "text": "它",
-          "start": 87.369,
-          "end": 87.574
+          "start": 79.269,
+          "end": 79.467
         }
       ]
     },
     {
       "id": "M5",
       "narration": "领先一点，就被放大一点。",
-      "min_hold": 3.2,
-      "start": 88.64,
-      "end": 91.84,
+      "min_hold": 2.7,
+      "start": 80.352,
+      "end": 83.24,
       "width": 1920,
       "height": 1080,
-      "voice_start": 88.76,
-      "voice_end": 91.544,
+      "voice_start": 80.432,
+      "voice_end": 83.12,
       "words": [
         {
           "text": "领先",
-          "start": 88.855,
-          "end": 89.253
+          "start": 80.526,
+          "end": 80.91
         },
         {
           "text": "一点",
-          "start": 89.265,
-          "end": 89.662
+          "start": 80.921,
+          "end": 81.304
         },
         {
           "text": "就",
-          "start": 89.912,
-          "end": 90.049
+          "start": 81.546,
+          "end": 81.677
         },
         {
           "text": "被",
-          "start": 90.049,
-          "end": 90.128
+          "start": 81.677,
+          "end": 81.754
         },
         {
           "text": "放大",
-          "start": 90.151,
-          "end": 90.458
+          "start": 81.776,
+          "end": 82.072
         },
         {
           "text": "一点",
-          "start": 90.469,
-          "end": 90.742
+          "start": 82.083,
+          "end": 82.346
         }
       ]
     },
     {
       "id": "M6",
       "narration": "这叫累积优势。",
-      "min_hold": 2.8,
-      "start": 91.84,
-      "end": 94.64,
+      "min_hold": 2.0,
+      "start": 83.24,
+      "end": 85.36,
       "width": 1920,
       "height": 1080,
-      "voice_start": 91.96,
-      "voice_end": 93.952,
+      "voice_start": 83.32,
+      "voice_end": 85.24,
       "words": [
         {
           "text": "这",
-          "start": 92.055,
-          "end": 92.226
+          "start": 83.414,
+          "end": 83.578
         },
         {
           "text": "叫",
-          "start": 92.226,
-          "end": 92.396
+          "start": 83.578,
+          "end": 83.743
         },
         {
           "text": "累积",
-          "start": 92.419,
-          "end": 92.715
+          "start": 83.765,
+          "end": 84.05
         },
         {
           "text": "优势",
-          "start": 92.726,
-          "end": 93.146
+          "start": 84.061,
+          "end": 84.466
         }
       ]
     },
     {
       "id": "M7",
       "narration": "社会学家默顿，把这类现象叫做马太效应。",
-      "min_hold": 3.8,
-      "start": 94.64,
-      "end": 99.132,
+      "min_hold": 4.2,
+      "start": 85.36,
+      "end": 89.568,
       "width": 1920,
       "height": 1080,
-      "voice_start": 94.76,
-      "voice_end": 98.912,
+      "voice_start": 85.44,
+      "voice_end": 89.448,
       "words": [
         {
           "text": "社会学",
-          "start": 94.855,
-          "end": 95.378
+          "start": 85.534,
+          "end": 86.038
         },
         {
           "text": "家",
-          "start": 95.378,
-          "end": 95.503
+          "start": 86.038,
+          "end": 86.159
         },
         {
           "text": "默顿",
-          "start": 95.515,
-          "end": 95.924
+          "start": 86.17,
+          "end": 86.565
         },
         {
           "text": "把",
-          "start": 96.185,
-          "end": 96.321
+          "start": 86.817,
+          "end": 86.948
         },
         {
           "text": "这",
-          "start": 96.333,
-          "end": 96.446
+          "start": 86.959,
+          "end": 87.069
         },
         {
           "text": "类",
-          "start": 96.446,
-          "end": 96.537
+          "start": 87.069,
+          "end": 87.157
         },
         {
           "text": "现象",
-          "start": 96.549,
-          "end": 97.003
+          "start": 87.168,
+          "end": 87.606
         },
         {
           "text": "叫做",
-          "start": 97.094,
-          "end": 97.412
+          "start": 87.694,
+          "end": 88.001
         },
         {
           "text": "马太效应",
-          "start": 97.435,
-          "end": 98.117
+          "start": 88.023,
+          "end": 88.681
         }
       ]
     },
     {
       "id": "L1",
       "narration": "这不只发生在音乐里。",
-      "min_hold": 3.0,
-      "start": 99.132,
-      "end": 102.132,
+      "min_hold": 2.2,
+      "start": 89.568,
+      "end": 91.976,
       "width": 1920,
       "height": 1080,
-      "voice_start": 99.252,
-      "voice_end": 101.532,
+      "voice_start": 89.648,
+      "voice_end": 91.856,
       "words": [
         {
           "text": "这",
-          "start": 99.347,
-          "end": 99.495
+          "start": 89.742,
+          "end": 89.884
         },
         {
           "text": "不只",
-          "start": 99.507,
-          "end": 99.779
+          "start": 89.895,
+          "end": 90.159
         },
         {
           "text": "发生",
-          "start": 99.791,
-          "end": 100.063
+          "start": 90.169,
+          "end": 90.433
         },
         {
           "text": "在",
-          "start": 100.063,
-          "end": 100.154
+          "start": 90.433,
+          "end": 90.52
         },
         {
           "text": "音乐",
-          "start": 100.177,
-          "end": 100.518
+          "start": 90.542,
+          "end": 90.871
         },
         {
           "text": "里",
-          "start": 100.518,
-          "end": 100.734
+          "start": 90.871,
+          "end": 91.08
         }
       ]
     },
     {
       "id": "L2",
       "narration": "点外卖，先看销量；",
-      "min_hold": 2.8,
-      "start": 102.132,
-      "end": 104.992,
+      "min_hold": 2.4,
+      "start": 91.976,
+      "end": 94.624,
       "width": 1920,
       "height": 1080,
-      "voice_start": 102.252,
-      "voice_end": 104.772,
+      "voice_start": 92.056,
+      "voice_end": 94.504,
       "words": [
         {
           "text": "点",
-          "start": 102.347,
-          "end": 102.495
+          "start": 92.15,
+          "end": 92.292
         },
         {
           "text": "外卖",
-          "start": 102.507,
-          "end": 102.916
+          "start": 92.303,
+          "end": 92.698
         },
         {
           "text": "先",
-          "start": 103.302,
-          "end": 103.495
+          "start": 93.071,
+          "end": 93.257
         },
         {
           "text": "看",
-          "start": 103.495,
-          "end": 103.597
+          "start": 93.257,
+          "end": 93.356
         },
         {
           "text": "销量",
-          "start": 103.609,
-          "end": 103.972
+          "start": 93.367,
+          "end": 93.718
         }
       ]
     },
@@ -1532,1491 +1532,1491 @@
       "id": "L3",
       "narration": "刷视频，先点播放多的；",
       "min_hold": 2.8,
-      "start": 104.992,
-      "end": 108.236,
+      "start": 94.624,
+      "end": 97.632,
       "width": 1920,
       "height": 1080,
-      "voice_start": 105.112,
-      "voice_end": 108.016,
+      "voice_start": 94.704,
+      "voice_end": 97.512,
       "words": [
         {
           "text": "刷",
-          "start": 105.207,
-          "end": 105.469
+          "start": 94.798,
+          "end": 95.05
         },
         {
           "text": "视频",
-          "start": 105.48,
-          "end": 105.946
+          "start": 95.061,
+          "end": 95.511
         },
         {
           "text": "先",
-          "start": 106.321,
-          "end": 106.56
+          "start": 95.872,
+          "end": 96.103
         },
         {
           "text": "点",
-          "start": 106.56,
-          "end": 106.639
+          "start": 96.103,
+          "end": 96.179
         },
         {
           "text": "播放",
-          "start": 106.662,
-          "end": 106.889
+          "start": 96.201,
+          "end": 96.421
         },
         {
           "text": "多",
-          "start": 106.901,
-          "end": 107.048
+          "start": 96.432,
+          "end": 96.574
         },
         {
           "text": "的",
-          "start": 107.048,
-          "end": 107.219
+          "start": 96.574,
+          "end": 96.739
         }
       ]
     },
     {
       "id": "L4",
       "narration": "选电影，先看票房。",
-      "min_hold": 2.8,
-      "start": 108.236,
-      "end": 111.168,
+      "min_hold": 2.5,
+      "start": 97.632,
+      "end": 100.328,
       "width": 1920,
       "height": 1080,
-      "voice_start": 108.356,
-      "voice_end": 110.948,
+      "voice_start": 97.712,
+      "voice_end": 100.208,
       "words": [
         {
           "text": "选",
-          "start": 108.451,
-          "end": 108.701
+          "start": 97.806,
+          "end": 98.047
         },
         {
           "text": "电影",
-          "start": 108.701,
-          "end": 109.031
+          "start": 98.047,
+          "end": 98.365
         },
         {
           "text": "先",
-          "start": 109.349,
-          "end": 109.565
+          "start": 98.672,
+          "end": 98.88
         },
         {
           "text": "看",
-          "start": 109.565,
-          "end": 109.679
+          "start": 98.88,
+          "end": 98.99
         },
         {
           "text": "票房",
-          "start": 109.69,
-          "end": 110.133
+          "start": 99.001,
+          "end": 99.429
         }
       ]
     },
     {
       "id": "L5",
       "narration": "你每天，都在这个实验里。",
-      "min_hold": 3.2,
-      "start": 111.168,
-      "end": 114.368,
+      "min_hold": 2.7,
+      "start": 100.328,
+      "end": 103.168,
       "width": 1920,
       "height": 1080,
-      "voice_start": 111.288,
-      "voice_end": 114.024,
+      "voice_start": 100.408,
+      "voice_end": 103.048,
       "words": [
         {
           "text": "你",
-          "start": 111.383,
-          "end": 111.588
+          "start": 100.502,
+          "end": 100.699
         },
         {
           "text": "每天",
-          "start": 111.588,
-          "end": 112.077
+          "start": 100.699,
+          "end": 101.171
         },
         {
           "text": "都",
-          "start": 112.349,
-          "end": 112.508
+          "start": 101.434,
+          "end": 101.587
         },
         {
           "text": "在",
-          "start": 112.508,
-          "end": 112.599
+          "start": 101.587,
+          "end": 101.675
         },
         {
           "text": "这个",
-          "start": 112.611,
-          "end": 112.736
+          "start": 101.686,
+          "end": 101.807
         },
         {
           "text": "实验",
-          "start": 112.747,
-          "end": 113.031
+          "start": 101.818,
+          "end": 102.092
         },
         {
           "text": "里",
-          "start": 113.031,
-          "end": 113.236
+          "start": 102.092,
+          "end": 102.289
         }
       ]
     },
     {
       "id": "L6",
       "narration": "你随手一点，也在帮领先的，再领先一点。",
-      "min_hold": 3.8,
-      "start": 114.368,
-      "end": 118.5,
+      "min_hold": 3.7,
+      "start": 103.168,
+      "end": 107.04,
       "width": 1920,
       "height": 1080,
-      "voice_start": 114.488,
-      "voice_end": 118.28,
+      "voice_start": 103.248,
+      "voice_end": 106.92,
       "words": [
         {
           "text": "你",
-          "start": 114.583,
-          "end": 114.799
+          "start": 103.342,
+          "end": 103.55
         },
         {
           "text": "随手",
-          "start": 114.811,
-          "end": 115.072
+          "start": 103.561,
+          "end": 103.813
         },
         {
           "text": "一点",
-          "start": 115.083,
-          "end": 115.447
+          "start": 103.824,
+          "end": 104.175
         },
         {
           "text": "也",
-          "start": 115.799,
-          "end": 115.913
+          "start": 104.515,
+          "end": 104.625
         },
         {
           "text": "在",
-          "start": 115.913,
-          "end": 116.004
+          "start": 104.625,
+          "end": 104.712
         },
         {
           "text": "帮",
-          "start": 116.015,
-          "end": 116.129
+          "start": 104.723,
+          "end": 104.833
         },
         {
           "text": "领先",
-          "start": 116.14,
-          "end": 116.413
+          "start": 104.844,
+          "end": 105.107
         },
         {
           "text": "的",
-          "start": 116.413,
-          "end": 116.583
+          "start": 105.107,
+          "end": 105.272
         },
         {
           "text": "再",
-          "start": 116.879,
-          "end": 117.004
+          "start": 105.557,
+          "end": 105.677
         },
         {
           "text": "领先",
-          "start": 117.015,
-          "end": 117.231
+          "start": 105.688,
+          "end": 105.897
         },
         {
           "text": "一点",
-          "start": 117.243,
-          "end": 117.481
+          "start": 105.908,
+          "end": 106.138
         }
       ]
     },
     {
       "id": "Q1",
       "narration": "那是不是全靠运气？",
-      "min_hold": 2.8,
-      "start": 118.5,
-      "end": 121.3,
+      "min_hold": 2.0,
+      "start": 107.04,
+      "end": 109.328,
       "width": 1920,
       "height": 1080,
-      "voice_start": 118.62,
-      "voice_end": 120.78,
+      "voice_start": 107.12,
+      "voice_end": 109.208,
       "words": [
         {
           "text": "那",
-          "start": 118.715,
-          "end": 118.852
+          "start": 107.214,
+          "end": 107.345
         },
         {
           "text": "是不是",
-          "start": 118.863,
-          "end": 119.147
+          "start": 107.356,
+          "end": 107.631
         },
         {
           "text": "全",
-          "start": 119.17,
-          "end": 119.363
+          "start": 107.652,
+          "end": 107.839
         },
         {
           "text": "靠",
-          "start": 119.363,
-          "end": 119.5
+          "start": 107.839,
+          "end": 107.97
         },
         {
           "text": "运气",
-          "start": 119.511,
-          "end": 119.965
+          "start": 107.981,
+          "end": 108.42
         }
       ]
     },
     {
       "id": "Q2",
       "narration": "也不是。",
-      "min_hold": 2.4,
-      "start": 121.3,
-      "end": 123.7,
+      "min_hold": 1.8,
+      "start": 109.328,
+      "end": 111.128,
       "width": 1920,
       "height": 1080,
-      "voice_start": 121.42,
-      "voice_end": 122.932,
+      "voice_start": 109.408,
+      "voice_end": 110.872,
       "words": [
         {
           "text": "也",
-          "start": 121.515,
-          "end": 121.72
+          "start": 109.502,
+          "end": 109.699
         },
         {
           "text": "不是",
-          "start": 121.72,
-          "end": 122.152
+          "start": 109.699,
+          "end": 110.116
         }
       ]
     },
     {
       "id": "Q3",
       "narration": "最好的歌，很少垫底；",
-      "min_hold": 3.0,
-      "start": 123.7,
-      "end": 126.728,
+      "min_hold": 2.6,
+      "start": 111.128,
+      "end": 113.92,
       "width": 1920,
       "height": 1080,
-      "voice_start": 123.82,
-      "voice_end": 126.508,
+      "voice_start": 111.208,
+      "voice_end": 113.8,
       "words": [
         {
           "text": "最好",
-          "start": 123.915,
-          "end": 124.234
+          "start": 111.302,
+          "end": 111.609
         },
         {
           "text": "的",
-          "start": 124.234,
-          "end": 124.313
+          "start": 111.609,
+          "end": 111.686
         },
         {
           "text": "歌",
-          "start": 124.313,
-          "end": 124.575
+          "start": 111.686,
+          "end": 111.938
         },
         {
           "text": "很少",
-          "start": 124.904,
-          "end": 125.29
+          "start": 112.256,
+          "end": 112.629
         },
         {
           "text": "垫底",
-          "start": 125.302,
-          "end": 125.7
+          "start": 112.64,
+          "end": 113.023
         }
       ]
     },
     {
       "id": "Q4",
       "narration": "最差的歌，很少夺冠。",
-      "min_hold": 3.0,
-      "start": 126.728,
-      "end": 129.948,
+      "min_hold": 2.8,
+      "start": 113.92,
+      "end": 116.904,
       "width": 1920,
       "height": 1080,
-      "voice_start": 126.848,
-      "voice_end": 129.728,
+      "voice_start": 114.0,
+      "voice_end": 116.784,
       "words": [
         {
           "text": "最",
-          "start": 126.943,
-          "end": 127.193
+          "start": 114.094,
+          "end": 114.335
         },
         {
           "text": "差",
-          "start": 127.193,
-          "end": 127.375
+          "start": 114.335,
+          "end": 114.511
         },
         {
           "text": "的",
-          "start": 127.375,
-          "end": 127.455
+          "start": 114.511,
+          "end": 114.587
         },
         {
           "text": "歌",
-          "start": 127.455,
-          "end": 127.75
+          "start": 114.587,
+          "end": 114.872
         },
         {
           "text": "很少",
-          "start": 128.091,
-          "end": 128.557
+          "start": 115.201,
+          "end": 115.651
         },
         {
           "text": "夺冠",
-          "start": 128.568,
-          "end": 128.932
+          "start": 115.662,
+          "end": 116.013
         }
       ]
     },
     {
       "id": "Q5",
       "narration": "后来，他们又做了一次更狠的：",
-      "min_hold": 3.2,
-      "start": 129.948,
-      "end": 133.336,
+      "min_hold": 3.1,
+      "start": 116.904,
+      "end": 120.056,
       "width": 1920,
       "height": 1080,
-      "voice_start": 130.068,
-      "voice_end": 133.116,
+      "voice_start": 116.984,
+      "voice_end": 119.936,
       "words": [
         {
           "text": "后来",
-          "start": 130.163,
-          "end": 130.72
+          "start": 117.078,
+          "end": 117.615
         },
         {
           "text": "他们",
-          "start": 131.129,
-          "end": 131.357
+          "start": 118.01,
+          "end": 118.229
         },
         {
           "text": "又",
-          "start": 131.368,
-          "end": 131.493
+          "start": 118.24,
+          "end": 118.361
         },
         {
           "text": "做",
-          "start": 131.493,
-          "end": 131.607
+          "start": 118.361,
+          "end": 118.47
         },
         {
           "text": "了",
-          "start": 131.607,
-          "end": 131.663
+          "start": 118.47,
+          "end": 118.525
         },
         {
           "text": "一次",
-          "start": 131.675,
-          "end": 131.834
+          "start": 118.536,
+          "end": 118.69
         },
         {
           "text": "更",
-          "start": 131.857,
-          "end": 131.993
+          "start": 118.712,
+          "end": 118.843
         },
         {
           "text": "狠",
-          "start": 131.993,
-          "end": 132.141
+          "start": 118.843,
+          "end": 118.986
         },
         {
           "text": "的",
-          "start": 132.141,
-          "end": 132.323
+          "start": 118.986,
+          "end": 119.161
         }
       ]
     },
     {
       "id": "Q6",
       "narration": "把排行榜整个倒过来，",
-      "min_hold": 3.0,
-      "start": 133.336,
-      "end": 136.336,
+      "min_hold": 2.1,
+      "start": 120.056,
+      "end": 122.416,
       "width": 1920,
       "height": 1080,
-      "voice_start": 133.456,
-      "voice_end": 135.688,
+      "voice_start": 120.136,
+      "voice_end": 122.296,
       "words": [
         {
           "text": "把",
-          "start": 133.551,
-          "end": 133.699
+          "start": 120.23,
+          "end": 120.372
         },
         {
           "text": "排行榜",
-          "start": 133.711,
-          "end": 134.154
+          "start": 120.383,
+          "end": 120.811
         },
         {
           "text": "整个",
-          "start": 134.176,
-          "end": 134.415
+          "start": 120.833,
+          "end": 121.063
         },
         {
           "text": "倒过来",
-          "start": 134.426,
-          "end": 134.892
+          "start": 121.074,
+          "end": 121.524
         }
       ]
     },
     {
       "id": "Q7",
       "narration": "最不受欢迎的歌，被标成了第一。",
-      "min_hold": 3.4,
-      "start": 136.336,
-      "end": 139.736,
+      "min_hold": 3.0,
+      "start": 122.416,
+      "end": 125.568,
       "width": 1920,
       "height": 1080,
-      "voice_start": 136.456,
-      "voice_end": 139.504,
+      "voice_start": 122.496,
+      "voice_end": 125.448,
       "words": [
         {
           "text": "最",
-          "start": 136.551,
-          "end": 136.779
+          "start": 122.59,
+          "end": 122.809
         },
         {
           "text": "不受欢迎",
-          "start": 136.779,
-          "end": 137.267
+          "start": 122.809,
+          "end": 123.281
         },
         {
           "text": "的",
-          "start": 137.267,
-          "end": 137.358
+          "start": 123.281,
+          "end": 123.368
         },
         {
           "text": "歌",
-          "start": 137.358,
-          "end": 137.654
+          "start": 123.368,
+          "end": 123.653
         },
         {
           "text": "被",
-          "start": 137.87,
-          "end": 137.995
+          "start": 123.862,
+          "end": 123.982
         },
         {
           "text": "标成",
-          "start": 138.006,
-          "end": 138.29
+          "start": 123.993,
+          "end": 124.267
         },
         {
           "text": "了",
-          "start": 138.29,
-          "end": 138.358
+          "start": 124.267,
+          "end": 124.333
         },
         {
           "text": "第一",
-          "start": 138.37,
-          "end": 138.711
+          "start": 124.344,
+          "end": 124.673
         }
       ]
     },
     {
       "id": "Q8",
       "narration": "结果，大多数歌，假的人气慢慢变成了真的。",
-      "min_hold": 4.2,
-      "start": 139.736,
-      "end": 144.708,
+      "min_hold": 4.5,
+      "start": 125.568,
+      "end": 130.232,
       "width": 1920,
       "height": 1080,
-      "voice_start": 139.856,
-      "voice_end": 144.488,
+      "voice_start": 125.648,
+      "voice_end": 130.112,
       "words": [
         {
           "text": "结果",
-          "start": 139.951,
-          "end": 140.451
+          "start": 125.742,
+          "end": 126.224
         },
         {
           "text": "大多数",
-          "start": 140.77,
-          "end": 141.213
+          "start": 126.531,
+          "end": 126.959
         },
         {
           "text": "歌",
-          "start": 141.213,
-          "end": 141.474
+          "start": 126.959,
+          "end": 127.211
         },
         {
           "text": "假",
-          "start": 141.815,
-          "end": 142.054
+          "start": 127.54,
+          "end": 127.77
         },
         {
           "text": "的",
-          "start": 142.054,
-          "end": 142.133
+          "start": 127.77,
+          "end": 127.847
         },
         {
           "text": "人气",
-          "start": 142.145,
-          "end": 142.656
+          "start": 127.858,
+          "end": 128.351
         },
         {
           "text": "慢慢",
-          "start": 142.758,
-          "end": 143.065
+          "start": 128.45,
+          "end": 128.746
         },
         {
           "text": "变成",
-          "start": 143.076,
-          "end": 143.281
+          "start": 128.757,
+          "end": 128.955
         },
         {
           "text": "了",
-          "start": 143.281,
-          "end": 143.349
+          "start": 128.955,
+          "end": 129.02
         },
         {
           "text": "真",
-          "start": 143.361,
-          "end": 143.542
+          "start": 129.031,
+          "end": 129.207
         },
         {
           "text": "的",
-          "start": 143.542,
-          "end": 143.69
+          "start": 129.207,
+          "end": 129.349
         }
       ]
     },
     {
       "id": "Q9",
       "narration": "但最好的那几首，又慢慢爬了回来。",
-      "min_hold": 3.8,
-      "start": 144.708,
-      "end": 148.508,
+      "min_hold": 3.3,
+      "start": 130.232,
+      "end": 133.768,
       "width": 1920,
       "height": 1080,
-      "voice_start": 144.828,
-      "voice_end": 148.284,
+      "voice_start": 130.312,
+      "voice_end": 133.648,
       "words": [
         {
           "text": "但",
-          "start": 144.923,
-          "end": 145.083
+          "start": 130.406,
+          "end": 130.559
         },
         {
           "text": "最好",
-          "start": 145.105,
-          "end": 145.435
+          "start": 130.581,
+          "end": 130.899
         },
         {
           "text": "的",
-          "start": 145.435,
-          "end": 145.492
+          "start": 130.899,
+          "end": 130.954
         },
         {
           "text": "那",
-          "start": 145.503,
-          "end": 145.617
+          "start": 130.965,
+          "end": 131.075
         },
         {
           "text": "几首",
-          "start": 145.617,
-          "end": 146.128
+          "start": 131.075,
+          "end": 131.568
         },
         {
           "text": "又",
-          "start": 146.355,
-          "end": 146.514
+          "start": 131.787,
+          "end": 131.941
         },
         {
           "text": "慢慢",
-          "start": 146.514,
-          "end": 146.764
+          "start": 131.941,
+          "end": 132.182
         },
         {
           "text": "爬",
-          "start": 146.776,
-          "end": 147.037
+          "start": 132.193,
+          "end": 132.445
         },
         {
           "text": "了",
-          "start": 147.037,
-          "end": 147.105
+          "start": 132.445,
+          "end": 132.511
         },
         {
           "text": "回来",
-          "start": 147.117,
-          "end": 147.469
+          "start": 132.522,
+          "end": 132.862
         }
       ]
     },
     {
       "id": "B2",
       "narration": "",
-      "min_hold": 2.5,
-      "start": 148.508,
-      "end": 151.008,
+      "min_hold": 2.2,
+      "start": 133.768,
+      "end": 135.968,
       "width": 1920,
       "height": 1080,
-      "voice_start": 148.628,
-      "voice_end": 148.628,
+      "voice_start": 133.848,
+      "voice_end": 133.848,
       "words": []
     },
     {
       "id": "D1",
       "narration": "所以，如果你的视频、你的小店、你的文章没火，",
-      "min_hold": 4.4,
-      "start": 151.008,
-      "end": 156.316,
+      "min_hold": 4.9,
+      "start": 135.968,
+      "end": 140.968,
       "width": 1920,
       "height": 1080,
-      "voice_start": 151.128,
-      "voice_end": 156.096,
+      "voice_start": 136.048,
+      "voice_end": 140.848,
       "words": [
         {
           "text": "所以",
-          "start": 151.223,
-          "end": 151.678
+          "start": 136.142,
+          "end": 136.58
         },
         {
           "text": "如果",
-          "start": 152.223,
-          "end": 152.405
+          "start": 137.107,
+          "end": 137.282
         },
         {
           "text": "你",
-          "start": 152.417,
-          "end": 152.508
+          "start": 137.293,
+          "end": 137.381
         },
         {
           "text": "的",
-          "start": 152.508,
-          "end": 152.564
+          "start": 137.381,
+          "end": 137.436
         },
         {
           "text": "视频",
-          "start": 152.576,
-          "end": 153.155
+          "start": 137.447,
+          "end": 138.006
         },
         {
           "text": "你",
-          "start": 153.383,
-          "end": 153.564
+          "start": 138.225,
+          "end": 138.401
         },
         {
           "text": "的",
-          "start": 153.564,
-          "end": 153.621
+          "start": 138.401,
+          "end": 138.455
         },
         {
           "text": "小店",
-          "start": 153.633,
-          "end": 154.087
+          "start": 138.466,
+          "end": 138.905
         },
         {
           "text": "你",
-          "start": 154.36,
-          "end": 154.53
+          "start": 139.168,
+          "end": 139.333
         },
         {
           "text": "的",
-          "start": 154.53,
-          "end": 154.61
+          "start": 139.333,
+          "end": 139.409
         },
         {
           "text": "文章",
-          "start": 154.621,
-          "end": 154.86
+          "start": 139.42,
+          "end": 139.651
         },
         {
           "text": "没",
-          "start": 154.871,
-          "end": 155.008
+          "start": 139.662,
+          "end": 139.793
         },
         {
           "text": "火",
-          "start": 155.008,
-          "end": 155.303
+          "start": 139.793,
+          "end": 140.078
         }
       ]
     },
     {
       "id": "D2",
       "narration": "可能不是它不够好。",
-      "min_hold": 2.8,
-      "start": 156.316,
-      "end": 159.116,
+      "min_hold": 1.9,
+      "start": 140.968,
+      "end": 143.136,
       "width": 1920,
       "height": 1080,
-      "voice_start": 156.436,
-      "voice_end": 158.476,
+      "voice_start": 141.048,
+      "voice_end": 143.016,
       "words": [
         {
           "text": "可能",
-          "start": 156.531,
-          "end": 156.85
+          "start": 141.142,
+          "end": 141.449
         },
         {
           "text": "不是",
-          "start": 156.861,
-          "end": 157.1
+          "start": 141.46,
+          "end": 141.69
         },
         {
           "text": "它",
-          "start": 157.1,
-          "end": 157.202
+          "start": 141.69,
+          "end": 141.789
         },
         {
           "text": "不够",
-          "start": 157.213,
-          "end": 157.418
+          "start": 141.8,
+          "end": 141.997
         },
         {
           "text": "好",
-          "start": 157.418,
-          "end": 157.679
+          "start": 141.997,
+          "end": 142.249
         }
       ]
     },
     {
       "id": "D3",
       "narration": "只是开头那几个人，刚好没点开它。",
-      "min_hold": 3.6,
-      "start": 159.116,
-      "end": 162.96,
+      "min_hold": 3.4,
+      "start": 143.136,
+      "end": 146.72,
       "width": 1920,
       "height": 1080,
-      "voice_start": 159.236,
-      "voice_end": 162.74,
+      "voice_start": 143.216,
+      "voice_end": 146.6,
       "words": [
         {
           "text": "只是",
-          "start": 159.331,
-          "end": 159.559
+          "start": 143.31,
+          "end": 143.529
         },
         {
           "text": "开头",
-          "start": 159.581,
-          "end": 159.968
+          "start": 143.551,
+          "end": 143.924
         },
         {
           "text": "那",
-          "start": 159.979,
-          "end": 160.093
+          "start": 143.935,
+          "end": 144.045
         },
         {
           "text": "几个",
-          "start": 160.093,
-          "end": 160.286
+          "start": 144.045,
+          "end": 144.231
         },
         {
           "text": "人",
-          "start": 160.286,
-          "end": 160.616
+          "start": 144.231,
+          "end": 144.549
         },
         {
           "text": "刚好",
-          "start": 160.9,
-          "end": 161.263
+          "start": 144.823,
+          "end": 145.174
         },
         {
           "text": "没",
-          "start": 161.275,
-          "end": 161.434
+          "start": 145.185,
+          "end": 145.338
         },
         {
           "text": "点",
-          "start": 161.434,
-          "end": 161.525
+          "start": 145.338,
+          "end": 145.426
         },
         {
           "text": "开",
-          "start": 161.536,
-          "end": 161.741
+          "start": 145.437,
+          "end": 145.634
         },
         {
           "text": "它",
-          "start": 161.741,
-          "end": 161.945
+          "start": 145.634,
+          "end": 145.832
         }
       ]
     },
     {
       "id": "D4",
       "narration": "世界没法重来。",
-      "min_hold": 2.8,
-      "start": 162.96,
-      "end": 165.76,
+      "min_hold": 2.0,
+      "start": 146.72,
+      "end": 148.912,
       "width": 1920,
       "height": 1080,
-      "voice_start": 163.08,
-      "voice_end": 165.144,
+      "voice_start": 146.8,
+      "voice_end": 148.792,
       "words": [
         {
           "text": "世界",
-          "start": 163.175,
-          "end": 163.562
+          "start": 146.894,
+          "end": 147.267
         },
         {
           "text": "没法",
-          "start": 163.585,
-          "end": 163.857
+          "start": 147.289,
+          "end": 147.552
         },
         {
           "text": "重",
-          "start": 163.869,
-          "end": 164.119
+          "start": 147.563,
+          "end": 147.804
         },
         {
           "text": "来",
-          "start": 164.119,
-          "end": 164.346
+          "start": 147.804,
+          "end": 148.023
         }
       ]
     },
     {
       "id": "D5",
       "narration": "但你可以再做一个，再发一次。",
-      "min_hold": 3.6,
-      "start": 165.76,
-      "end": 169.36,
+      "min_hold": 3.1,
+      "start": 148.912,
+      "end": 152.012,
       "width": 1920,
       "height": 1080,
-      "voice_start": 165.88,
-      "voice_end": 168.856,
+      "voice_start": 148.992,
+      "voice_end": 151.848,
       "words": [
         {
           "text": "但",
-          "start": 165.975,
-          "end": 166.135
+          "start": 149.086,
+          "end": 149.239
         },
         {
           "text": "你",
-          "start": 166.135,
-          "end": 166.214
+          "start": 149.239,
+          "end": 149.316
         },
         {
           "text": "可以",
-          "start": 166.225,
-          "end": 166.373
+          "start": 149.327,
+          "end": 149.47
         },
         {
           "text": "再",
-          "start": 166.396,
-          "end": 166.566
+          "start": 149.492,
+          "end": 149.656
         },
         {
           "text": "做",
-          "start": 166.566,
-          "end": 166.68
+          "start": 149.656,
+          "end": 149.766
         },
         {
           "text": "一个",
-          "start": 166.691,
-          "end": 167.01
+          "start": 149.777,
+          "end": 150.084
         },
         {
           "text": "再",
-          "start": 167.328,
-          "end": 167.555
+          "start": 150.391,
+          "end": 150.61
         },
         {
           "text": "发",
-          "start": 167.555,
-          "end": 167.714
+          "start": 150.61,
+          "end": 150.764
         },
         {
           "text": "一次",
-          "start": 167.725,
-          "end": 168.044
+          "start": 150.774,
+          "end": 151.081
         }
       ]
     },
     {
       "id": "D6",
       "narration": "每一次重新开始，都是一个新的世界。",
-      "min_hold": 3.8,
-      "start": 169.36,
-      "end": 173.16,
+      "min_hold": 3.6,
+      "start": 152.012,
+      "end": 155.612,
       "width": 1920,
       "height": 1080,
-      "voice_start": 169.48,
-      "voice_end": 172.888,
+      "voice_start": 152.092,
+      "voice_end": 155.38,
       "words": [
         {
           "text": "每",
-          "start": 169.575,
-          "end": 169.769
+          "start": 152.186,
+          "end": 152.372
         },
         {
           "text": "一次",
-          "start": 169.769,
-          "end": 169.962
+          "start": 152.372,
+          "end": 152.559
         },
         {
           "text": "重新",
-          "start": 169.985,
-          "end": 170.303
+          "start": 152.581,
+          "end": 152.888
         },
         {
           "text": "开始",
-          "start": 170.314,
-          "end": 170.814
+          "start": 152.899,
+          "end": 153.381
         },
         {
           "text": "都",
-          "start": 171.03,
-          "end": 171.178
+          "start": 153.589,
+          "end": 153.732
         },
         {
           "text": "是",
-          "start": 171.178,
-          "end": 171.291
+          "start": 153.732,
+          "end": 153.842
         },
         {
           "text": "一个",
-          "start": 171.303,
-          "end": 171.439
+          "start": 153.853,
+          "end": 153.984
         },
         {
           "text": "新的世界",
-          "start": 171.462,
-          "end": 172.087
+          "start": 154.006,
+          "end": 154.609
         }
       ]
     },
     {
       "id": "D7",
       "narration": "你没火，可能只是这个世界没选中你。",
-      "min_hold": 4.2,
+      "min_hold": 3.8,
       "no_sub": true,
-      "start": 173.16,
-      "end": 177.36,
+      "start": 155.612,
+      "end": 159.412,
       "width": 1920,
       "height": 1080,
-      "voice_start": 173.28,
-      "voice_end": 176.712,
+      "voice_start": 155.692,
+      "voice_end": 159.004,
       "words": [
         {
           "text": "你",
-          "start": 173.375,
-          "end": 173.546
+          "start": 155.786,
+          "end": 155.95
         },
         {
           "text": "没",
-          "start": 173.546,
-          "end": 173.671
+          "start": 155.95,
+          "end": 156.071
         },
         {
           "text": "火",
-          "start": 173.671,
-          "end": 174.035
+          "start": 156.071,
+          "end": 156.422
         },
         {
           "text": "可能",
-          "start": 174.432,
-          "end": 174.682
+          "start": 156.806,
+          "end": 157.047
         },
         {
           "text": "只是",
-          "start": 174.694,
-          "end": 174.864
+          "start": 157.058,
+          "end": 157.222
         },
         {
           "text": "这个",
-          "start": 174.875,
-          "end": 175.012
+          "start": 157.233,
+          "end": 157.365
         },
         {
           "text": "世界",
-          "start": 175.023,
-          "end": 175.239
+          "start": 157.376,
+          "end": 157.584
         },
         {
           "text": "没",
-          "start": 175.262,
-          "end": 175.41
+          "start": 157.606,
+          "end": 157.749
         },
         {
           "text": "选中",
-          "start": 175.41,
-          "end": 175.716
+          "start": 157.749,
+          "end": 158.045
         },
         {
           "text": "你",
-          "start": 175.716,
-          "end": 175.91
+          "start": 158.045,
+          "end": 158.231
         }
       ]
     },
     {
       "id": "D8",
       "narration": "那就，多去几个世界。",
-      "min_hold": 4.2,
+      "min_hold": 2.8,
       "no_sub": true,
-      "start": 177.36,
-      "end": 181.56,
+      "start": 159.412,
+      "end": 162.212,
       "width": 1920,
       "height": 1080,
-      "voice_start": 177.48,
-      "voice_end": 179.952,
+      "voice_start": 159.492,
+      "voice_end": 161.892,
       "words": [
         {
           "text": "那",
-          "start": 177.575,
-          "end": 177.735
+          "start": 159.586,
+          "end": 159.739
         },
         {
           "text": "就",
-          "start": 177.735,
-          "end": 178.087
+          "start": 159.739,
+          "end": 160.079
         },
         {
           "text": "多",
-          "start": 178.394,
-          "end": 178.541
+          "start": 160.375,
+          "end": 160.518
         },
         {
           "text": "去",
-          "start": 178.541,
-          "end": 178.644
+          "start": 160.518,
+          "end": 160.617
         },
         {
           "text": "几个",
-          "start": 178.655,
-          "end": 178.803
+          "start": 160.628,
+          "end": 160.77
         },
         {
           "text": "世界",
-          "start": 178.814,
-          "end": 179.155
+          "start": 160.781,
+          "end": 161.11
         }
       ]
     },
     {
       "id": "END",
       "narration": "",
-      "min_hold": 4.8,
-      "start": 181.56,
-      "end": 186.36,
+      "min_hold": 4.4,
+      "start": 162.212,
+      "end": 166.612,
       "width": 1920,
       "height": 1080,
-      "voice_start": 181.68,
-      "voice_end": 181.68,
+      "voice_start": 162.292,
+      "voice_end": 162.292,
       "words": []
     }
   ],
   "cues": [
     {
-      "start": 0.215,
-      "end": 1.181,
+      "start": 0.174,
+      "end": 1.106,
       "text": "两家店"
     },
     {
-      "start": 1.181,
-      "end": 2.772,
+      "start": 1.106,
+      "end": 2.641,
       "text": "一家门口排长队"
     },
     {
-      "start": 2.772,
-      "end": 3.709,
+      "start": 2.641,
+      "end": 3.555,
       "text": "一家空着"
     },
     {
-      "start": 4.635,
-      "end": 5.901,
+      "start": 4.31,
+      "end": 5.542,
       "text": "你会进哪家？"
     },
     {
-      "start": 11.839,
-      "end": 13.237,
+      "start": 10.51,
+      "end": 11.859,
       "text": "有人做过一个实验"
     },
     {
-      "start": 13.237,
-      "end": 14.81,
+      "start": 11.859,
+      "end": 13.387,
       "text": "让世界重来八次"
     },
     {
-      "start": 20.555,
-      "end": 22.685,
+      "start": 18.366,
+      "end": 20.431,
       "text": "研究者找来一万四千多人"
     },
     {
-      "start": 23.755,
-      "end": 25.601,
+      "start": 21.182,
+      "end": 22.973,
       "text": "和四十八首没人听过的歌"
     },
     {
-      "start": 26.955,
-      "end": 29.721,
+      "start": 23.734,
+      "end": 26.413,
       "text": "这些人被随机分进八个一模一样的世界"
     },
     {
-      "start": 30.655,
-      "end": 31.53,
+      "start": 27.174,
+      "end": 28.018,
       "text": "在这里"
     },
     {
-      "start": 31.53,
-      "end": 33.569,
+      "start": 28.018,
+      "end": 29.996,
       "text": "你能看到每首歌被下载了几次"
     },
     {
-      "start": 34.499,
-      "end": 35.545,
+      "start": 30.758,
+      "end": 31.767,
       "text": "就一个数字"
     },
     {
-      "start": 35.545,
-      "end": 36.647,
+      "start": 31.767,
+      "end": 32.83,
       "text": "像门口的队"
     },
     {
-      "start": 36.647,
-      "end": 37.97,
+      "start": 32.83,
+      "end": 34.117,
       "text": "像网上的销量"
     },
     {
-      "start": 38.919,
-      "end": 40.851,
+      "start": 34.894,
+      "end": 36.758,
       "text": "另有一组人看不到数字"
     },
     {
-      "start": 40.851,
-      "end": 42.015,
+      "start": 36.758,
+      "end": 37.891,
       "text": "只凭耳朵选"
     },
     {
-      "start": 42.955,
-      "end": 44.137,
+      "start": 38.646,
+      "end": 39.786,
       "text": "他们选出来的"
     },
     {
-      "start": 44.137,
-      "end": 46.21,
+      "start": 39.786,
+      "end": 41.797,
       "text": "就当作这些歌本来有多好"
     },
     {
-      "start": 47.135,
-      "end": 48.022,
+      "start": 42.566,
+      "end": 43.421,
       "text": "你猜"
     },
     {
-      "start": 48.022,
-      "end": 50.14,
+      "start": 43.421,
+      "end": 45.475,
       "text": "八个世界的榜单会差不多吗？"
     },
     {
-      "start": 51.075,
-      "end": 51.985,
+      "start": 46.246,
+      "end": 47.123,
       "text": "直觉说"
     },
     {
-      "start": 51.985,
-      "end": 53.432,
+      "start": 47.123,
+      "end": 48.53,
       "text": "好歌在哪儿都会火"
     },
     {
-      "start": 54.343,
-      "end": 55.162,
+      "start": 49.278,
+      "end": 50.067,
       "text": "结果"
     },
     {
-      "start": 55.162,
-      "end": 56.162,
+      "start": 50.067,
+      "end": 51.032,
       "text": "不同的世界"
     },
     {
-      "start": 56.162,
-      "end": 57.473,
+      "start": 51.032,
+      "end": 52.308,
       "text": "火起来的歌不一样"
     },
     {
-      "start": 58.403,
-      "end": 59.756,
+      "start": 53.078,
+      "end": 54.383,
       "text": "有一首中等的歌"
     },
     {
-      "start": 59.756,
-      "end": 61.419,
+      "start": 54.383,
+      "end": 55.998,
       "text": "在一个世界里是冠军"
     },
     {
-      "start": 62.367,
-      "end": 63.652,
+      "start": 56.758,
+      "end": 57.997,
       "text": "在另一个世界里"
     },
     {
-      "start": 63.652,
-      "end": 64.781,
+      "start": 57.997,
+      "end": 59.097,
       "text": "排在很后面"
     },
     {
-      "start": 65.767,
-      "end": 67.336,
+      "start": 59.862,
+      "end": 61.375,
       "text": "八个世界无一例外"
     },
     {
-      "start": 67.336,
-      "end": 68.324,
+      "start": 61.375,
+      "end": 62.329,
       "text": "火的更火"
     },
     {
-      "start": 68.324,
-      "end": 69.306,
+      "start": 62.329,
+      "end": 63.287,
       "text": "冷的更冷"
     },
     {
-      "start": 70.235,
-      "end": 71.372,
+      "start": 64.062,
+      "end": 65.158,
       "text": "谁会火"
     },
     {
-      "start": 71.372,
-      "end": 72.524,
+      "start": 65.158,
+      "end": 66.281,
       "text": "也更难猜了"
     },
     {
-      "start": 75.955,
-      "end": 76.801,
+      "start": 69.246,
+      "end": 70.072,
       "text": "为什么？"
     },
     {
-      "start": 78.555,
-      "end": 79.999,
+      "start": 71.046,
+      "end": 72.438,
       "text": "开头几个人点哪首"
     },
     {
-      "start": 79.999,
-      "end": 81.196,
+      "start": 72.438,
+      "end": 73.605,
       "text": "多少带点随机"
     },
     {
-      "start": 82.155,
-      "end": 84.319,
+      "start": 74.366,
+      "end": 76.464,
       "text": "一首歌刚好多被点了几下"
     },
     {
-      "start": 85.255,
-      "end": 86.687,
+      "start": 77.23,
+      "end": 78.611,
       "text": "后来的人看到数字"
     },
     {
-      "start": 86.687,
-      "end": 87.874,
+      "start": 78.611,
+      "end": 79.767,
       "text": "更愿意点开它"
     },
     {
-      "start": 88.855,
-      "end": 89.912,
+      "start": 80.526,
+      "end": 81.546,
       "text": "领先一点"
     },
     {
-      "start": 89.912,
-      "end": 91.042,
+      "start": 81.546,
+      "end": 82.646,
       "text": "就被放大一点"
     },
     {
-      "start": 92.055,
-      "end": 93.446,
+      "start": 83.414,
+      "end": 84.766,
       "text": "这叫累积优势"
     },
     {
-      "start": 94.855,
-      "end": 96.185,
+      "start": 85.534,
+      "end": 86.817,
       "text": "社会学家默顿"
     },
     {
-      "start": 96.185,
-      "end": 98.417,
+      "start": 86.817,
+      "end": 88.981,
       "text": "把这类现象叫做马太效应"
     },
     {
-      "start": 99.347,
-      "end": 101.034,
+      "start": 89.742,
+      "end": 91.38,
       "text": "这不只发生在音乐里"
     },
     {
-      "start": 102.347,
-      "end": 103.302,
+      "start": 92.15,
+      "end": 93.071,
       "text": "点外卖"
     },
     {
-      "start": 103.302,
-      "end": 104.272,
+      "start": 93.071,
+      "end": 94.018,
       "text": "先看销量"
     },
     {
-      "start": 105.207,
-      "end": 106.321,
+      "start": 94.798,
+      "end": 95.872,
       "text": "刷视频"
     },
     {
-      "start": 106.321,
-      "end": 107.519,
+      "start": 95.872,
+      "end": 97.039,
       "text": "先点播放多的"
     },
     {
-      "start": 108.451,
-      "end": 109.349,
+      "start": 97.806,
+      "end": 98.672,
       "text": "选电影"
     },
     {
-      "start": 109.349,
-      "end": 110.433,
+      "start": 98.672,
+      "end": 99.729,
       "text": "先看票房"
     },
     {
-      "start": 111.383,
-      "end": 112.349,
+      "start": 100.502,
+      "end": 101.434,
       "text": "你每天"
     },
     {
-      "start": 112.349,
-      "end": 113.536,
+      "start": 101.434,
+      "end": 102.589,
       "text": "都在这个实验里"
     },
     {
-      "start": 114.583,
-      "end": 115.799,
+      "start": 103.342,
+      "end": 104.515,
       "text": "你随手一点"
     },
     {
-      "start": 115.799,
-      "end": 116.879,
+      "start": 104.515,
+      "end": 105.557,
       "text": "也在帮领先的"
     },
     {
-      "start": 116.879,
-      "end": 117.781,
+      "start": 105.557,
+      "end": 106.438,
       "text": "再领先一点"
     },
     {
-      "start": 118.715,
-      "end": 120.265,
+      "start": 107.214,
+      "end": 108.72,
       "text": "那是不是全靠运气？"
     },
     {
-      "start": 121.515,
-      "end": 122.452,
+      "start": 109.502,
+      "end": 110.416,
       "text": "也不是"
     },
     {
-      "start": 123.915,
-      "end": 124.904,
+      "start": 111.302,
+      "end": 112.256,
       "text": "最好的歌"
     },
     {
-      "start": 124.904,
-      "end": 126.0,
+      "start": 112.256,
+      "end": 113.323,
       "text": "很少垫底"
     },
     {
-      "start": 126.943,
-      "end": 128.091,
+      "start": 114.094,
+      "end": 115.201,
       "text": "最差的歌"
     },
     {
-      "start": 128.091,
-      "end": 129.232,
+      "start": 115.201,
+      "end": 116.313,
       "text": "很少夺冠"
     },
     {
-      "start": 130.163,
-      "end": 131.129,
+      "start": 117.078,
+      "end": 118.01,
       "text": "后来"
     },
     {
-      "start": 131.129,
-      "end": 132.623,
+      "start": 118.01,
+      "end": 119.461,
       "text": "他们又做了一次更狠的"
     },
     {
-      "start": 133.551,
-      "end": 135.192,
+      "start": 120.23,
+      "end": 121.824,
       "text": "把排行榜整个倒过来"
     },
     {
-      "start": 136.551,
-      "end": 137.87,
+      "start": 122.59,
+      "end": 123.862,
       "text": "最不受欢迎的歌"
     },
     {
-      "start": 137.87,
-      "end": 139.011,
+      "start": 123.862,
+      "end": 124.973,
       "text": "被标成了第一"
     },
     {
-      "start": 139.951,
-      "end": 140.77,
+      "start": 125.742,
+      "end": 126.531,
       "text": "结果"
     },
     {
-      "start": 140.77,
-      "end": 141.815,
+      "start": 126.531,
+      "end": 127.54,
       "text": "大多数歌"
     },
     {
-      "start": 141.815,
-      "end": 143.99,
+      "start": 127.54,
+      "end": 129.649,
       "text": "假的人气慢慢变成了真的"
     },
     {
-      "start": 144.923,
-      "end": 146.355,
+      "start": 130.406,
+      "end": 131.787,
       "text": "但最好的那几首"
     },
     {
-      "start": 146.355,
-      "end": 147.769,
+      "start": 131.787,
+      "end": 133.162,
       "text": "又慢慢爬了回来"
     },
     {
-      "start": 151.223,
-      "end": 152.223,
+      "start": 136.142,
+      "end": 137.107,
       "text": "所以"
     },
     {
-      "start": 152.223,
-      "end": 155.603,
+      "start": 137.107,
+      "end": 140.378,
       "text": "如果你的视频、你的小店、你的文章没火"
     },
     {
-      "start": 156.531,
-      "end": 157.979,
+      "start": 141.142,
+      "end": 142.549,
       "text": "可能不是它不够好"
     },
     {
-      "start": 159.331,
-      "end": 160.9,
+      "start": 143.31,
+      "end": 144.823,
       "text": "只是开头那几个人"
     },
     {
-      "start": 160.9,
-      "end": 162.245,
+      "start": 144.823,
+      "end": 146.132,
       "text": "刚好没点开它"
     },
     {
-      "start": 163.175,
-      "end": 164.646,
+      "start": 146.894,
+      "end": 148.323,
       "text": "世界没法重来"
     },
     {
-      "start": 165.975,
-      "end": 167.328,
+      "start": 149.086,
+      "end": 150.391,
       "text": "但你可以再做一个"
     },
     {
-      "start": 167.328,
-      "end": 168.344,
+      "start": 150.391,
+      "end": 151.381,
       "text": "再发一次"
     },
     {
-      "start": 169.575,
-      "end": 171.03,
+      "start": 152.186,
+      "end": 153.589,
       "text": "每一次重新开始"
     },
     {
-      "start": 171.03,
-      "end": 186.26,
+      "start": 153.589,
+      "end": 166.512,
       "text": "都是一个新的世界"
     }
   ]

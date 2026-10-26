@@ -1,0 +1,73 @@
+{
+  "id": "008-sample",
+  "title": "你没火（样片）",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+10%",
+  "scenes": [
+    {
+      "id": "H1",
+      "narration": "两家店，一家门口排长队，一家空着。",
+      "min_hold": 4.1
+    },
+    {
+      "id": "H3",
+      "narration": "可是，排队的那家，真的更好吃吗？",
+      "min_hold": 4.2,
+      "no_sub": true
+    },
+    {
+      "id": "T1",
+      "narration": "",
+      "min_hold": 4.8
+    },
+    {
+      "id": "E1",
+      "narration": "研究者找来一万四千多人，",
+      "min_hold": 2.8
+    },
+    {
+      "id": "E3",
+      "narration": "这些人被随机分进八个一模一样的世界，",
+      "min_hold": 3.3
+    },
+    {
+      "id": "E4",
+      "narration": "在这里，你能看到每首歌被下载了几次。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "R2",
+      "narration": "有一首中等的歌，在一个世界里是冠军，",
+      "min_hold": 3.5
+    },
+    {
+      "id": "M6",
+      "narration": "这叫累积优势。",
+      "min_hold": 2.0
+    },
+    {
+      "id": "L2",
+      "narration": "点外卖，先看销量；",
+      "min_hold": 2.4
+    },
+    {
+      "id": "Q7",
+      "narration": "最不受欢迎的歌，被标成了第一。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "D7",
+      "narration": "你没火，可能只是这个世界没选中你。",
+      "min_hold": 3.8,
+      "no_sub": true
+    },
+    {
+      "id": "END",
+      "narration": "",
+      "min_hold": 4.8
+    }
+  ],
+  "aspect": "landscape",
+  "lead": 0.12,
+  "trail": 0.22
+}

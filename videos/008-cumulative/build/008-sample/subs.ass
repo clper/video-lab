@@ -1,0 +1,27 @@
+﻿[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Source Han Sans CN,56,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,200,200,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.22,0:00:01.18,Default,,0,0,0,,{\fad(150,150)}两家店
+Dialogue: 0,0:00:01.18,0:00:02.77,Default,,0,0,0,,{\fad(150,150)}一家门口排长队
+Dialogue: 0,0:00:02.77,0:00:03.71,Default,,0,0,0,,{\fad(150,150)}一家空着
+Dialogue: 0,0:00:13.64,0:00:15.77,Default,,0,0,0,,{\fad(150,150)}研究者找来一万四千多人
+Dialogue: 0,0:00:16.69,0:00:19.46,Default,,0,0,0,,{\fad(150,150)}这些人被随机分进八个一模一样的世界
+Dialogue: 0,0:00:20.39,0:00:21.27,Default,,0,0,0,,{\fad(150,150)}在这里
+Dialogue: 0,0:00:21.27,0:00:23.30,Default,,0,0,0,,{\fad(150,150)}你能看到每首歌被下载了几次
+Dialogue: 0,0:00:24.24,0:00:25.59,Default,,0,0,0,,{\fad(150,150)}有一首中等的歌
+Dialogue: 0,0:00:25.59,0:00:27.25,Default,,0,0,0,,{\fad(150,150)}在一个世界里是冠军
+Dialogue: 0,0:00:28.20,0:00:29.59,Default,,0,0,0,,{\fad(150,150)}这叫累积优势
+Dialogue: 0,0:00:30.53,0:00:31.49,Default,,0,0,0,,{\fad(150,150)}点外卖
+Dialogue: 0,0:00:31.49,0:00:32.46,Default,,0,0,0,,{\fad(150,150)}先看销量
+Dialogue: 0,0:00:33.39,0:00:34.71,Default,,0,0,0,,{\fad(150,150)}最不受欢迎的歌
+Dialogue: 0,0:00:34.71,0:00:45.06,Default,,0,0,0,,{\fad(150,150)}被标成了第一
