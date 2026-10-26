@@ -1,0 +1,521 @@
+# 008《你没火，可能只是没被选中》全片：16:9 · 有旁白 + 字幕 + 配乐（规矩 2：人声优先）
+#
+# 剧本：SCRIPT.md v1.1，2026-10-26 项目负责人确认。镜号和剧本第 4 节一一对应，旁白一字不差。
+#
+# voice 模式：时长由配音定，画面按 timeline.json 对齐。
+#   narration —— 这一句说的话；留空 = 呼吸镜，用 min_hold 撑住时长
+#   no_sub    —— 这一句不烧字幕，画面上用大字给（开场问句、落点；SCRIPT 第 5 节）
+#
+# 声音：第一版只看画面，配音先用云希当占位（项目负责人 2026-10-26 定：声音后续加）。
+#   换声音 = 重跑配音 → 时间轴变 → 所有镜头按指纹自动重渲，镜头卡和参数不用动。
+#
+# 屏上文字按 SCRIPT 第 5 节分三级：大字（line / title）、画面内（卡自己画：计数器、徽章、圈）、小字（note，右下角）。
+# 不加章节标（kicker），卡里也不画。
+
+id: 008-cumulative
+title: 你没火，可能只是没被选中
+brand: VIBE / 选中
+style: styles/select.yaml
+aspect: landscape
+fps: 30
+end_hold: 1.8
+
+fx_default:
+  flash: false          # 切点不许发亮（STYLE-RHYTHM「特效栈的边界」）
+  dipIn: 0.12
+  dipFrames: 4
+
+# 占位声音（见上）。换声音时只改 name / rate。
+# lead / trail：每镜开口前、说完后的静音。52 个镜头，默认的 0.25 + 0.35 一共是 31 秒空白，这里收到 0.12 + 0.22
+voice: {name: zh-CN-YunxiNeural, rate: "+10%", lead: 0.12, trail: 0.22}
+
+audio:
+  music: true
+  music_fn: fold_score      # 带段落的铺底，段落表按本片章节写（时间来自 build/008-cumulative/timeline.json）
+  music_segs:
+    - [0.00, 15.54, {lp: 1200, gain: 0.82}]   # 钩子：街上，闷一点
+    - [15.54, 20.34, {gain: 1.0}]   # 片名：全开
+    - [20.34, 46.92, {gain: 0.88}]   # 实验：铺底
+    - [46.92, 54.13, {lp: 2600, gain: 0.85}]   # 直觉：收一点，等反转
+    - [54.13, 75.74, {gain: 1.0}]   # 反转 1：全开
+    - [75.74, 99.13, {hp: 220, gain: 0.9}]   # 原理：抽掉低频，看清机制
+    - [99.13, 118.50, {gain: 1.0}]   # 生活：回到全开
+    - [118.50, 139.74, {gain: 0.92}]   # 运气还是实力
+    - [139.74, 151.01, {gain: 1.0}]   # 倒置实验：假人气变真、最好的爬回来
+    - [151.01, 165.76, {lp: 1800, gain: 0.78}]   # 落点：贴近，闷
+    - [165.76, 173.16, {gain: 1.0}]   # 云海：打开
+    - [173.16, 181.56, {lp: 2200, gain: 0.8}]   # 回场：收
+    - [181.56, 99999.00, {lp: 1500, gain: 0.7}]   # 片尾：只剩底
+  music_v: 1
+  bpm: 96
+  seed: 31
+  music_db: -8        # 有人声，铺底让两档；第一版先看画面，配乐只是垫着
+  sfx_db: -4
+  duck: true          # 说话时配乐自动压低
+  lufs: -14
+
+fx: {handheld: true, sweep: true, flash: false, breathing: true, grain: true, stardust: true, dip: true, subtitleBar: false}
+
+scenes:
+  # ── 钩子：黄昏的街，两家店 ─────────────────────────────────────
+  - id: H1
+    renderer: remotion
+    card: streetScene
+    fx: {dipIn: 0.75, dipFrames: 12, stardust: false}
+    narration: 两家店，一家门口排长队，一家空着。
+    min_hold: 3.4
+    beats: 3
+    params: {mode: queue}
+
+  - id: H2
+    renderer: remotion
+    card: streetScene
+    fx: {stardust: false}
+    narration: 你会进哪家？
+    min_hold: 3.0
+    beats: 2
+    params: {mode: doors}
+
+  - id: H3
+    renderer: remotion
+    card: streetScene
+    fx: {stardust: false}
+    narration: 可是，排队的那家，真的更好吃吗？
+    no_sub: true
+    min_hold: 3.8
+    beats: 3
+    params: {mode: shadow, line: 排队的那家，真的更好吃吗？}
+
+  - id: H4
+    renderer: remotion
+    card: streetScene
+    fx: {dipOut: 0.55, dipFrames: 10, stardust: false}
+    narration: 有人做过一个实验：让世界重来八次。
+    min_hold: 3.8
+    beats: 3
+    params: {mode: dark, note: Salganik, Dodds & Watts · Science 2006}
+
+  # ── 片名：那家没人排队的店，灯亮着 ──────────────────────────────
+  - id: T1
+    renderer: remotion
+    card: streetScene
+    fx: {dipIn: 0.55, dipOut: 0.55, dipFrames: 10, stardust: false}
+    narration: ""
+    min_hold: 4.8
+    beats: 3
+    params: {mode: title, title: 你没火，可能只是没被选中}
+
+  # ── 实验：48 首歌、8 个世界、一个数字 ───────────────────────────
+  - id: E1
+    renderer: remotion
+    card: worldBoards
+    fx: {dipIn: 0.55, dipFrames: 10}
+    narration: 研究者找来一万四千多人，
+    min_hold: 3.2
+    beats: 3
+    params: {mode: inflow, count: 14341, note: 多数招募自一个青少年网站}
+
+  - id: E2
+    renderer: remotion
+    card: worldBoards
+    narration: 和四十八首没人听过的歌。
+    min_hold: 3.2
+    beats: 2
+    params: {mode: songs, label: "48"}
+
+  - id: E3
+    renderer: remotion
+    card: worldBoards
+    narration: 这些人被随机分进八个一模一样的世界，
+    min_hold: 3.6
+    beats: 3
+    params: {mode: boards, note: 实验共两轮，这里合在一起讲}
+
+  - id: E4
+    renderer: remotion
+    card: worldBoard
+    narration: 在这里，你能看到每首歌被下载了几次。
+    min_hold: 3.6
+    beats: 3
+    params: {mode: counting}
+
+  - id: E5
+    renderer: remotion
+    card: worldBoard
+    narration: 就一个数字，像门口的队，像网上的销量。
+    min_hold: 3.6
+    beats: 3
+    params: {mode: digit}
+
+  - id: E6
+    renderer: remotion
+    card: worldBoards
+    narration: 另有一组人看不到数字，只凭耳朵选。
+    min_hold: 3.6
+    beats: 2
+    params: {mode: control, label: 对照组}
+
+  - id: E7
+    renderer: remotion
+    card: worldBoards
+    narration: 他们选出来的，就当作这些歌本来有多好。
+    min_hold: 3.8
+    beats: 2
+    params: {mode: ruler, label: 质量排名}
+
+  # ── 直觉 ────────────────────────────────────────────────────────
+  - id: I1
+    renderer: remotion
+    card: worldBoards
+    narration: 你猜，八个世界的榜单会差不多吗？
+    min_hold: 3.6
+    beats: 2
+    params: {mode: grow}
+
+  - id: I2
+    renderer: remotion
+    card: worldBoards
+    narration: 直觉说：好歌在哪儿都会火。
+    min_hold: 3.2
+    beats: 2
+    params: {mode: guess}
+
+  # ── 反转 1：每个世界的爆款不一样 ─────────────────────────────────
+  - id: R1
+    renderer: remotion
+    card: worldBoards
+    narration: 结果，不同的世界，火起来的歌不一样。
+    min_hold: 3.8
+    beats: 3
+    params: {mode: diverge}
+
+  - id: R2
+    renderer: remotion
+    card: worldBoards
+    narration: 有一首中等的歌，在一个世界里是冠军，
+    min_hold: 3.8
+    beats: 3
+    params: {mode: champion, badge: 第 1 名}
+
+  - id: R3
+    renderer: remotion
+    card: worldBoards
+    narration: 在另一个世界里，排在很后面。
+    min_hold: 3.4
+    beats: 3
+    params: {mode: loser, badge: 第 40 名 / 48}
+
+  - id: R4
+    renderer: remotion
+    card: worldBoards
+    narration: 八个世界无一例外：火的更火，冷的更冷。
+    min_hold: 4.2
+    beats: 3
+    params: {mode: compare}
+
+  - id: R5
+    renderer: remotion
+    card: worldBoards
+    narration: 谁会火，也更难猜了。
+    min_hold: 3.0
+    beats: 2
+    params: {mode: unpredictable}
+
+  - id: B1
+    renderer: remotion
+    card: worldBoards
+    narration: ""
+    min_hold: 2.5
+    beats: 2
+    params: {mode: glide}
+
+  # ── 原理：累积优势（示意模拟） ──────────────────────────────────
+  - id: M1
+    renderer: remotion
+    card: worldBoard
+    fx: {dipIn: 0.4, dipFrames: 8}
+    narration: 为什么？
+    min_hold: 2.6
+    beats: 2
+    params: {mode: sim0}
+
+  - id: M2
+    renderer: remotion
+    card: worldBoard
+    narration: 开头几个人点哪首，多少带点随机。
+    min_hold: 3.6
+    beats: 3
+    params: {mode: sim1, note: 示意 · 简化模型，不是实验数据}
+
+  - id: M3
+    renderer: remotion
+    card: worldBoard
+    narration: 一首歌刚好多被点了几下，
+    min_hold: 3.0
+    beats: 2
+    params: {mode: sim2, note: 示意 · 简化模型，不是实验数据}
+
+  - id: M4
+    renderer: remotion
+    card: worldBoard
+    narration: 后来的人看到数字，更愿意点开它。
+    min_hold: 3.6
+    beats: 3
+    params: {mode: sim3, note: 示意 · 简化模型，不是实验数据}
+
+  - id: M5
+    renderer: remotion
+    card: worldBoard
+    narration: 领先一点，就被放大一点。
+    min_hold: 3.2
+    beats: 2
+    params: {mode: sim4, note: 示意 · 简化模型，不是实验数据}
+
+  - id: M6
+    renderer: remotion
+    card: worldBoard
+    narration: 这叫累积优势。
+    min_hold: 2.8
+    beats: 2
+    params: {mode: term, label: 累积优势, sub: Cumulative Advantage}
+
+  - id: M7
+    renderer: remotion
+    card: worldBoard
+    fx: {dipOut: 0.4, dipFrames: 8}
+    narration: 社会学家默顿，把这类现象叫做马太效应。
+    min_hold: 3.8
+    beats: 2
+    params: {mode: term, label: 累积优势, sub: Cumulative Advantage, label2: 马太效应, note: Merton 1968}
+
+  # ── 生活：这不只是音乐 ──────────────────────────────────────────
+  - id: L1
+    renderer: remotion
+    card: lifeCounters
+    fx: {dipIn: 0.4, dipFrames: 8, stardust: false}
+    narration: 这不只发生在音乐里。
+    min_hold: 3.0
+    beats: 2
+    params: {mode: city}
+
+  - id: L2
+    renderer: remotion
+    card: lifeCounters
+    fx: {stardust: false}
+    narration: 点外卖，先看销量；
+    min_hold: 2.8
+    beats: 2
+    params: {mode: takeout, count: 2863, unit: 已售}
+
+  - id: L3
+    renderer: remotion
+    card: lifeCounters
+    fx: {stardust: false}
+    narration: 刷视频，先点播放多的；
+    min_hold: 2.8
+    beats: 2
+    params: {mode: video, count: 412000, unit: 播放}
+
+  - id: L4
+    renderer: remotion
+    card: lifeCounters
+    fx: {stardust: false}
+    narration: 选电影，先看票房。
+    min_hold: 2.8
+    beats: 2
+    params: {mode: movie, count: 9.6, unit: 亿票房}
+
+  - id: L5
+    renderer: remotion
+    card: worldBoards
+    narration: 你每天，都在这个实验里。
+    min_hold: 3.2
+    beats: 2
+    params: {mode: youdot}
+
+  - id: L6
+    renderer: remotion
+    card: worldBoard
+    fx: {dipOut: 0.4, dipFrames: 8}
+    narration: 你随手一点，也在帮领先的，再领先一点。
+    min_hold: 3.8
+    beats: 3
+    params: {mode: tap}
+
+  # ── 反转 2：不全是运气 ───────────────────────────────────────────
+  - id: Q1
+    renderer: remotion
+    card: worldBoards
+    fx: {dipIn: 0.4, dipFrames: 8}
+    narration: 那是不是全靠运气？
+    min_hold: 2.8
+    beats: 2
+    params: {mode: final}
+
+  - id: Q2
+    renderer: remotion
+    card: worldBoards
+    narration: 也不是。
+    min_hold: 2.4
+    beats: 2
+    params: {mode: final, push: true}
+
+  - id: Q3
+    renderer: remotion
+    card: worldBoards
+    narration: 最好的歌，很少垫底；
+    min_hold: 3.0
+    beats: 2
+    params: {mode: best, note: 按对照组排名}
+
+  - id: Q4
+    renderer: remotion
+    card: worldBoards
+    narration: 最差的歌，很少夺冠。
+    min_hold: 3.0
+    beats: 2
+    params: {mode: worst}
+
+  - id: Q5
+    renderer: remotion
+    card: worldBoard
+    narration: 后来，他们又做了一次更狠的：
+    min_hold: 3.2
+    beats: 2
+    params: {mode: fresh, note: Salganik & Watts · 2008}
+
+  - id: Q6
+    renderer: remotion
+    card: worldBoard
+    narration: 把排行榜整个倒过来，
+    min_hold: 3.0
+    beats: 2
+    params: {mode: flip}
+
+  - id: Q7
+    renderer: remotion
+    card: worldBoard
+    narration: 最不受欢迎的歌，被标成了第一。
+    min_hold: 3.4
+    beats: 3
+    params: {mode: fakebadge, badge: 「第 1 名」}
+
+  - id: Q8
+    renderer: remotion
+    card: worldBoard
+    narration: 结果，大多数歌，假的人气慢慢变成了真的。
+    min_hold: 4.2
+    beats: 2
+    params: {mode: selffulfil}
+
+  - id: Q9
+    renderer: remotion
+    card: worldBoard
+    narration: 但最好的那几首，又慢慢爬了回来。
+    min_hold: 3.8
+    beats: 2
+    params: {mode: recover}
+
+  - id: B2
+    renderer: remotion
+    card: worldBoard
+    fx: {dipOut: 0.5, dipFrames: 10}
+    narration: ""
+    min_hold: 2.5
+    beats: 2
+    params: {mode: glide}
+
+  # ── 落点 ────────────────────────────────────────────────────────
+  - id: D1
+    renderer: remotion
+    card: worldBoard
+    fx: {dipIn: 0.5, dipFrames: 10}
+    narration: 所以，如果你的视频、你的小店、你的文章没火，
+    min_hold: 4.4
+    beats: 2
+    params: {mode: alone}
+
+  - id: D2
+    renderer: remotion
+    card: worldBoard
+    narration: 可能不是它不够好。
+    min_hold: 2.8
+    beats: 2
+    params: {mode: edge}
+
+  - id: D3
+    renderer: remotion
+    card: worldBoard
+    narration: 只是开头那几个人，刚好没点开它。
+    min_hold: 3.6
+    beats: 3
+    params: {mode: missed}
+
+  - id: D4
+    renderer: remotion
+    card: worldBoard
+    fx: {dipOut: 0.7, dipFrames: 12}
+    narration: 世界没法重来。
+    min_hold: 2.8
+    beats: 2
+    params: {mode: freeze}
+
+  # 云海：公共着色器，两镜连飞（D6 的 t0 = D5 的时长，配音后填）
+  - id: D5
+    renderer: glsl
+    frag: ../../toolkit/vlab/scenes/shaders/cloudsea.frag
+    ss: 1
+    t0: 0.0
+    fade_in: 0.6
+    narration: 但你可以再做一个，再发一次。
+    min_hold: 3.6
+    beats: 2
+
+  - id: D6
+    renderer: glsl
+    frag: ../../toolkit/vlab/scenes/shaders/cloudsea.frag
+    ss: 1
+    t0: 3.60
+    fade_out: 0.5
+    narration: 每一次重新开始，都是一个新的世界。
+    min_hold: 3.8
+    beats: 2
+
+  - id: D7
+    renderer: remotion
+    card: streetScene
+    fx: {dipIn: 0.55, dipFrames: 10, stardust: false}
+    narration: 你没火，可能只是这个世界没选中你。
+    no_sub: true
+    min_hold: 4.2
+    beats: 2
+    params: {mode: callback, line: 你没火，可能只是这个世界没选中你——}
+
+  - id: D8
+    renderer: remotion
+    card: streetScene
+    fx: {dipOut: 0.55, dipFrames: 10, stardust: false}
+    narration: 那就，多去几个世界。
+    no_sub: true
+    min_hold: 4.2
+    beats: 2
+    params: {mode: visitor, line: 那就，多去几个世界。}
+
+  # ── 片尾 ────────────────────────────────────────────────────────
+  - id: END
+    renderer: remotion
+    card: regressTitle
+    fx: {dipIn: 0.55, dipFrames: 10}
+    narration: ""
+    min_hold: 4.8
+    beats: 2
+    params:
+      title: 你没火，可能只是没被选中
+      size: 112
+      sub: ""
+      latin: ""
+      bead: false
+      refs:
+        - "参考：Salganik, Dodds & Watts, Science 2006 · Salganik & Watts, Social Psychology Quarterly 2008"
+        - "局限：研究者认为，现实里营销和媒体的影响，比实验里强得多"
+        - "中间的模拟是简化模型，只用来演示原理"

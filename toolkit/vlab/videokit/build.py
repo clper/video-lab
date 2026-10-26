@@ -99,8 +99,26 @@ def render_scene(P: Project, scene: dict, tl_scene: dict, style_arg, force: bool
         r = ShaderRenderer(P.dir / scene["frag"], ss=int(scene.get("ss", 2)),
                            size=(tl_scene.get("width", 1080), tl_scene.get("height", 1920)))
         uniforms = scene.get("uniforms") or scene.get("params") or {}
-        render_clip(r, clip, want, t0=0.0, fps=fps,
-                    uniforms=(lambda t, u=uniforms: dict(u)) if uniforms else None)
+        # t0：着色器时间的起点（秒）。连续两镜用同一个着色器飞行时，第二镜写 t0 = 第一镜的时长，画面就接得上
+        # fade_in / fade_out（秒）：着色器镜头没有 dip 层，亮场的云海接在暗场之后就是一次"开灯"，
+        # 所以首尾各压一段黑（STYLE-RHYTHM：切点不许发亮）
+        g_t0 = float(scene.get("t0", 0.0))
+        g_fi, g_fo = float(scene.get("fade_in", 0) or 0), float(scene.get("fade_out", 0) or 0)
+        g_dur = want / fps
+
+        def _fade(t, img, _t0=g_t0, _fi=g_fi, _fo=g_fo, _dur=g_dur):
+            u = t - _t0
+            k = 1.0
+            if _fi > 0:
+                k = min(k, u / _fi)
+            if _fo > 0:
+                k = min(k, (_dur - u) / _fo)
+            k = max(0.0, min(1.0, k))
+            return img if k >= 0.999 else img.point(lambda v, _k=k: int(v * _k))
+
+        render_clip(r, clip, want, t0=g_t0, fps=fps,
+                    uniforms=(lambda t, u=uniforms: dict(u)) if uniforms else None,
+                    overlay=_fade if (g_fi > 0 or g_fo > 0) else None)
     elif renderer == "custom":
         # 项目自带脚本：从 --scene 读一份 JSON（out/frames/fps/params/words…），自己写出 out。
         # 只给“这张卡库表达不了”的一次性镜头用，长得像固定模板了就搬回 cards/

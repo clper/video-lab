@@ -6,6 +6,7 @@
 用法（任意目录）:
        uv run vlab-tts archive/001-float-precision/content/float.json
 稿子里可以写 "aspect": "landscape" 出横屏（1920x1080），不写就是竖屏（1080x1920）。
+分镜里写 "no_sub": true，这一句照常配音、进时间轴，但不出字幕（画面上用大字代替，同一句不出现两遍）。
 产物写到稿子所在项目的 build 目录（稿子在 <项目>/content/ 下）:
        <项目>/build/<id>/narration.wav   整条配音
        <项目>/build/<id>/timeline.json   分镜起止时间、每个词的时间点、字幕条
@@ -142,7 +143,7 @@ def build_grid(content: dict, content_path: Path) -> None:
         hold = float(scene["hold"])
         start, end = t, t + hold * beat
         text = (scene.get("text") or "").strip()
-        if text:
+        if text and not scene.get("no_sub"):
             cin = float(scene.get("sub_in") if scene.get("sub_in") is not None else 0.15)
             cout = float(scene.get("sub_out") if scene.get("sub_out") is not None else 0.20)
             c0, c1 = start + cin, max(start + cin + 0.6, end - cout)
@@ -212,6 +213,9 @@ async def main(content_path: Path) -> None:
         sys.exit(f"aspect 只能是 {' 或 '.join(ASPECTS)}，稿子里写的是 {aspect_name!r}")
     aspect = ASPECTS[aspect_name]
     end_hold = float(content.get("end_hold", END_HOLD))   # 片尾多停多久，可以在稿子里覆盖
+    # 每镜开口前 / 说完后留多久：镜头多的快切片要收紧（52 镜 × 0.6s 就是半分钟空白），稿子里写 lead / trail 覆盖
+    lead = float(content.get("lead", LEAD))
+    trail = float(content.get("trail", TRAIL))
     project = content_path.resolve().parent.parent      # <项目>/content/xxx.json → <项目>
     out_dir = project / "build" / content["id"]
     seg_dir = out_dir / "segments"
@@ -235,12 +239,12 @@ async def main(content_path: Path) -> None:
             # 所以有旁白的片子里插不进空镜——007《回归》需要 6 个呼吸镜，才加的这条路。
             words, seg, seg_len = [], b"", 0.0
 
-        voice_start = t + LEAD
-        tail = TRAIL + (end_hold if i == len(content["scenes"]) - 1 else 0)
+        voice_start = t + lead
+        tail = trail + (end_hold if i == len(content["scenes"]) - 1 else 0)
         # 镜头最短时长 min_hold（秒）：呼吸镜至少要停够（不然 0.6 秒一闪而过），
         # 有旁白的镜头也能靠它把节奏压整齐。不写 = 0，行为和以前完全一样。
-        pad = max(0.0, float(scene.get("min_hold") or 0) - (LEAD + seg_len + tail))
-        pcm += silence(LEAD) + seg + silence(tail + pad)
+        pad = max(0.0, float(scene.get("min_hold") or 0) - (lead + seg_len + tail))
+        pcm += silence(lead) + seg + silence(tail + pad)
         end = voice_start + seg_len + tail + pad
 
         aligned = align_words(text, words)
@@ -253,6 +257,8 @@ async def main(content_path: Path) -> None:
             whole = "".join(w["shown"] + w["trailing"] for w in aligned).strip()
             whole = whole.rstrip(STRIP_PUNCT + " ")
             scene_cues = [{"start": scene_cues[0]["start"], "end": scene_cues[-1]["end"], "text": whole}]
+        if scene.get("no_sub"):
+            scene_cues = []        # 这一句画面上用大字给，不烧字幕（008 的开场问句和落点）
         cues += scene_cues
 
         scenes.append(

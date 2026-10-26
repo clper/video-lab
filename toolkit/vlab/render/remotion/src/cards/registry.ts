@@ -26,6 +26,10 @@ import { RegressTitle } from "./RegressTitle";
 import { BriefRoom } from "./BriefRoom";
 import { ScatterRegress } from "./ScatterRegress";
 import { WaveField } from "./WaveField";
+import { StreetScene } from "./StreetScene";
+import { WorldBoards } from "./WorldBoards";
+import { WorldBoard } from "./WorldBoard";
+import { LifeCounters } from "./LifeCounters";
 import { PaperLength } from "./PaperLength";
 import { PaperRoll } from "./PaperRoll";
 import { Polaroid } from "./Polaroid";
@@ -71,6 +75,11 @@ export const CARDS: Record<string, React.ComponentType<any>> = {
   briefRoom: BriefRoom,
   scatterRegress: ScatterRegress,
   waveField: WaveField,
+  // 008《你没火，可能只是没被选中》
+  streetScene: StreetScene,
+  worldBoards: WorldBoards,
+  worldBoard: WorldBoard,
+  lifeCounters: LifeCounters,
 };
 
 export const CARD_NAMES = Object.keys(CARDS);

@@ -193,7 +193,8 @@ class Project:
                    "grid": {"bpm": bpm, "beat": float(g.get("beat") or 60.0 / bpm),
                             "lead": float(g.get("lead", 0.0))},
                    "scenes": [{"id": s["id"], "text": s.get("text", ""), "hold": s.get("hold"),
-                               "sub_in": s.get("sub_in"), "sub_out": s.get("sub_out")} for s in self.scenes]}
+                               "sub_in": s.get("sub_in"), "sub_out": s.get("sub_out"),
+                               **({"no_sub": True} if s.get("no_sub") else {})} for s in self.scenes]}
             if "end_hold" in self.data:
                 out["end_hold"] = self.data["end_hold"]
             return out
@@ -201,10 +202,15 @@ class Project:
         out = {"id": self.id, "title": self.data.get("title", self.id),
                "voice": v.get("name", "zh-CN-YunxiNeural"), "rate": v.get("rate", "+8%"),
                "scenes": [{"id": s["id"], "narration": s.get("narration", ""),
-                           "min_hold": s.get("min_hold")} for s in self.scenes]}
+                           "min_hold": s.get("min_hold"),
+                           # 只在为真时写进去：旧工程的稿子内容不变，配音指纹也就不变
+                           **({"no_sub": True} if s.get("no_sub") else {})} for s in self.scenes]}
         for k in ("aspect", "end_hold"):      # 可选：画幅、片尾停留（默认竖屏 / 1.6s）
             if k in self.data:
                 out[k] = self.data[k]
+        for k in ("lead", "trail"):           # 可选：每镜开口前 / 说完后的静音（秒），快切片收紧用
+            if k in v:
+                out[k] = float(v[k])
         return out
 
     def narration_hash(self) -> str:

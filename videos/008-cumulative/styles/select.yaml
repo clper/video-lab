@@ -1,0 +1,17 @@
+# 008《你没火，可能只是没被选中》的风格：和 006/007 同一家族（深底 + 金/青）。
+# 主角是"光点"：48 首歌是 48 颗光点，8 个世界是 8 块玻璃板；火起来的歌长成光柱。
+# 金 = 第一名、最好的歌、被选中；青 = 对照组（只凭耳朵）、"你"那颗点；灰 = 排在后面、没被点开。
+# 开场和结尾是黄昏的街，暖色只在那里出现。
+name: select
+palette:
+  bg: "#05070c"
+  bg2: "#0c1522"
+  ink: "#f4f1e8"
+  dim: "#8b93a7"
+  accent1: "#f3c14b"
+  accent2: "#49e3d1"
+  accent3: "#ff5b5b"
+font: {family: Source Han Sans CN, title_size: 52, body_size: 38}
+motion: {enter: fade_up, duration: 0.5, stagger: 0.12, easing: smooth}
+# 有旁白，配乐要让位；暗角和 007 一样轻，玻璃板自己有反光
+texture: {vignette: 0.14, grain: 0}

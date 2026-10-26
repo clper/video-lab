@@ -18,6 +18,8 @@ type Props = {
   refs?: string[];
   /** 要不要那颗悬着的金珠（片名卡要，片尾不要） */
   bead?: boolean;
+  /** 标题字号（默认 240 是两个字的片名；长片名用 110–130） */
+  size?: number;
 };
 
 export const RegressTitle: React.FC<Props> = ({
@@ -27,6 +29,7 @@ export const RegressTitle: React.FC<Props> = ({
   rule = 760,
   refs = [],
   bead = true,
+  size = 240,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -148,9 +151,9 @@ export const RegressTitle: React.FC<Props> = ({
                 style={{
                   fontFamily: FONT,
                   fontWeight: 700,
-                  fontSize: 240,
+                  fontSize: size,
                   lineHeight: 1.08,
-                  letterSpacing: 8,
+                  letterSpacing: size >= 200 ? 8 : 4,
                   color: C.ink,
                   opacity: p,
                   filter: `blur(${(1 - p) * 10}px)`,
@@ -202,7 +205,7 @@ export const RegressTitle: React.FC<Props> = ({
 
         {/* 文献线索 + 软肋自曝：片尾才有 */}
         {refs.length ? (
-          <div style={{ position: "absolute", top: 852, left: 0, right: 0, textAlign: "center" }}>
+          <div style={{ position: "absolute", top: size >= 200 ? 852 : 700, left: 0, right: 0, textAlign: "center" }}>
             {refs.map((r, i) => {
               const p = clamp(
                 (frame - t0 - per * title.length - fps * 0.3 - i * fps * 0.16) / (fps * 0.6),

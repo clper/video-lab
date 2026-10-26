@@ -1,0 +1,275 @@
+{
+  "id": "008-cumulative",
+  "title": "你没火，可能只是没被选中",
+  "voice": "zh-CN-YunxiNeural",
+  "rate": "+10%",
+  "scenes": [
+    {
+      "id": "H1",
+      "narration": "两家店，一家门口排长队，一家空着。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "H2",
+      "narration": "你会进哪家？",
+      "min_hold": 3.0
+    },
+    {
+      "id": "H3",
+      "narration": "可是，排队的那家，真的更好吃吗？",
+      "min_hold": 3.8,
+      "no_sub": true
+    },
+    {
+      "id": "H4",
+      "narration": "有人做过一个实验：让世界重来八次。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "T1",
+      "narration": "",
+      "min_hold": 4.8
+    },
+    {
+      "id": "E1",
+      "narration": "研究者找来一万四千多人，",
+      "min_hold": 3.2
+    },
+    {
+      "id": "E2",
+      "narration": "和四十八首没人听过的歌。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "E3",
+      "narration": "这些人被随机分进八个一模一样的世界，",
+      "min_hold": 3.6
+    },
+    {
+      "id": "E4",
+      "narration": "在这里，你能看到每首歌被下载了几次。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "E5",
+      "narration": "就一个数字，像门口的队，像网上的销量。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "E6",
+      "narration": "另有一组人看不到数字，只凭耳朵选。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "E7",
+      "narration": "他们选出来的，就当作这些歌本来有多好。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "I1",
+      "narration": "你猜，八个世界的榜单会差不多吗？",
+      "min_hold": 3.6
+    },
+    {
+      "id": "I2",
+      "narration": "直觉说：好歌在哪儿都会火。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "R1",
+      "narration": "结果，不同的世界，火起来的歌不一样。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "R2",
+      "narration": "有一首中等的歌，在一个世界里是冠军，",
+      "min_hold": 3.8
+    },
+    {
+      "id": "R3",
+      "narration": "在另一个世界里，排在很后面。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "R4",
+      "narration": "八个世界无一例外：火的更火，冷的更冷。",
+      "min_hold": 4.2
+    },
+    {
+      "id": "R5",
+      "narration": "谁会火，也更难猜了。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "B1",
+      "narration": "",
+      "min_hold": 2.5
+    },
+    {
+      "id": "M1",
+      "narration": "为什么？",
+      "min_hold": 2.6
+    },
+    {
+      "id": "M2",
+      "narration": "开头几个人点哪首，多少带点随机。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "M3",
+      "narration": "一首歌刚好多被点了几下，",
+      "min_hold": 3.0
+    },
+    {
+      "id": "M4",
+      "narration": "后来的人看到数字，更愿意点开它。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "M5",
+      "narration": "领先一点，就被放大一点。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "M6",
+      "narration": "这叫累积优势。",
+      "min_hold": 2.8
+    },
+    {
+      "id": "M7",
+      "narration": "社会学家默顿，把这类现象叫做马太效应。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "L1",
+      "narration": "这不只发生在音乐里。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "L2",
+      "narration": "点外卖，先看销量；",
+      "min_hold": 2.8
+    },
+    {
+      "id": "L3",
+      "narration": "刷视频，先点播放多的；",
+      "min_hold": 2.8
+    },
+    {
+      "id": "L4",
+      "narration": "选电影，先看票房。",
+      "min_hold": 2.8
+    },
+    {
+      "id": "L5",
+      "narration": "你每天，都在这个实验里。",
+      "min_hold": 3.2
+    },
+    {
+      "id": "L6",
+      "narration": "你随手一点，也在帮领先的，再领先一点。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "Q1",
+      "narration": "那是不是全靠运气？",
+      "min_hold": 2.8
+    },
+    {
+      "id": "Q2",
+      "narration": "也不是。",
+      "min_hold": 2.4
+    },
+    {
+      "id": "Q3",
+      "narration": "最好的歌，很少垫底；",
+      "min_hold": 3.0
+    },
+    {
+      "id": "Q4",
+      "narration": "最差的歌，很少夺冠。",
+      "min_hold": 3.0
+    },
+    {
+      "id": "Q5",
+      "narration": "后来，他们又做了一次更狠的：",
+      "min_hold": 3.2
+    },
+    {
+      "id": "Q6",
+      "narration": "把排行榜整个倒过来，",
+      "min_hold": 3.0
+    },
+    {
+      "id": "Q7",
+      "narration": "最不受欢迎的歌，被标成了第一。",
+      "min_hold": 3.4
+    },
+    {
+      "id": "Q8",
+      "narration": "结果，大多数歌，假的人气慢慢变成了真的。",
+      "min_hold": 4.2
+    },
+    {
+      "id": "Q9",
+      "narration": "但最好的那几首，又慢慢爬了回来。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "B2",
+      "narration": "",
+      "min_hold": 2.5
+    },
+    {
+      "id": "D1",
+      "narration": "所以，如果你的视频、你的小店、你的文章没火，",
+      "min_hold": 4.4
+    },
+    {
+      "id": "D2",
+      "narration": "可能不是它不够好。",
+      "min_hold": 2.8
+    },
+    {
+      "id": "D3",
+      "narration": "只是开头那几个人，刚好没点开它。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "D4",
+      "narration": "世界没法重来。",
+      "min_hold": 2.8
+    },
+    {
+      "id": "D5",
+      "narration": "但你可以再做一个，再发一次。",
+      "min_hold": 3.6
+    },
+    {
+      "id": "D6",
+      "narration": "每一次重新开始，都是一个新的世界。",
+      "min_hold": 3.8
+    },
+    {
+      "id": "D7",
+      "narration": "你没火，可能只是这个世界没选中你。",
+      "min_hold": 4.2,
+      "no_sub": true
+    },
+    {
+      "id": "D8",
+      "narration": "那就，多去几个世界。",
+      "min_hold": 4.2,
+      "no_sub": true
+    },
+    {
+      "id": "END",
+      "narration": "",
+      "min_hold": 4.8
+    }
+  ],
+  "aspect": "landscape",
+  "end_hold": 1.8,
+  "lead": 0.12,
+  "trail": 0.22
+}

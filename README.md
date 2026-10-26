@@ -19,7 +19,7 @@
 
 | 编号 | 视频 | 路线 | 状态 |
 |---|---|---|---|
-| 008 | [累积优势](videos/008-cumulative/) | 主线：硬知识 + 人生落点 | 剧本 v0.1 待项目负责人逐条审核（剧本闸门，见 [process/SCRIPT-REVIEW.md](process/SCRIPT-REVIEW.md)） |
+| 008 | [你没火，可能只是没被选中](videos/008-cumulative/) | 主线：硬知识 + 人生落点 | 剧本已确认（2026-10-26，剧本闸门见 [process/SCRIPT-REVIEW.md](process/SCRIPT-REVIEW.md)），制作中 |
 | 007 | [回归](videos/007-regression/) | 主线：硬知识 + 人生落点 | 暂停（2026-10-26），剧本未审 |
 
 **已归档：** 001–006 是开发过程中的探索作品，2026-10-26 归档到 `archive/`，不再是主力视频。
@@ -80,7 +80,7 @@
 ```
 AI-Vedio/
 ├── videos/              【项目结果】
-│   ├── 008-cumulative/  《累积优势》，剧本待审
+│   ├── 008-cumulative/  《你没火，可能只是没被选中》，制作中
 │   └── 007-regression/  《回归》，暂停
 ├── research/            【开发测试】
 │   ├── visual/          画面技术 01–14（13 Remotion 样片、 14 custom 渲染器示例）
