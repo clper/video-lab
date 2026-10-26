@@ -153,7 +153,10 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
       const sc = lerp(1.1, 2.6, k);
       return { sc, ox: lerp(0, 960 - d.cx, k), oy: lerp(0, 470 - d.cy, k), origin: `${d.cx}px ${d.cy}px` };
     }
-    if (mode === "glide") return { sc: 2.0, ox: lerp(520, -520, p), oy: 240, origin: "960px 540px" };
+    // 呼吸镜：极慢的推进 + 轻微上浮。原来是 2 倍放大横扫 1040px，实测镜内帧间差 40.6——
+    // 全片最高，是 B1（8 块板掠过，17.97）的 2.3 倍。呼吸镜该是全片最安静的位置，
+    // 不该比倒置实验（Q5 的 4.27）晃十倍。
+    if (mode === "glide") return { sc: lerp(1.88, 2.04, ease(p)), ox: lerp(-70, 70, ease(p)), oy: 220, origin: "960px 540px" };
     if (mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze") {
       const d = dotPos(27, PX, PY, PW, PH);
       const sc = mode === "alone" ? lerp(2.4, 1.9, ease(p)) : 1.9;

@@ -217,7 +217,15 @@ def main():
                         + [json.dumps(tex, sort_keys=True), json.dumps(P.data.get("audio") or {}, sort_keys=True),
                            P.narration_hash(), subs.read_text(encoding="utf-8-sig") if subs.exists() else ""])
     asm_file = P.clip_dir() / "_assembly.hash"
-    if not args.force and final.exists() and asm_file.exists() and asm_file.read_text() == asm_hash:
+    # 总装指纹里含 subs.ass 全文（中文）：必须显式 UTF-8。Windows 默认 GBK，
+    # 而跨环境（Linux/容器里跑的）留下的是 UTF-8，直接 read_text() 会 UnicodeDecodeError 炸在这行
+    old_asm = ""
+    if asm_file.exists():
+        try:
+            old_asm = asm_file.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            old_asm = ""           # 旧指纹读不出来就当没有：这次重拼，之后统一写 UTF-8
+    if not args.force and final.exists() and old_asm == asm_hash:
         print(f"成片：没有变化，跳过拼接 → {final}")
         return
     vf = []      # 质感在 concat 之后加，保证整片一致（逐镜头加的话接缝处会看出差别）
@@ -296,7 +304,7 @@ def main():
     sheet = P.dir / "media" / f"{P.id}_{P.style['name']}_preview.png"
     subprocess.run([sys.executable, "-m", "vlab.tools.preview", str(final), "--timeline", str(P.timeline_path),
                     "--out", str(sheet), "--cols", str(min(6, len(P.scenes)))], check=True)
-    asm_file.write_text(asm_hash)
+    asm_file.write_text(asm_hash, encoding="utf-8")
 
 
 if __name__ == "__main__":

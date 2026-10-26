@@ -224,6 +224,7 @@ async def main(content_path: Path) -> None:
     pcm = bytearray()
     t = 0.0
     scenes, cues = [], []
+    cue_limits = []        # 每条字幕最多能挂到哪一秒 = 它自己那一镜的结尾
     for i, scene in enumerate(content["scenes"]):
         text = (scene.get("narration") or "").strip()
         if text:
@@ -260,6 +261,7 @@ async def main(content_path: Path) -> None:
         if scene.get("no_sub"):
             scene_cues = []        # 这一句画面上用大字给，不烧字幕（008 的开场问句和落点）
         cues += scene_cues
+        cue_limits += [round(end, 3)] * len(scene_cues)
 
         scenes.append(
             {
@@ -286,8 +288,11 @@ async def main(content_path: Path) -> None:
         c["start"], c["end"] = round(c["start"], 3), round(c["end"], 3)
 
     # 最后一句停到片尾：收尾金句得留在屏幕上，不能说完就消失（空镜白留着）
+    # 但只能停到它自己那一镜的结尾：008 片尾三镜是 no_sub 的大字 + 片尾卡，
+    # 一路拖到片尾会让「都是一个新的世界」压在大字和片名上 13 秒
     if cues and cues[-1]["end"] < t - 0.1:
-        cues[-1]["end"] = round(t - 0.1, 3)
+        limit = min(t - 0.1, cue_limits[-1] - 0.2) if cue_limits else t - 0.1
+        cues[-1]["end"] = round(max(cues[-1]["end"], limit), 3)
 
     raw = seg_dir / "narration_raw.wav"
     with wave.open(str(raw), "wb") as wav:
