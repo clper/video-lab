@@ -35,6 +35,7 @@ import { PaperRoll } from "./PaperRoll";
 import { Polaroid } from "./Polaroid";
 import { ScaleCard } from "./ScaleCard";
 import { StampStrike } from "./StampStrike";
+import { StickScene } from "./StickScene";
 import { TechCard } from "./TechCard";
 import { VortexBlocks } from "./VortexBlocks";
 
@@ -80,6 +81,8 @@ export const CARDS: Record<string, React.ComponentType<any>> = {
   worldBoards: WorldBoards,
   worldBoard: WorldBoard,
   lifeCounters: LifeCounters,
+  // research/visual/15-stickfigure：火柴人场景播放器（动作数据由 Python 算好传进来）
+  stickScene: StickScene,
 };
 
 export const CARD_NAMES = Object.keys(CARDS);

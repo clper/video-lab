@@ -74,6 +74,9 @@
 | 数学之美 | [route-math.md](route-math.md) | 生日悖论 |
 | 节气与天象 | [route-seasons.md](route-seasons.md) | 冬至 |
 | 前沿解读 | [route-frontier.md](route-frontier.md) | 等合适的进展 |
+| 火柴人 VS 物理 | [route-stickfigure.md](route-stickfigure.md) | 四两拨千斤 |
+
+2026-10-27：项目负责人看完火柴人样片（`research/visual/15-stickfigure/`），定下一条视频做火柴人，按 ROUTES 第 4 节试水，排在下面 7 条前面。
 
 AI 建议的试水顺序，由项目负责人定：
 

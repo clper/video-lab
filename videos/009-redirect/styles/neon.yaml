@@ -1,0 +1,15 @@
+# 009《他比我重一倍，我借了他的力》的风格：光绘火柴人（research/visual/15-stickfigure 的样片定下的画风）。
+# 深底，两个人是两种光：金 = 小个子（60 kg），青 = 大块头（120 kg）。物理标注用白和金，"挡"用冷白，"倒"用红。
+# 颗粒、暗角、呼吸由镜头卡的全局特效栈给，拼接时不再叠质感（叠两层暗角四角会发黑）。
+name: neon
+palette:
+  bg: "#06070d"
+  bg2: "#0e1424"
+  ink: "#f6f2e7"
+  dim: "#8b93a7"
+  accent1: "#f3c14b"
+  accent2: "#49e3d1"
+  accent3: "#ff5b5b"
+font: {family: Source Han Sans CN, title_size: 52, body_size: 38}
+motion: {enter: fade_up, duration: 0.5, stagger: 0.12, easing: smooth}
+texture: {vignette: 0.0, grain: 0}

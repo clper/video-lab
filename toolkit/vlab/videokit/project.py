@@ -151,6 +151,9 @@ class Project:
                     errs.append(f"[{sid}] renderer 是 custom，但没写 script（相对项目目录的 .py）")
                 elif not (self.dir / script).exists():
                     errs.append(f"[{sid}] 找不到自定义脚本 {script}")
+                for dep in s.get("deps") or []:
+                    if not (self.dir / dep).exists():
+                        errs.append(f"[{sid}] 依赖 {dep} 不存在（是生成出来的文件的话，先跑生成它的脚本）")
             else:  # glsl
                 frag = s.get("frag")
                 if not frag:
@@ -239,6 +242,14 @@ def _code_hash(project_dir: Path, scene: dict, renderer: str) -> str:
         script = project_dir / (scene.get("script") or "")
         h = hashlib.sha1(script.read_bytes() if script.exists() else b"missing")
         h.update(json.dumps(scene.get("args") or [], ensure_ascii=False).encode("utf-8"))
+        # deps：脚本之外还影响画面的文件或目录（这一镜的动作数据、脚本调用的镜头卡代码……），
+        # 一起算进指纹，改了才重渲；目录按里面所有文件算
+        for dep in scene.get("deps") or []:
+            p = project_dir / dep
+            files = sorted(f for f in p.rglob("*") if f.is_file()) if p.is_dir() else [p]
+            for f in files:
+                h.update(f.name.encode("utf-8"))
+                h.update(f.read_bytes() if f.exists() else b"missing")
         return h.hexdigest()
     # remotion：把 src 下所有 ts/tsx 一起算，改任何一张卡都会让 remotion 镜头失效；
     # 桥本身（像素格式、帧数算法）也会影响产物，一起算进去

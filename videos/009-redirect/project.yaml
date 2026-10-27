@@ -1,0 +1,42 @@
+# 009《他比我重一倍，我借了他的力》——火柴人 VS 物理（试水）。剧本和分镜见 SCRIPT.md（2026-10-27 项目负责人确认）。
+# 无旁白，拍格模式：120 BPM（每拍 0.5 秒），24 镜共 240 拍 = 120 秒，关键动作落在小节第一拍。
+# 每一镜都是 custom 渲染器：shots/stick.py 读 motion.py 算好的这一镜动作数据，交给镜头卡 stickScene 画。
+# 跑法：先 uv run python videos/009-redirect/motion.py（算动作、切镜头数据、出音效事件表），再 uv run vlab-build 这个文件。
+# 配乐不在这里：项目负责人剪辑时从曲库加（2026-10-27 定），所以成片只有音效。
+id: 009-redirect
+title: 他比我重一倍，我借了他的力
+style: styles/neon.yaml
+aspect: landscape
+fps: 30
+grid: {bpm: 120}
+x-remotion: &remotion ../../toolkit/vlab/render/remotion/src
+audio:
+  music: false
+  sfx_file: build/009-redirect/sfx_events.json
+  sfx_db: 0
+  lufs: -14
+scenes:
+  - {id: S01, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S01, fx: {dipIn: 1.0, dipFrames: 24}}, deps: [build/009-redirect/shots/S01.json, *remotion]}
+  - {id: S02, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S02}, deps: [build/009-redirect/shots/S02.json, *remotion]}
+  - {id: S03, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S03}, deps: [build/009-redirect/shots/S03.json, *remotion]}
+  - {id: S04, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S04}, deps: [build/009-redirect/shots/S04.json, *remotion]}
+  - {id: S05, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S05}, deps: [build/009-redirect/shots/S05.json, *remotion]}
+  - {id: S06, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S06}, deps: [build/009-redirect/shots/S06.json, *remotion]}
+  - {id: S07, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S07}, deps: [build/009-redirect/shots/S07.json, *remotion]}
+  - {id: S08, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S08}, deps: [build/009-redirect/shots/S08.json, *remotion]}
+  - {id: S09, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S09}, deps: [build/009-redirect/shots/S09.json, *remotion]}
+  - {id: S10, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S10}, deps: [build/009-redirect/shots/S10.json, *remotion]}
+  - {id: S11, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S11}, deps: [build/009-redirect/shots/S11.json, *remotion]}
+  - {id: S12, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S12}, deps: [build/009-redirect/shots/S12.json, *remotion]}
+  - {id: S13, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S13}, deps: [build/009-redirect/shots/S13.json, *remotion]}
+  - {id: S14, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S14}, deps: [build/009-redirect/shots/S14.json, *remotion]}
+  - {id: S15, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S15}, deps: [build/009-redirect/shots/S15.json, *remotion]}
+  - {id: S16, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S16}, deps: [build/009-redirect/shots/S16.json, *remotion]}
+  - {id: S17, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S17}, deps: [build/009-redirect/shots/S17.json, *remotion]}
+  - {id: S18, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S18}, deps: [build/009-redirect/shots/S18.json, *remotion]}
+  - {id: S19, hold: 12, renderer: custom, script: shots/stick.py, params: {shot: S19}, deps: [build/009-redirect/shots/S19.json, *remotion]}
+  - {id: S20, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S20}, deps: [build/009-redirect/shots/S20.json, *remotion]}
+  - {id: S21, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S21}, deps: [build/009-redirect/shots/S21.json, *remotion]}
+  - {id: S22, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S22}, deps: [build/009-redirect/shots/S22.json, *remotion]}
+  - {id: S23, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S23}, deps: [build/009-redirect/shots/S23.json, *remotion]}
+  - {id: S24, hold: 16, renderer: custom, script: shots/stick.py, params: {shot: S24}, deps: [build/009-redirect/shots/S24.json, *remotion]}

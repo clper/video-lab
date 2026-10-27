@@ -2,7 +2,7 @@
   "id": "008-cumulative",
   "title": "你没火，可能只是没被选中",
   "voice": "zh-CN-YunxiNeural",
-  "rate": "+10%",
+  "rate": "+16%",
   "scenes": [
     {
       "id": "H1",
@@ -12,7 +12,7 @@
     {
       "id": "H2",
       "narration": "你会进哪家？",
-      "min_hold": 3.0
+      "min_hold": 2.6
     },
     {
       "id": "H3",
@@ -38,7 +38,7 @@
     {
       "id": "E2",
       "narration": "和四十八首没人听过的歌。",
-      "min_hold": 3.2
+      "min_hold": 2.8
     },
     {
       "id": "E3",
@@ -108,7 +108,7 @@
     {
       "id": "M1",
       "narration": "为什么？",
-      "min_hold": 2.6
+      "min_hold": 2.2
     },
     {
       "id": "M2",
@@ -133,7 +133,7 @@
     {
       "id": "M6",
       "narration": "这叫累积优势。",
-      "min_hold": 2.8
+      "min_hold": 2.4
     },
     {
       "id": "M7",
@@ -143,7 +143,7 @@
     {
       "id": "L1",
       "narration": "这不只发生在音乐里。",
-      "min_hold": 3.0
+      "min_hold": 2.6
     },
     {
       "id": "L2",
@@ -173,12 +173,12 @@
     {
       "id": "Q1",
       "narration": "那是不是全靠运气？",
-      "min_hold": 2.8
+      "min_hold": 2.5
     },
     {
       "id": "Q2",
       "narration": "也不是。",
-      "min_hold": 2.4
+      "min_hold": 2.0
     },
     {
       "id": "Q3",
@@ -198,7 +198,7 @@
     {
       "id": "Q6",
       "narration": "把排行榜整个倒过来，",
-      "min_hold": 3.0
+      "min_hold": 2.6
     },
     {
       "id": "Q7",
@@ -228,7 +228,7 @@
     {
       "id": "D2",
       "narration": "可能不是它不够好。",
-      "min_hold": 2.8
+      "min_hold": 2.4
     },
     {
       "id": "D3",
@@ -238,7 +238,7 @@
     {
       "id": "D4",
       "narration": "世界没法重来。",
-      "min_hold": 2.8
+      "min_hold": 2.4
     },
     {
       "id": "D5",
@@ -270,6 +270,6 @@
   ],
   "aspect": "landscape",
   "end_hold": 1.8,
-  "lead": 0.12,
-  "trail": 0.22
+  "lead": 0.1,
+  "trail": 0.18
 }

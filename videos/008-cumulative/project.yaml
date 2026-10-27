@@ -11,6 +11,13 @@
 #
 # 屏上文字按 SCRIPT 第 5 节分三级：大字（line / title）、画面内（卡自己画：计数器、徽章、圈）、小字（note，右下角）。
 # 不加章节标（kicker），卡里也不画。
+#
+# 体检破例（STYLE-RHYTHM：观感优先，破了哪条写清楚）：
+#   同款视觉连镜上限 2 —— 本片 worldBoards / worldBoard 最多连用 10 镜。和 007 的散点云一样，
+#   这是同一组「8 个世界」在连续演化（光点 → 光柱 → 各世界分化 → 推近 → 比较），每镜换 mode，
+#   画面读法在变；切走就断了「同一组世界」的连续性。判据是「画面读法变没变」，不是「卡名变没变」。
+#   首尾帧缺结构 —— H4 尾帧、L1 首帧、D4 尾帧：都落在章节压暗 / 淡入的过场里（街景退成 8 个光点、
+#   城市从暗处立起、定格后接云海），是 1/30 秒级的过场帧，中帧正常。和 007 一样按电影常规保留。
 
 id: 008-cumulative
 title: 你没火，可能只是没被选中
@@ -26,26 +33,26 @@ fx_default:
   dipFrames: 4
 
 # 占位声音（见上）。换声音时只改 name / rate。
-# lead / trail：每镜开口前、说完后的静音。52 个镜头，默认的 0.25 + 0.35 一共是 31 秒空白，这里收到 0.12 + 0.22
-voice: {name: zh-CN-YunxiNeural, rate: "+10%", lead: 0.12, trail: 0.22}
+# lead / trail：每镜开口前、说完后的静音。52 个镜头，默认的 0.25 + 0.35 一共是 31 秒空白，这里收到 0.10 + 0.18；占位声音提到 +16%，全片压到 170 秒左右（规矩 5）
+voice: {name: zh-CN-YunxiNeural, rate: "+16%", lead: 0.10, trail: 0.18}
 
 audio:
   music: true
   music_fn: fold_score      # 带段落的铺底，段落表按本片章节写（时间来自 build/008-cumulative/timeline.json）
   music_segs:
-    - [0.00, 15.54, {lp: 1200, gain: 0.82}]   # 钩子：街上，闷一点
-    - [15.54, 20.34, {gain: 1.0}]   # 片名：全开
-    - [20.34, 46.92, {gain: 0.88}]   # 实验：铺底
-    - [46.92, 54.13, {lp: 2600, gain: 0.85}]   # 直觉：收一点，等反转
-    - [54.13, 75.74, {gain: 1.0}]   # 反转 1：全开
-    - [75.74, 99.13, {hp: 220, gain: 0.9}]   # 原理：抽掉低频，看清机制
-    - [99.13, 118.50, {gain: 1.0}]   # 生活：回到全开
-    - [118.50, 139.74, {gain: 0.92}]   # 运气还是实力
-    - [139.74, 151.01, {gain: 1.0}]   # 倒置实验：假人气变真、最好的爬回来
-    - [151.01, 165.76, {lp: 1800, gain: 0.78}]   # 落点：贴近，闷
-    - [165.76, 173.16, {gain: 1.0}]   # 云海：打开
-    - [173.16, 181.56, {lp: 2200, gain: 0.8}]   # 回场：收
-    - [181.56, 99999.00, {lp: 1500, gain: 0.7}]   # 片尾：只剩底
+    - [0.00, 14.50, {lp: 1200, gain: 0.82}]   # 钩子：街上，闷一点
+    - [14.50, 19.30, {gain: 1.0}]   # 片名：全开
+    - [19.30, 44.37, {gain: 0.88}]   # 实验：铺底
+    - [44.37, 51.26, {lp: 2600, gain: 0.85}]   # 直觉：收一点，等反转
+    - [51.26, 71.98, {gain: 1.0}]   # 反转 1：全开
+    - [71.98, 94.22, {hp: 220, gain: 0.9}]   # 原理：抽掉低频，看清机制
+    - [94.22, 112.54, {gain: 1.0}]   # 生活：回到全开
+    - [112.54, 132.26, {gain: 0.92}]   # 运气还是实力
+    - [132.26, 143.23, {gain: 1.0}]   # 倒置实验：假人气变真、最好的爬回来
+    - [143.23, 156.63, {lp: 1800, gain: 0.78}]   # 落点：贴近，闷
+    - [156.63, 164.03, {gain: 1.0}]   # 云海：打开
+    - [164.03, 172.43, {lp: 2200, gain: 0.8}]   # 回场：收
+    - [172.43, 99999.00, {lp: 1500, gain: 0.7}]   # 片尾：只剩底
   music_v: 1
   bpm: 96
   seed: 31
@@ -72,7 +79,7 @@ scenes:
     card: streetScene
     fx: {stardust: false}
     narration: 你会进哪家？
-    min_hold: 3.0
+    min_hold: 2.6
     beats: 2
     params: {mode: doors}
 
@@ -119,7 +126,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 和四十八首没人听过的歌。
-    min_hold: 3.2
+    min_hold: 2.8
     beats: 2
     params: {mode: songs, label: "48"}
 
@@ -235,7 +242,7 @@ scenes:
     card: worldBoard
     fx: {dipIn: 0.4, dipFrames: 8}
     narration: 为什么？
-    min_hold: 2.6
+    min_hold: 2.2
     beats: 2
     params: {mode: sim0}
 
@@ -275,7 +282,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 这叫累积优势。
-    min_hold: 2.8
+    min_hold: 2.4
     beats: 2
     params: {mode: term, label: 累积优势, sub: Cumulative Advantage}
 
@@ -294,7 +301,7 @@ scenes:
     card: lifeCounters
     fx: {dipIn: 0.4, dipFrames: 8, stardust: false}
     narration: 这不只发生在音乐里。
-    min_hold: 3.0
+    min_hold: 2.6
     beats: 2
     params: {mode: city}
 
@@ -305,7 +312,7 @@ scenes:
     narration: 点外卖，先看销量；
     min_hold: 2.8
     beats: 2
-    params: {mode: takeout, count: 2863, unit: 已售}
+    params: {mode: takeout, label: 已售, value: 2863}
 
   - id: L3
     renderer: remotion
@@ -314,7 +321,7 @@ scenes:
     narration: 刷视频，先点播放多的；
     min_hold: 2.8
     beats: 2
-    params: {mode: video, count: 412000, unit: 播放}
+    params: {mode: video, label: 播放, value: 412000}
 
   - id: L4
     renderer: remotion
@@ -323,7 +330,7 @@ scenes:
     narration: 选电影，先看票房。
     min_hold: 2.8
     beats: 2
-    params: {mode: movie, count: 9.6, unit: 亿票房}
+    params: {mode: movie, label: 票房, value: 9.6, suffix: 亿, decimals: 1}
 
   - id: L5
     renderer: remotion
@@ -348,7 +355,7 @@ scenes:
     card: worldBoards
     fx: {dipIn: 0.4, dipFrames: 8}
     narration: 那是不是全靠运气？
-    min_hold: 2.8
+    min_hold: 2.5
     beats: 2
     params: {mode: final}
 
@@ -356,7 +363,7 @@ scenes:
     renderer: remotion
     card: worldBoards
     narration: 也不是。
-    min_hold: 2.4
+    min_hold: 2.0
     beats: 2
     params: {mode: final, push: true}
 
@@ -388,7 +395,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 把排行榜整个倒过来，
-    min_hold: 3.0
+    min_hold: 2.6
     beats: 2
     params: {mode: flip}
 
@@ -439,7 +446,7 @@ scenes:
     renderer: remotion
     card: worldBoard
     narration: 可能不是它不够好。
-    min_hold: 2.8
+    min_hold: 2.4
     beats: 2
     params: {mode: edge}
 
@@ -454,9 +461,9 @@ scenes:
   - id: D4
     renderer: remotion
     card: worldBoard
-    fx: {dipOut: 0.7, dipFrames: 12}
+    fx: {dipOut: 0.45, dipFrames: 12}
     narration: 世界没法重来。
-    min_hold: 2.8
+    min_hold: 2.4
     beats: 2
     params: {mode: freeze}
 

@@ -86,7 +86,7 @@ export const LifeCounters: React.FC<Props> = ({ mode = "takeout", label = "", va
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #05070f 0%, #0b1024 55%, #1a1a30 100%)" }} />
             <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0 }}>
               {city.map((b, i) => {
-                const rise = ease(span(p, 0.02 + (i % 7) * 0.03, 0.4 + (i % 7) * 0.03));
+                const rise = 0.35 + 0.65 * ease(span(p, 0.02 + (i % 7) * 0.03, 0.4 + (i % 7) * 0.03));
                 const top = 900 - b.bh * rise;
                 return (
                   <g key={i}>

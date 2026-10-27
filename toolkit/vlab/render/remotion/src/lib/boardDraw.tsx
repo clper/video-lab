@@ -112,22 +112,27 @@ export const Panel: React.FC<PanelProps> = ({
     const b = barPos(i, x, y, w, h);
     const sh = shimmer ? 1 + shimmer * 0.06 * Math.sin(seed * 1.7 + i * 2.3) : 1;
     const hgt = Math.max(barW, b.maxH * clamp(hs[i]) * clamp(grow) * sh);
+    // 光点态：下载数越多，点越大越亮——还没长成柱子，也看得出谁在领先
+    const cnt = counters ? counters[i] : 0;
+    const dot = counters && cnt > 0 ? Math.min(30, 10 + 2.4 * Math.sqrt(cnt)) : 10;
     const cx = lerp(d.cx, b.cx, morph);
-    const cyBottom = lerp(d.cy + 5, b.baseY, morph);
-    const width = lerp(10, barW, morph);
-    const height = lerp(10, hgt, morph);
+    const cyBottom = lerp(d.cy + dot / 2, b.baseY, morph);
+    const width = lerp(dot, barW, morph);
+    const height = lerp(dot, hgt, morph);
     const col = morph < 0.5 ? t.mid : barColor(hs[i], tone);
     const o = (dim ? dim[i] : 1) * (morph < 0.5 ? 0.82 : 0.92);
     const isHi = highlight && highlight.song === i;
-    return { i, cx, top: cyBottom - height, width, height, col, o, isHi, d, b };
+    const glow = morph < 0.5 && cnt > 0 ? Math.min(14, 3 + Math.sqrt(cnt) * 1.6) : 0;
+    return { i, cx, top: cyBottom - height, width, height, col, o, isHi, d, b, glow };
   });
 
   const dashSegs = dashed
     ? Array.from({ length: N_SONGS - 1 }, (_, i) => {
         const a = barPos(i, x, y, w, h);
         const b = barPos(i + 1, x, y, w, h);
-        const ya = a.baseY - a.maxH * clamp(dashed.heights[i]);
-        const yb = b.baseY - b.maxH * clamp(dashed.heights[i + 1]);
+        // 虚线描的是柱顶，所以和柱子一样乘上"长到几成"（不乘的话虚线会飘在柱子上方一倍高的地方）
+        const ya = a.baseY - a.maxH * clamp(dashed.heights[i]) * clamp(grow);
+        const yb = b.baseY - b.maxH * clamp(dashed.heights[i + 1]) * clamp(grow);
         const shown = clamp(dashed.p * (N_SONGS - 1) - i);
         const sh = dashed.shatter ?? 0;
         const ang = Math.sin(seed * 3.1 + i * 12.9) * 1.2;
@@ -138,7 +143,7 @@ export const Panel: React.FC<PanelProps> = ({
     : [];
 
   return (
-    <g style={{ opacity, filter: frozen > 0 ? `grayscale(${clamp(frozen)}) brightness(${1 - 0.55 * clamp(frozen)})` : undefined }}>
+    <g style={{ opacity, filter: frozen > 0 ? `grayscale(${clamp(frozen)}) brightness(${1 - 0.35 * clamp(frozen)})` : undefined }}>
       <defs>
         <linearGradient id={`${id}-g`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={t.glass} />
@@ -152,7 +157,7 @@ export const Panel: React.FC<PanelProps> = ({
       <line x1={x + 18} y1={y + 1} x2={x + w - 18} y2={y + 1} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
 
       {label ? (
-        <text x={x + w / 2} y={y - 18} textAnchor="middle" fontFamily={FONT} fontSize={20} letterSpacing={4} fill={tone === "cool" ? C.cyan : C.gold} opacity={0.9}>
+        <text x={x + w / 2} y={y - 22} textAnchor="middle" fontFamily={FONT} fontSize={30} letterSpacing={6} fill={tone === "cool" ? C.cyan : C.gold} opacity={0.95}>
           {label}
         </text>
       ) : null}
@@ -175,10 +180,10 @@ export const Panel: React.FC<PanelProps> = ({
                 width={barW}
                 height={gh}
                 rx={Math.min(2.5, barW / 2)}
-                fill="none"
-                stroke="rgba(243,193,75,0.45)"
-                strokeDasharray="3 3"
-                strokeWidth={1}
+                fill="rgba(243,193,75,0.07)"
+                stroke="rgba(243,193,75,0.85)"
+                strokeDasharray="5 4"
+                strokeWidth={1.6}
               />
             );
           })
@@ -195,7 +200,13 @@ export const Panel: React.FC<PanelProps> = ({
           rx={Math.min(5, it.width / 2)}
           fill={it.isHi ? highlight!.color : it.col}
           opacity={it.isHi ? 1 : it.o}
-          style={it.isHi ? { filter: `drop-shadow(0 0 ${8 + 10 * (highlight!.glow ?? 1)}px ${highlight!.color})` } : undefined}
+          style={
+            it.isHi
+              ? { filter: `drop-shadow(0 0 ${8 + 10 * (highlight!.glow ?? 1)}px ${highlight!.color})` }
+              : it.glow > 0
+                ? { filter: `drop-shadow(0 0 ${it.glow}px rgba(246,242,231,0.65))` }
+                : undefined
+          }
         />
       ))}
 
@@ -264,7 +275,9 @@ export const Panel: React.FC<PanelProps> = ({
         const pop = 0.7 + 0.3 * (1 - Math.pow(1 - p, 3));
         const bw = 24 + bd.text.length * 17;
         const bx = Math.min(x + w - bw / 2 - 8, Math.max(x + bw / 2 + 8, it.cx));
-        const by = it.top - 30;
+        // 有虚影柱（显示出来的人气）时，徽章挂在虚影顶上——假的第一名挂在假的高度上
+        const gTop = ghost ? it.b.baseY - it.b.maxH * clamp(ghost.heights[bd.song]) * clamp(ghost.p) : it.top;
+        const by = Math.min(it.top, gTop) - 30;
         return (
           <g key={`b${k}`} opacity={p} transform={`translate(${bx} ${by}) scale(${pop})`}>
             <line x1={it.cx - bx} y1={14} x2={it.cx - bx} y2={28} stroke={bd.color} strokeWidth={1.5} opacity={0.8} />

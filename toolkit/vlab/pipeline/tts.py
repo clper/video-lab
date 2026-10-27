@@ -285,8 +285,10 @@ async def main(content_path: Path) -> None:
             c["end"] = min(c["end"] + 0.3, nxt) if nxt is not None else c["end"] + 0.3
         c["start"], c["end"] = round(c["start"], 3), round(c["end"], 3)
 
-    # 最后一句停到片尾：收尾金句得留在屏幕上，不能说完就消失（空镜白留着）
-    if cues and cues[-1]["end"] < t - 0.1:
+    # 最后一句停到片尾：收尾金句得留在屏幕上，不能说完就消失（空镜白留着）。
+    # 但收尾那句要是 no_sub（画面上用大字给），最后一条字幕就是前面某一句，延到片尾会压住大字——不延
+    last_narrated = next((s for s in reversed(content["scenes"]) if (s.get("narration") or "").strip()), None)
+    if cues and cues[-1]["end"] < t - 0.1 and not (last_narrated and last_narrated.get("no_sub")):
         cues[-1]["end"] = round(t - 0.1, 3)
 
     raw = seg_dir / "narration_raw.wav"

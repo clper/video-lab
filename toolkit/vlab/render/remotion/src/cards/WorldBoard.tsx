@@ -163,10 +163,16 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
     return { sc: 1, ox: 0, oy: 0, origin: "960px 540px" };
   })();
 
-  // flip：绕水平轴翻 180°，翻到一半换成倒过来的柱高
+  // 倒置实验的画法：虚线柱 = 排行榜上"显示出来的人气"，实心柱 = 真实的下载。
+  // flip：虚线柱从真实的高度换成倒过来的高度（排行榜整个倒过来），实心柱不动、压暗；
+  // 之后几镜虚线一直挂着，观众能看见"假的"和"真的"怎么慢慢靠拢。
   const flipK = mode === "flip" ? ease(span(p, 0.15, 0.75)) : 0;
-  const flipHeights = mode === "flip" ? (flipK > 0.5 ? inverted : finals) : heights;
-  const panelTransform = mode === "flip" ? `perspective(2200px) rotateX(${180 * flipK}deg)` : undefined;
+  const flipHeights = heights;
+  const panelTransform = undefined;
+  const showGhost = mode === "flip" || mode === "fakebadge" || mode === "selffulfil" || mode === "recover" || mode === "glide";
+  const ghostLayer = showGhost
+    ? { heights: mode === "flip" ? finals.map((h, i) => lerp(h, inverted[i], flipK)) : inverted, p: 1 }
+    : null;
 
   // ---------- 徽章 / 高亮 / 圈 ----------
   const badges: Badge[] = (() => {
@@ -184,6 +190,9 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
     }
     if (mode === "digit") return { song: 19, color: C.ink, glow: 0.8 };
     if (mode === "fakebadge" || mode === "selffulfil") return { song: worstSong, color: C.gold, glow: 0.8 };
+    // 落点：那颗没被点开的光点。暗，但要看得见；edge 那镜它其实很亮
+    if (mode === "edge") return { song: 27, color: "#f6f2e7", glow: 1.6 };
+    if (mode === "alone" || mode === "missed" || mode === "freeze") return { song: 27, color: "#c3cada", glow: 0.9 };
     return null;
   })();
   const rings = (() => {
@@ -192,8 +201,9 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
     return [];
   })();
   const dim = (() => {
-    if (mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze") return new Array(N_SONGS).fill(0.12).map((v, i) => (i === 27 ? 0.5 : v));
+    if (mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze") return new Array(N_SONGS).fill(0.38);
     if (mode === "digit") return new Array(N_SONGS).fill(0.3).map((v, i) => (i === 19 ? 1 : v));
+    if (mode === "flip") return new Array(N_SONGS).fill(0.45);
     return undefined;
   })();
 
@@ -243,14 +253,27 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
   const ghostPhone = mode === "digit" ? Math.sin(Math.PI * span(p, 0.6, 0.84)) : 0;
 
   const frozen = mode === "freeze" ? ease(span(p, 0.25, 0.95)) : 0;
-  const panelOpacity = mode === "alone" ? 0.55 : mode === "edge" || mode === "missed" ? 0.7 : mode === "freeze" ? 0.7 : 1;
-  const termP = mode === "term" ? ease(span(p, 0.08, 0.45)) : 0;
-  const term2P = mode === "term" && label2 ? ease(span(p, 0.3, 0.7)) : 0;
+  // term：名词落下时板子退成背景；M7（有第二行）接着 M6，一开始就是退好的状态，切点不跳
+  const continuing = mode === "term" && Boolean(label2);
+  const panelOpacity =
+    mode === "term"
+      ? continuing
+        ? 0.22
+        : lerp(1, 0.22, ease(span(p, 0, 0.35)))
+      : mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze"
+        ? 0.85
+        : 1;
+  const termP = mode === "term" ? (continuing ? 1 : ease(span(p, 0.08, 0.45))) : 0;
+  const term2P = continuing ? ease(span(p, 0.15, 0.55)) : 0;
 
   return (
     <AbsoluteFill>
       <div style={{ position: "absolute", left: "50%", top: "50%", width: W, height: H, transform: `translate(-50%, -50%) scale(${s})` }}>
-        <TopLight cx={960} cy={140} strength={mode === "alone" || mode === "edge" || mode === "missed" ? 0.35 : 1} />
+        <TopLight cx={960} cy={140} strength={mode === "alone" || mode === "edge" || mode === "missed" ? 0.7 : 1} />
+        {/* 落点那几镜：一束很窄的光只罩着那颗没被点开的光点，画面有主体，不是死帧 */}
+        {mode === "alone" || mode === "edge" || mode === "missed" || mode === "freeze" ? (
+          <div style={{ position: "absolute", inset: 0, background: `radial-gradient(260px 220px at 960px 520px, rgba(220,228,245,${mode === "freeze" ? 0.05 : 0.12}) 0%, rgba(0,0,0,0) 100%)` }} />
+        ) : null}
 
         <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transform: `translate(${cam.ox}px, ${cam.oy}px) scale(${cam.sc})`, transformOrigin: cam.origin }}>
           <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transform: panelTransform, transformOrigin: `${PX + PW / 2}px ${PY + PH / 2}px` }}>
@@ -272,7 +295,7 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
                 rings={rings}
                 dim={dim}
                 frozen={frozen}
-                ghost={mode === "fakebadge" ? { heights: finals.map((_, i) => (i === worstSong ? 0.92 : 0)), p: ease(span(p, 0.35, 0.7)) } : null}
+                ghost={ghostLayer}
                 shimmer={mode === "fresh" || mode === "tap" || mode === "glide" ? 1 : 0}
                 seed={3 + frame * 0.03}
               />
@@ -318,11 +341,14 @@ export const WorldBoard: React.FC<Props> = ({ mode = "counting", label = "", lab
 
         {/* term：名词落下 */}
         {mode === "term" ? (
+          <div style={{ position: "absolute", left: 360, right: 360, top: 230, height: 520, background: "radial-gradient(closest-side, rgba(5,7,12,0.82) 0%, rgba(5,7,12,0.55) 55%, rgba(5,7,12,0) 100%)", opacity: termP }} />
+        ) : null}
+        {mode === "term" ? (
           <div style={{ position: "absolute", left: 0, right: 0, top: 300, textAlign: "center" }}>
             <div style={{ fontFamily: FONT, fontWeight: 700, fontSize: 150, lineHeight: 1.1, letterSpacing: 10, color: C.ink, opacity: termP, transform: `translateY(${(1 - termP) * 30}px) scale(${0.96 + 0.04 * termP})`, textShadow: "0 0 80px rgba(243,193,75,0.3), 0 4px 30px rgba(0,0,0,0.9)" }}>
               {label}
             </div>
-            <div style={{ fontFamily: FONT, fontSize: 26, letterSpacing: 14, color: C.dim, marginTop: 10, opacity: 0.85 * ease(span(p, 0.25, 0.55)) }}>{sub}</div>
+            <div style={{ fontFamily: FONT, fontSize: 26, letterSpacing: 14, color: C.dim, marginTop: 10, opacity: 0.85 * (continuing ? 1 : ease(span(p, 0.25, 0.55))) }}>{sub}</div>
             {label2 ? (
               <div style={{ fontFamily: FONT, fontWeight: 700, fontSize: 96, lineHeight: 1.1, letterSpacing: 8, color: C.gold, marginTop: 26, opacity: term2P, transform: `translateY(${(1 - term2P) * 24}px)`, textShadow: "0 0 60px rgba(243,193,75,0.35), 0 4px 30px rgba(0,0,0,0.9)" }}>
                 {label2}

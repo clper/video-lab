@@ -213,9 +213,13 @@ def main():
     # 总装指纹：所有镜头指纹 + 质感 + 配音；都没变且成片还在，就不用重新拼接编码
     # subs.ass 也要算：字幕样式/分行变了要重新烧，否则会沿用旧成片
     subs = P.build_dir / "subs.ass"
+    _audio = P.data.get("audio") if isinstance(P.data.get("audio"), dict) else {}
+    _sfx_file = P.dir / _audio["sfx_file"] if _audio.get("sfx_file") else None
     asm_hash = "|".join([c.with_suffix(".hash").read_text() for c in clips]
                         + [json.dumps(tex, sort_keys=True), json.dumps(P.data.get("audio") or {}, sort_keys=True),
-                           P.narration_hash(), subs.read_text(encoding="utf-8-sig") if subs.exists() else ""])
+                           P.narration_hash(), subs.read_text(encoding="utf-8-sig") if subs.exists() else "",
+                           # 音效事件表在文件里时，文件内容变了也要重新混音
+                           _sfx_file.read_text(encoding="utf-8") if _sfx_file and _sfx_file.exists() else ""])
     asm_file = P.clip_dir() / "_assembly.hash"
     if not args.force and final.exists() and asm_file.exists() and asm_file.read_text() == asm_hash:
         print(f"成片：没有变化，跳过拼接 → {final}")
@@ -270,9 +274,12 @@ def main():
                 kw["segs"] = [(float(a), float(b), dict(c or {})) for a, b, c in audio_cfg["music_segs"]]
             _music.write_wav(music_path, fn(tl["duration"] + 0.5, bpm=int(audio_cfg.get("bpm", 88)),
                                             seed=int(audio_cfg.get("seed", 7)), **kw))
-    # 音效：直接写事件表（秒 / kind / gain），渲染成一条轨，mix 时按 sfx_db 合入
+    # 音效：直接写事件表（秒 / kind / gain），渲染成一条轨，mix 时按 sfx_db 合入。
+    # 事件多、由程序算出来的（比如火柴人片子里每一次落地），写 sfx_file：相对项目目录的 JSON 事件表
     sfx_path = None
-    sfx_cfg = audio_cfg.get("sfx")
+    sfx_cfg = list(audio_cfg.get("sfx") or [])
+    if audio_cfg.get("sfx_file"):
+        sfx_cfg += json.loads((P.dir / audio_cfg["sfx_file"]).read_text(encoding="utf-8"))
     if sfx_cfg:
         from vlab.audio import sfx as _sfx
         sfx_path = P.build_dir / "sfx.wav"

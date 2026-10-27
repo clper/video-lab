@@ -79,7 +79,7 @@ export const WorldBoards: React.FC<Props> = ({
     if (mode === "inflow" || mode === "songs") return 0;
     if (mode === "boards") return ease(span(p, 0.02 + w * 0.05, 0.3 + w * 0.05));
     if (focus >= 0) return w === focus ? 1 : 0.14;
-    if (mode === "youdot") return 0.42 * ease(span(p, 0, 0.5));
+    if (mode === "youdot") return w === 5 ? 1 : lerp(1, 0.35, ease(span(p, 0.1, 0.6)));
     return 1;
   };
 
@@ -124,6 +124,14 @@ export const WorldBoards: React.FC<Props> = ({
     if (mode === "glide") {
       const sc = 2.3;
       return { sc, ox: lerp(760, -760, p), oy: 300, origin: "960px 540px" };
+    }
+    if (mode === "youdot") {
+      // 推向第 6 块板：你是那块板上的一颗光点
+      const g = gridPos(5);
+      const k = ease(span(p, 0, 0.6));
+      const cx = g.x + PW / 2;
+      const cy = g.y + PH / 2;
+      return { sc: lerp(1, 1.7, k), ox: lerp(0, W / 2 - cx, k), oy: lerp(0, H / 2 - cy, k), origin: `${cx}px ${cy}px` };
     }
     if (mode === "final" && push) return { sc: 1 + 0.07 * p, ox: 0, oy: 0, origin: "960px 520px" };
     if (mode === "boards") return { sc: 1.02, ox: lerp(18, -18, p), oy: 0, origin: "960px 540px" };
