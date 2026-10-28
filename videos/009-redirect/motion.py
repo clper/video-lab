@@ -47,7 +47,8 @@ def main():
         times = [float(x) for x in args[i + 1].split(",")]
         media = HERE / "media"
         media.mkdir(exist_ok=True)
-        print("骨架拼图：", sheet(data, times, media / "skeleton.png", cols=4, onion=1 if "--onion" in args else 0))
+        name = next((a.split("=", 1)[1] for a in args if a.startswith("--name=")), "skeleton")
+        print("骨架拼图：", sheet(data, times, media / f"{name}.png", cols=4, onion=1 if "--onion" in args else 0))
 
 
 if __name__ == "__main__":

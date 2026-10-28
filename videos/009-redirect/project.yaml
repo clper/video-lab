@@ -1,8 +1,21 @@
 # 009《他比我重一倍，我借了他的力》——火柴人 VS 物理（试水）。剧本和分镜见 SCRIPT.md（2026-10-27 项目负责人确认）。
-# 无旁白，拍格模式：120 BPM（每拍 0.5 秒），24 镜共 240 拍 = 120 秒，关键动作落在小节第一拍。
-# 每一镜都是 custom 渲染器：shots/stick.py 读 motion.py 算好的这一镜动作数据，交给镜头卡 stickScene 画。
+# 无旁白，拍格模式：120 BPM（每拍 0.5 秒），24 镜共 240 拍 = 120 秒，关键动作落在小节第一拍（时刻表见 README）。
+# 每一镜都是 custom 渲染器：shots/stick.py 读 motion.py 算好的这一镜动作数据，交给公共镜头卡 stickScene 画
+# （component 申报的就是这张卡，beats 是这一镜里真实发生的动作数，都只给 vlab-review 看，不进镜头指纹）。
 # 跑法：先 uv run python videos/009-redirect/motion.py（算动作、切镜头数据、出音效事件表），再 uv run vlab-build 这个文件。
 # 配乐不在这里：项目负责人剪辑时从曲库加（2026-10-27 定），所以成片只有音效。
+#
+# 体检破例（STYLE-RHYTHM：观感优先，破了哪条写清楚）：
+#   同款视觉连镜上限 2 —— 全片是一场连续的打斗，24 镜都由 stickScene 画。每镜的画面读法都在变（进场、对峙、出拳、
+#   定格讲物理、被打飞、慢镜头、过肩摔……），镜内还有机位变化；判据是"画面读法变没变"，和 007、008 一样。
+#   单镜 ≤5.2 秒 —— S19（6 秒）是退后、刨地、冲锋一气呵成，切开会断掉冲锋的蓄势；
+#   S24（8 秒）是落点字幕的远景：STYLE-IMPACT 规矩 1 要求落点在最后 8–12 秒给出，两条冲突时以规矩 1 为准。
+#   平均镜长 ≤4.5 秒 —— 本片 5.0 秒：分镜按剧本 24 镜（4–6 秒一镜），镜内动作密，镜内还有硬切（S12 末尾切到金）。
+#   motion 基线（STYLE-IMPACT 规矩 3：全片 ≥1.5、每 10 秒段 ≥1.0）—— 本片实测全片 1.03，没有 2 秒以上的死帧（最长 0.07 秒）。
+#   细线画在黑底上，动起来的像素本来就少：同风格的打斗样片（research/visual/15 样片 B，满屏都在打）也只有 1.79。
+#   低于 1.0 的段落都是剧本里有意安静的地方：定格讲物理（S05、S15）、音乐停下来躺着喘气（S10–S11）、
+#   砸地以后的余震（S22）、落点远景（S24）。已经加了跟拍、主光、背景雾和手持微动（第一版 0.73 → 1.03），
+#   再往安静的段落里塞动作就违背剧本的情绪设计，按观感优先保留。
 id: 009-redirect
 title: 他比我重一倍，我借了他的力
 style: styles/neon.yaml
@@ -16,27 +29,51 @@ audio:
   sfx_db: 0
   lufs: -14
 scenes:
-  - {id: S01, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S01, fx: {dipIn: 1.0, dipFrames: 24}}, deps: [build/009-redirect/shots/S01.json, *remotion]}
-  - {id: S02, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S02}, deps: [build/009-redirect/shots/S02.json, *remotion]}
-  - {id: S03, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S03}, deps: [build/009-redirect/shots/S03.json, *remotion]}
-  - {id: S04, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S04}, deps: [build/009-redirect/shots/S04.json, *remotion]}
-  - {id: S05, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S05}, deps: [build/009-redirect/shots/S05.json, *remotion]}
-  - {id: S06, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S06}, deps: [build/009-redirect/shots/S06.json, *remotion]}
-  - {id: S07, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S07}, deps: [build/009-redirect/shots/S07.json, *remotion]}
-  - {id: S08, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S08}, deps: [build/009-redirect/shots/S08.json, *remotion]}
-  - {id: S09, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S09}, deps: [build/009-redirect/shots/S09.json, *remotion]}
-  - {id: S10, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S10}, deps: [build/009-redirect/shots/S10.json, *remotion]}
-  - {id: S11, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S11}, deps: [build/009-redirect/shots/S11.json, *remotion]}
-  - {id: S12, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S12}, deps: [build/009-redirect/shots/S12.json, *remotion]}
-  - {id: S13, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S13}, deps: [build/009-redirect/shots/S13.json, *remotion]}
-  - {id: S14, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S14}, deps: [build/009-redirect/shots/S14.json, *remotion]}
-  - {id: S15, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S15}, deps: [build/009-redirect/shots/S15.json, *remotion]}
-  - {id: S16, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S16}, deps: [build/009-redirect/shots/S16.json, *remotion]}
-  - {id: S17, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S17}, deps: [build/009-redirect/shots/S17.json, *remotion]}
-  - {id: S18, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S18}, deps: [build/009-redirect/shots/S18.json, *remotion]}
-  - {id: S19, hold: 12, renderer: custom, script: shots/stick.py, params: {shot: S19}, deps: [build/009-redirect/shots/S19.json, *remotion]}
-  - {id: S20, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S20}, deps: [build/009-redirect/shots/S20.json, *remotion]}
-  - {id: S21, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S21}, deps: [build/009-redirect/shots/S21.json, *remotion]}
-  - {id: S22, hold: 10, renderer: custom, script: shots/stick.py, params: {shot: S22}, deps: [build/009-redirect/shots/S22.json, *remotion]}
-  - {id: S23, hold: 8, renderer: custom, script: shots/stick.py, params: {shot: S23}, deps: [build/009-redirect/shots/S23.json, *remotion]}
-  - {id: S24, hold: 16, renderer: custom, script: shots/stick.py, params: {shot: S24}, deps: [build/009-redirect/shots/S24.json, *remotion]}
+  # S01：四步重脚步
+  - {id: S01, hold: 8, beats: 4, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S01, fx: {dipIn: 1.0, dipFrames: 24}}, deps: [build/009-redirect/shots/S01.json, *remotion]}
+  # S02：标签亮起、金抬头
+  - {id: S02, hold: 8, beats: 2, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S02}, deps: [build/009-redirect/shots/S02.json, *remotion]}
+  # S03：两人摆架势、推近
+  - {id: S03, hold: 8, beats: 2, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S03}, deps: [build/009-redirect/shots/S03.json, *remotion]}
+  # S04：冲两步、收拳、出拳、撞上
+  - {id: S04, hold: 10, beats: 4, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S04}, deps: [build/009-redirect/shots/S04.json, *remotion]}
+  # S05：定格、两支力箭头、字
+  - {id: S05, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S05}, deps: [build/009-redirect/shots/S05.json, *remotion]}
+  # S06：解冻打飞、落地、滑行
+  - {id: S06, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S06}, deps: [build/009-redirect/shots/S06.json, *remotion]}
+  # S07：爬起、甩头、冲回去
+  - {id: S07, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S07}, deps: [build/009-redirect/shots/S07.json, *remotion]}
+  # S08：连打四拳
+  - {id: S08, hold: 10, beats: 4, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S08}, deps: [build/009-redirect/shots/S08.json, *remotion]}
+  # S09：拍胸口、一掌推飞、落地
+  - {id: S09, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S09}, deps: [build/009-redirect/shots/S09.json, *remotion]}
+  # S10：喘息、落尘推近
+  - {id: S10, hold: 10, beats: 2, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S10}, deps: [build/009-redirect/shots/S10.json, *remotion]}
+  # S11：羽毛飘下、抬头、扇空
+  - {id: S11, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S11}, deps: [build/009-redirect/shots/S11.json, *remotion]}
+  # S12：慢放扫手、气流、金转头
+  - {id: S12, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S12}, deps: [build/009-redirect/shots/S12.json, *remotion]}
+  # S13：坐起站起、深呼吸
+  - {id: S13, hold: 10, beats: 2, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S13}, deps: [build/009-redirect/shots/S13.json, *remotion]}
+  # S14：走近、收拳、拳头逼近
+  - {id: S14, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S14}, deps: [build/009-redirect/shots/S14.json, *remotion]}
+  # S15：定格、挡的箭头、拨的箭头
+  - {id: S15, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S15}, deps: [build/009-redirect/shots/S15.json, *remotion]}
+  # S16：一拨、冲过头、踉跄三步
+  - {id: S16, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S16}, deps: [build/009-redirect/shots/S16.json, *remotion]}
+  # S17：晃、重心越过前脚、扑倒
+  - {id: S17, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S17}, deps: [build/009-redirect/shots/S17.json, *remotion]}
+  # S18：撑起、转身、气得发抖
+  - {id: S18, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S18}, deps: [build/009-redirect/shots/S18.json, *remotion]}
+  # S19：后退、刨地、冲锋、动量箭头
+  - {id: S19, hold: 12, beats: 4, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S19}, deps: [build/009-redirect/shots/S19.json, *remotion]}
+  # S20：抓住、转身扛起、支点和弧
+  - {id: S20, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S20}, deps: [build/009-redirect/shots/S20.json, *remotion]}
+  # S21：翻过去、平拍在地、冲击
+  - {id: S21, hold: 10, beats: 3, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S21}, deps: [build/009-redirect/shots/S21.json, *remotion]}
+  # S22：落尘、退半步喘气
+  - {id: S22, hold: 10, beats: 2, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S22}, deps: [build/009-redirect/shots/S22.json, *remotion]}
+  # S23：翻身跪起、上前、握手、拉起
+  - {id: S23, hold: 8, beats: 4, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S23}, deps: [build/009-redirect/shots/S23.json, *remotion]}
+  # S24：远景、落点字
+  - {id: S24, hold: 16, beats: 2, component: stickScene, renderer: custom, script: shots/stick.py, params: {shot: S24}, deps: [build/009-redirect/shots/S24.json, *remotion]}

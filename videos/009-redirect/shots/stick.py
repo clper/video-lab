@@ -20,7 +20,7 @@ def main():
     have = data["frames"] - data["offset"]
     if have != want:
         sys.exit(f"{sid}：动作数据 {have} 帧，镜头要 {want} 帧——project.yaml 改过拍数的话，先重跑 motion.py")
-    fx = {"handheld": False, "stardust": False, "sweep": False, "flash": False}
+    fx = {"handheld": True, "stardust": False, "sweep": False, "flash": False}     # 手持微动开着：镜头一直有一点呼吸
     fx.update(spec["params"].get("fx") or {})
     render_shot("stickScene", spec["out"], spec["seconds"], params={"data": data}, fps=spec["fps"], frames=want,
                 fx=fx, t0=round(spec["start"] * spec["fps"]), width=spec["width"], height=spec["height"],

@@ -87,7 +87,7 @@ AI 不能自行开新路线，也不能把路线外的题材塞进现有路线�
 | 数学之美 | 一个反直觉又好看的数学事实 | [route-math.md](../research/content/route-math.md) | 提案待审 |
 | 节气与天象 | 用天文和气象原理讲节气，每年固定节点 | [route-seasons.md](../research/content/route-seasons.md) | 提案待审 |
 | 前沿解读 | 把一项新的科学或技术进展讲透，包括它还不能说明什么 | [route-frontier.md](../research/content/route-frontier.md) | 提案待审 |
-| 火柴人 VS 物理 | 一个光绘火柴人用真实的物理规律闯关、打架，声画为主 | [route-stickfigure.md](../research/content/route-stickfigure.md) | 试水中：009《他比我重一倍，我借了他的力》，剧本待审（2026-10-27） |
+| 火柴人 VS 物理 | 一个光绘火柴人用真实的物理规律闯关、打架，声画为主 | [route-stickfigure.md](../research/content/route-stickfigure.md) | 试水中：009《他比我重一倍，我借了他的力》，第一版完成、等项目负责人看（2026-10-27） |
 
 提案待审的路线，拍板试水之前不能按它开做。AI 对试水顺序的建议写在 [research/content/README.md](../research/content/README.md) 的"路线提案"一节，只作参考。
 

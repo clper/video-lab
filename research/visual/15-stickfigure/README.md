@@ -23,7 +23,7 @@
 ## 管线
 
 ```
-Python 算动作（stick/）                         Remotion 画（toolkit/.../cards/StickScene.tsx）
+Python 算动作（toolkit/vlab/stick/）            Remotion 画（toolkit/.../cards/StickScene.tsx）
   关键帧 + 两段骨 IK（rig.py）   ─┐               光绘火柴人：外晕 + 本色 + 白芯
   Verlet 布偶物理（ragdoll.py）  ─┼→ 每帧 11 个关节坐标 ─→  手脚光迹、冲刺残影、地面倒影和投光
   解析抛体（sample_a.py）        ─┤   + 相机 + 粒子事件     火花 / 尘土 / 冲击环 / 亮斑

@@ -1,6 +1,6 @@
 # 路线提案：火柴人 VS 物理
 
-**状态**：项目负责人定试水（2026-10-27）：看完 `research/visual/15-stickfigure/` 的两段样片后，定下一条视频做火柴人。试水题：四两拨千斤（`videos/009-redirect/`，无旁白、正好 120 秒），剧本待审
+**状态**：项目负责人定试水（2026-10-27）：看完 `research/visual/15-stickfigure/` 的两段样片后，定下一条视频做火柴人。试水题：四两拨千斤（`videos/009-redirect/`，无旁白、正好 120 秒），第一版完成（2026-10-27），等项目负责人看
 **依据**：样片 [research/visual/15-stickfigure/](../visual/15-stickfigure/README.md)；项目负责人看完 008 后的两条结论（剧本要动人；声画为主、旁白辅助）；规则见 [process/ROUTES.md](../../process/ROUTES.md) 第 4 节
 
 ## 一句话

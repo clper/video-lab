@@ -53,7 +53,7 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 ```
 videos/      【项目结果】正在做的正式视频（现在是 009；007、008 暂停），一条一个目录；受剧本闸门约束
 research/    【开发测试】visual/ 画面技术（01–12）、audio/ 音频研究、frontier/ 前沿视频生成、content/ 创作内容研究（内容方向、平台、合规）；实验目录都是 NN-主题/
-toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、fonts 项目字体、render 渲染器、scenes 可复用画面、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
+toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、fonts 项目字体、render 渲染器、scenes 可复用画面、stick 火柴人动作（骨架、布偶物理）、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
 process/     【流程】我们的流程和流程规则：内容路线、剧本审核、传播与节奏规范、发布清单、入库与提交（必须遵守，只由项目负责人改）
 docs/        【文档】参考资料：TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
 archive/     【存档】000 参考项目的只读快照（不要改，它自带的 shared/ 和环境配置只属于它自己）；

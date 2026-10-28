@@ -29,7 +29,7 @@ def sheet(data, times, out, cols=4, scale=0.36, onion=0):
         for w in data.get("walls", []):
             d.line([P(w["x"], w["y0"]), P(w["x"], w["y1"])], fill="#8b93a7", width=3)
         for p in data.get("paths", []):
-            if f >= p["f0"]:
+            if p["f0"] <= f <= p.get("end", 10 ** 9):
                 pts = [P(*q) for q in p["pts"]]
                 d.line(pts, fill="#2c6f68", width=1)
         for gh in data.get("ghosts", []):

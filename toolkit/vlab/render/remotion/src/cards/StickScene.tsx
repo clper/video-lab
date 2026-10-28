@@ -32,6 +32,12 @@ type Data = {
   fps: number;
   frames: number;
   offset?: number;
+  /** 这段数据第 0 帧在全片的帧号（背景雾按它计时，切镜时不跳） */
+  fabs0?: number;
+  /** 从上往下打的主光：每帧 [x, 亮度 0~1]，跟着人走 */
+  spot?: number[][];
+  /** 背景里慢慢飘的雾光 */
+  haze?: boolean;
   ground: number;
   grid?: boolean;
   trail?: number;
@@ -39,10 +45,21 @@ type Data = {
   figures: Fig[];
   camera: number[][];
   freeze?: number[];
+  /** 每帧的动作时间（单位：帧）：粒子按它算年龄，定格时悬在半空、慢镜头里飞得慢 */
+  clock?: number[];
   bursts: Burst[];
   balls?: { color: string; r: number; p: (number[] | null)[] }[];
   ghosts?: { color: string; r: number; pts: number[][] }[];
-  paths?: { color: string; f0: number; f1: number; pts: number[][]; dash?: number[]; width?: number; opacity?: number }[];
+  paths?: {
+    color: string;
+    f0: number;
+    f1: number;
+    end?: number;
+    pts: number[][];
+    dash?: number[];
+    width?: number;
+    opacity?: number;
+  }[];
   labels?: {
     f0: number;
     f1?: number;
@@ -69,7 +86,7 @@ type Data = {
   }[];
   walls?: { x: number; y0: number; y1: number; color?: string }[];
   arrows?: (Track & { color: string; width: number; grow?: number })[];
-  dots?: (Track & { color: string; r: number })[];
+  dots?: (Track & { color: string; r: number; label?: string; lsize?: number; lx?: number; ly?: number })[];
   bars?: (Track & { color: string; alt: string; falt: number; y: number })[];
   tris?: (Track & { color: string; size: number })[];
   flows?: (Track & { color: string; lines: number[][][] })[];
@@ -376,7 +393,38 @@ export const StickScene: React.FC<Props> = ({ data }) => {
             <stop offset="0%" stopColor="#2b3550" />
             <stop offset="100%" stopColor="#0d111c" />
           </linearGradient>
+          <linearGradient id="st-cone" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#fff3d6" stopOpacity={0} />
+            <stop offset="70%" stopColor="#fff3d6" stopOpacity={0.55} />
+            <stop offset="100%" stopColor="#fff3d6" stopOpacity={1} />
+          </linearGradient>
+          <radialGradient id="st-haze-a" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#3a5a8c" stopOpacity={1} />
+            <stop offset="100%" stopColor="#3a5a8c" stopOpacity={0} />
+          </radialGradient>
+          <radialGradient id="st-haze-b" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#8c6a3a" stopOpacity={1} />
+            <stop offset="100%" stopColor="#8c6a3a" stopOpacity={0} />
+          </radialGradient>
+          <filter id="st-glow-xl" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="40" />
+          </filter>
         </defs>
+
+        {/* 背景雾光：两团冷暖的光在暗处慢慢飘，按全片帧号计时（切镜不跳） */}
+        {data.haze
+          ? (() => {
+              const fa = (data.fabs0 ?? 0) + frame;
+              return (
+                <g opacity={1 - 0.5 * fz}>
+                  <ellipse cx={960 + 560 * Math.sin(fa * 0.0042)} cy={430 + 110 * Math.cos(fa * 0.0031)} rx={620} ry={360}
+                    fill="url(#st-haze-a)" opacity={0.16} />
+                  <ellipse cx={960 - 520 * Math.sin(fa * 0.0035 + 1.7)} cy={520 + 90 * Math.sin(fa * 0.0027 + 0.6)} rx={540}
+                    ry={320} fill="url(#st-haze-b)" opacity={0.1} />
+                </g>
+              );
+            })()
+          : null}
 
         <g transform={world}>
           {/* 定格时整个场景压暗去色，只有物理标注保持鲜亮 */}
@@ -394,6 +442,20 @@ export const StickScene: React.FC<Props> = ({ data }) => {
                 ))
               : null}
             <line x1={-6000} y1={G} x2={8000} y2={G} stroke="#5d6a86" strokeWidth={2} opacity={0.75} />
+
+            {/* 主光：一束从上往下打的光罩着两个人，地上一圈光斑 */}
+            {data.spot?.[frame]
+              ? (() => {
+                  const [sx, sk] = data.spot![frame];
+                  return (
+                    <g opacity={sk}>
+                      <path d={`M ${sx - 150} ${G - 1150} L ${sx + 150} ${G - 1150} L ${sx + 440} ${G} L ${sx - 440} ${G} Z`}
+                        fill="url(#st-cone)" opacity={0.085} filter="url(#st-glow-xl)" />
+                      <ellipse cx={sx} cy={G + 8} rx={440} ry={50} fill="#fff3d6" opacity={0.13} filter="url(#st-glow-l)" />
+                    </g>
+                  );
+                })()
+              : null}
 
             {/* 人和球在地上投下的光 */}
             {figs.map(({ fig, j }) => {
@@ -428,12 +490,14 @@ export const StickScene: React.FC<Props> = ({ data }) => {
             {/* 预测的抛物线（先画出来，球再沿着它飞） */}
             {(data.paths ?? []).map((p, i) => {
               const k = clamp01((frame - p.f0) / Math.max(1, p.f1 - p.f0));
-              if (k <= 0) return null;
+              const out = p.end === undefined ? 1 : clamp01((p.end - frame) / 8);
+              if (k <= 0 || out <= 0) return null;
               const m = Math.max(2, Math.ceil(k * p.pts.length));
               const d = "M" + p.pts.slice(0, m).map((q) => `${q[0]} ${q[1]}`).join(" L");
               return (
                 <path key={`p${i}`} d={d} stroke={p.color} strokeWidth={p.width ?? 2.4} fill="none"
-                  strokeDasharray={(p.dash ?? [10, 12]).join(" ")} opacity={(p.opacity ?? 0.55) * clamp01((frame - p.f0) / 6)} />
+                  strokeDasharray={(p.dash ?? [10, 12]).join(" ")}
+                  opacity={(p.opacity ?? 0.55) * clamp01((frame - p.f0) / 6) * out} />
               );
             })}
 
@@ -537,6 +601,13 @@ export const StickScene: React.FC<Props> = ({ data }) => {
                 <circle cx={p[0]} cy={p[1]} r={d.r * 2.4 * pulse} fill={d.color} opacity={0.35} filter="url(#st-glow-m)" />
                 <circle cx={p[0]} cy={p[1]} r={d.r} fill={d.color} />
                 <circle cx={p[0]} cy={p[1]} r={d.r * 0.45} fill="#ffffff" />
+                {/* 跟着点走的标签（比如"重心"） */}
+                {d.label ? (
+                  <text x={p[0] + (d.lx ?? 22)} y={p[1] + (d.ly ?? -22)} fill={d.color} fontFamily={FONT}
+                    fontSize={d.lsize ?? 34} style={{ filter: `drop-shadow(0 0 8px ${d.color})` }}>
+                    {d.label}
+                  </text>
+                ) : null}
               </g>
             );
           })}

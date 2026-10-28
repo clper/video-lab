@@ -54,14 +54,19 @@ FX_NAMES = ["handheld", "sweep", "flash", "breathing", "grain", "stardust", "sub
 
 
 def component_of(scene: dict) -> str:
-    """一个镜头用的"零件"名：卡片 / 模板 / 着色器。"""
-    return str(scene.get("card") or scene.get("template") or Path(scene.get("frag", "")).name or "?")
+    """一个镜头用的"零件"名：卡片 / 模板 / 着色器。custom 镜头可以用 component 申报它画画用的公共卡。"""
+    return str(scene.get("component") or scene.get("card") or scene.get("template")
+               or Path(scene.get("frag", "")).name or "?")
 
 
 def is_public(scene: dict) -> bool:
-    """是否来自公共镜头库（toolkit 里的卡片/模板），而不是项目里一次性的代码。"""
+    """是否来自公共镜头库（toolkit 里的卡片/模板），而不是项目里一次性的代码。
+    custom 镜头申报了 component、而且那张卡确实登记在公共卡库里，才算公共组件。"""
     if scene.get("renderer") == "glsl":
         return True
+    if scene.get("component"):
+        from vlab.videokit.project import remotion_cards
+        return scene["component"] in remotion_cards()
     return bool(scene.get("card") or scene.get("template"))
 
 

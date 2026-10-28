@@ -63,11 +63,28 @@ def simulate(J0, Jprev, dt_frame, face, frames, kick=None, body=BODY, g=None, su
             rel = (a2 - a1 + 180.0) % 360.0 - 180.0
             if lo <= rel <= hi:
                 continue
-            target = a1 + (lo if rel < lo else hi)
-            L = math.hypot(x[c][0] - x[j][0], x[c][1] - x[j][1])
-            r = math.radians(target)
-            x[c][0] = x[j][0] + face * math.sin(r) * L
-            x[c][1] = x[j][1] + math.cos(r) * L
+            # 拉回离得近的那条边界（按圆周算）：相对角越过 ±180° 会绕回来，按正负号选边界会一下转一百多度，
+            # 位置猛跳就等于凭空加了速度，布偶会炸开。每轮只修一半，靠多轮迭代收敛
+            dl = abs((rel - lo + 180.0) % 360.0 - 180.0)
+            dh = abs((rel - hi + 180.0) % 360.0 - 180.0)
+            bound = lo if dl < dh else hi
+            step = ((bound - rel + 180.0) % 360.0 - 180.0) * 0.5
+            # 两段一起往回转（按质量分摊），再把三个点整体挪回原来的重心：
+            # 只转子段的话，每修一次都凭空给身体加一点动量，贴着地面反复修就像棘轮，人会自己往一边滑
+            mp_, mj, mc = MASS[p], MASS[j], MASS[c]
+            cx0 = (x[p][0] * mp_ + x[j][0] * mj + x[c][0] * mc) / (mp_ + mj + mc)
+            cy0 = (x[p][1] * mp_ + x[j][1] * mj + x[c][1] * mc) / (mp_ + mj + mc)
+            wc, wp = mp_ / (mp_ + mc), mc / (mp_ + mc)
+            for idx, d_ang in ((c, step * wc), (p, -step * wp)):
+                L = math.hypot(x[idx][0] - x[j][0], x[idx][1] - x[j][1])
+                r = math.radians(ang(x[idx][0] - x[j][0], x[idx][1] - x[j][1], face) + d_ang)
+                x[idx][0] = x[j][0] + face * math.sin(r) * L
+                x[idx][1] = x[j][1] + math.cos(r) * L
+            cx1 = (x[p][0] * mp_ + x[j][0] * mj + x[c][0] * mc) / (mp_ + mj + mc)
+            cy1 = (x[p][1] * mp_ + x[j][1] * mj + x[c][1] * mc) / (mp_ + mj + mc)
+            for idx in (p, j, c):
+                x[idx][0] += cx0 - cx1
+                x[idx][1] += cy0 - cy1
 
     def contacts(t):
         for pin in pins:
@@ -88,11 +105,15 @@ def simulate(J0, Jprev, dt_frame, face, frames, kick=None, body=BODY, g=None, su
                         x[i][0] = cx + dx / d * rr
                         x[i][1] = cy + dy / d * rr
 
+    vmax = 3200.0 * dt              # 速度上限 3200 px/s（约 17 m/s）：只是兜底，正常的摔打远到不了
     for f in range(frames):
         for s in range(substeps):
             t_now = (f * substeps + s + 1) * dt
             for i in range(n):
                 vx, vy = (x[i][0] - xp[i][0]) * air, (x[i][1] - xp[i][1]) * air
+                sp = math.hypot(vx, vy)
+                if sp > vmax:
+                    vx, vy = vx * vmax / sp, vy * vmax / sp
                 xp[i] = [x[i][0], x[i][1]]
                 x[i][0] += vx
                 x[i][1] += vy + g * dt * dt

@@ -17,10 +17,13 @@ class Episode:
     """一段布偶：动作时间 t0 起交给物理，until 时刻用 then(姿势, until) 返回的关键帧接回来（爬起来）"""
 
     def __init__(self, t0, kick=None, until=None, then=None, pins=(), obstacles=(), friction=0.06, bounce=0.22,
-                 extra=None):
+                 extra=None, lead=None):
         self.t0, self.kick, self.until, self.then = t0, kick, until, then
         self.pins, self.obstacles = list(pins), list(obstacles)
         self.friction, self.bounce, self.extra = friction, bounce, extra
+        # lead = (起始动作时间, factory)：布偶接手之前，先用一段脚本动作（比如绕着支点翻过去）；
+        # factory(当时的关键帧轨) 返回 f(动作时间) -> 关节坐标。布偶从脚本最后两帧接手，速度连续
+        self.lead = lead
         self.frames, self.events, self.face = None, [], 1
 
 
@@ -44,9 +47,17 @@ class Figure:
         self.segments = []
         cur, t_prev = self.track, -1e9
         for ep in sorted(self.episodes, key=lambda e: e.t0):
-            self.segments.append((t_prev, ep.t0, "track", cur))
-            J0, face = cur.joints(ep.t0)
-            Jp, _ = cur.joints(ep.t0 - 1.0 / fps)
+            if ep.lead:
+                ts, factory = ep.lead
+                fn = factory(cur)
+                face = cur.joints(ts)[1]
+                self.segments.append((t_prev, ts, "track", cur))
+                self.segments.append((ts, ep.t0, "fn", fn))
+                J0, Jp = fn(ep.t0), fn(ep.t0 - 1.0 / fps)
+            else:
+                self.segments.append((t_prev, ep.t0, "track", cur))
+                J0, face = cur.joints(ep.t0)
+                Jp, _ = cur.joints(ep.t0 - 1.0 / fps)
             end = ep.until if ep.until is not None else ta_end
             n = int(math.ceil((end - ep.t0) * fps)) + 2
             t0 = ep.t0
@@ -78,9 +89,24 @@ class Figure:
             return self.track.joints(ta)[0]
         for t0, t1, kind, obj in self.segments:
             if t0 <= ta < t1:
-                return obj.joints(ta)[0] if kind == "track" else self._rag_at(obj, ta)
+                return self._seg(kind, obj, ta)
         t0, t1, kind, obj = self.segments[-1]
-        return obj.joints(ta)[0] if kind == "track" else self._rag_at(obj, ta)
+        return self._seg(kind, obj, ta)
+
+    def _seg(self, kind, obj, ta):
+        if kind == "track":
+            return obj.joints(ta)[0]
+        if kind == "fn":
+            return obj(ta)
+        return self._rag_at(obj, ta)
+
+    def touchdown(self, ep, joints=(0, 1), margin=40.0):
+        """这段布偶里，躯干第一次落到离地面 margin 以内的动作时间（"整个人砸到地上"的那一刻）"""
+        floor = GROUND - self.body.width / 2 - margin
+        for k, J in enumerate(ep.frames):
+            if any(J[i][1] >= floor for i in joints):
+                return ep.t0 + k / self.fps
+        return None
 
     def com(self, ta):
         return com(self.joints(ta))
@@ -103,6 +129,8 @@ class Scene:
         self.reflect = 0.16
         self.freeze_min = 0.3               # 定住超过这么久才压暗去色（短的顿帧不算）
         self.camera_fn = None               # f(真实秒) -> (cx, cy, zoom)；给了就不用关键帧（自动取景之类）
+        self.spot_fn = None                 # f(真实秒) -> (x, 亮度 0~1)：从上往下打的主光，跟着人走
+        self.haze = False                   # 背景里慢慢飘的雾光
 
     # —— 时间 ——
     def timemap(self, pts):
@@ -202,9 +230,13 @@ class Scene:
         f0, f1, pts = self._track(t0, t1, pos)
         self.layers["arrows"].append({"f0": f0, "f1": f1, "color": color, "width": width, "grow": grow, "pts": pts})
 
-    def dot(self, t0, t1, pos, color, r=9):
+    def dot(self, t0, t1, pos, color, r=9, label=None, lsize=34, lx=22, ly=-22):
+        """一个跟着走的光点（比如重心）；label 是挂在它旁边、跟着它走的字"""
         f0, f1, pts = self._track(t0, t1, pos)
-        self.layers["dots"].append({"f0": f0, "f1": f1, "color": color, "r": r, "pts": pts})
+        d = {"f0": f0, "f1": f1, "color": color, "r": r, "pts": pts}
+        if label:
+            d.update(label=label, lsize=lsize, lx=lx, ly=ly)
+        self.layers["dots"].append(d)
 
     def bar(self, t0, t1, pos, color, alt=None, t_alt=None, y=GROUND):
         """地面上的一段（支撑面）：pos -> (x0, x1)；t_alt 起换成 alt 色"""
@@ -299,9 +331,11 @@ class Scene:
             t = d.pop("t")
             d["f"] = round((self.anim(t) if d.pop("real") else t) * fps, 2)
             bursts.append(d)
-        data = {"fps": fps, "frames": n, "offset": 0, "ground": GROUND, "grid": self.grid, "trail": self.trail,
-                "reflect": self.reflect, "figures": figs, "camera": cam, "freeze": freeze, "clock": clock,
-                "bursts": bursts, **self.layers}
+        data = {"fps": fps, "frames": n, "offset": 0, "fabs0": 0, "ground": GROUND, "grid": self.grid,
+                "trail": self.trail, "reflect": self.reflect, "haze": self.haze, "figures": figs, "camera": cam,
+                "freeze": freeze, "clock": clock, "bursts": bursts, **self.layers}
+        if self.spot_fn:
+            data["spot"] = [[round(v, 3) for v in self.spot_fn(f / fps)] for f in range(n)]
         sfx = []
         for e in self.sfx_events:
             d = {"t": round(e["t"] if e["real"] else self.real(e["t"]), 4), "kind": e["kind"], "gain": e["gain"]}
@@ -317,8 +351,11 @@ def slice_data(data, f0, f1, pad=8):
     out = {k: v for k, v in data.items() if not isinstance(v, list)}
     out["offset"] = f0 - s0
     out["frames"] = f1 - s0
+    out["fabs0"] = s0                                       # 这段第 0 帧在全片的帧号：背景雾按它计时，切镜不跳
     out["figures"] = [dict(fig, j=fig["j"][s0:f1]) for fig in data["figures"]]
     out["camera"] = data["camera"][s0:f1]
+    if "spot" in data:
+        out["spot"] = data["spot"][s0:f1]
     out["freeze"] = data["freeze"][s0:f1]
     out["clock"] = data["clock"][s0:f1]
     lo, hi = min(out["clock"]), max(out["clock"])          # 粒子按动作时间算年龄，不用平移
@@ -338,7 +375,8 @@ def slice_data(data, f0, f1, pad=8):
             d["age0"] = k0 - x["f0"]          # 切进来时这个标注已经出现了几帧（生长动画接着走）
             items.append(d)
         out[key] = items
-    out["paths"] = [dict(p, f0=p["f0"] - s0, f1=p["f1"] - s0) for p in data.get("paths", []) if p["f0"] < f1]
+    out["paths"] = [dict(p, f0=p["f0"] - s0, f1=p["f1"] - s0, **({"end": p["end"] - s0} if "end" in p else {}))
+                    for p in data.get("paths", []) if p["f0"] < f1 and p.get("end", 10 ** 9) >= s0]
     out["ghosts"] = [dict(g, pts=[[a - s0, x, y] for a, x, y in g["pts"] if a < f1]) for g in data.get("ghosts", [])]
     out["balls"] = [dict(b, p=b["p"][s0:f1]) for b in data.get("balls", [])]
     out["feathers"] = [dict(fe, p=fe["p"][s0:f1]) for fe in data.get("feathers", [])]

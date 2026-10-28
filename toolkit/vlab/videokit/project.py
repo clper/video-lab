@@ -19,6 +19,8 @@ HERE = Path(__file__).resolve().parent
 #   glsl      —— 项目内的 .frag，适合粒子/场，走 render/glsl.py
 #   custom    —— 项目自带的 .py 脚本，适合一次性特殊镜头（接口见 build.py 的 custom 分支）
 RENDERERS = {"manim", "remotion", "glsl", "custom"}
+# 只给 vlab-review 看的申报字段：不进镜头指纹
+REVIEW_ONLY = ("beats", "component")
 
 # 模板需要的参数（校验用）。模板代码在 manim_templates.py
 TEMPLATE_PARAMS = {
@@ -226,6 +228,8 @@ class Project:
         # fx_default 在工程顶层，不在 scene 里：不合并进来的话，改了全局特效（比如关白闪）
         # 指纹不变，镜头会被“复用”，改了半天等于没改
         fx = {"_default": self.data.get("fx_default") or {}, **(scene.get("fx") or {})}
+        # 只给体检看的申报字段（beats 动作数、component 用的哪张卡）不影响画面，改了不必重渲
+        scene = {k: v for k, v in scene.items() if k not in REVIEW_ONLY}
         return _sha({"scene": scene, "style": style, "fx": fx, "start": tl_scene["start"], "end": tl_scene["end"],
                      "words": tl_scene["words"], "code": _code_hash(self.dir, scene, renderer), "fps": self.fps,
                      "preview": os.environ.get("PREVIEW") == "1"})

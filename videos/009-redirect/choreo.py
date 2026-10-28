@@ -35,10 +35,10 @@ def timemap(fall_hit, land):
     """真实秒 → 动作秒。fall_hit、land 是物理算出来的砸地时刻：让它们正好落在 80.0、100.0 秒"""
     return [(0.0, 0.0), (16.0, A_HIT), (22.0, A_HIT),            # S04 末撞上 → S05 定格
             (64.0, 58.0), (67.0, A_PUNCH), (72.0, A_PUNCH),      # S14 拳头逼近放慢 → S15 定格
-            (77.0, A_PUNCH + 5.0), (79.1, fall_hit - 0.9),       # S17 踉跄慢放：重心越过脚尖
-            (80.0, fall_hit),                                    # 正常速度砸地
-            (93.5, A_GRAB), (98.0, A_GRAB + 0.25),               # S20 抓住、转身、沉腰：极慢
-            (99.6, A_GRAB + 0.65), (100.0, land),                # S21 翻过去慢放 → 砸地
+            (77.0, A_PUNCH + 5.0), (79.4, fall_hit - 0.6),       # S17 慢放：重心一点点越过前脚
+            (80.0, fall_hit),                                    # 倒下去按正常速度，80.0 砸地
+            (93.5, A_GRAB), (98.0, A_GRAB + 0.3),                # S20 抓住、扛上后背：极慢
+            (99.6, A_GRAB + 0.66), (100.0, land),                # S21 翻过去慢放，100.0 平拍在地上
             (120.0, land + 20.0)]
 
 
@@ -81,35 +81,43 @@ def P(t, body, x, face, ease="inout", spread=0.28, bend=6.0, lean=4.0, head=0.0,
     return K(t, ease, face=face, lift=lift, footF=ch.pop("footF", fF), footB=ch.pop("footB", fB), **ch)
 
 
-def walk(body, face, t0, x0, x1, n, dur, first="F", lean=5.0, swing=24.0, lift=0.12, heavy=False, head=0.0,
-         arms=None):
-    """从站姿走到 x1：每一步一个"摆腿过身体"的关键帧 + 一个"落脚"的关键帧（两脚着地）。
-    落脚时前脚在骨盆前半步、后脚在后半步，骨盆高度按两脚分开的距离算（腿够得着，不会飘）；
-    摆腿时支撑脚正好在骨盆下面、腿几乎伸直，骨盆自然升高——走路的起伏就是这么来的。"""
+def walk(body, face, t0, x0, x1, n, dur, spread0=0.28, lean=5.0, swing=24.0, lift=0.12, heavy=False, head=0.0,
+         arms=None, **_):
+    """从站姿（骨盆 x0、两脚按 spread0 分开）走 n 步，停在骨盆 x1。
+
+    按脚印排：每一步都是落在后面的那只脚迈过支撑脚、落到它前面一步远；最后两只脚的中点就是 x1。
+    落脚时骨盆在两脚中间，高度按两脚分开的距离算（腿够得着，不会飘）；摆腿时骨盆在支撑脚正上方、腿几乎伸直，
+    骨盆自然升高——走路的起伏就是这么来的。"""
     keys = []
     L = leg(body)
     d = 1 if x1 >= x0 else -1
-    stride = (x1 - x0) / n
-    reach = abs(stride) / 2
-    y_c = body.foot_y - math.sqrt(max(L * L - reach * reach, (0.6 * L) ** 2)) + (8 if heavy else 4)
-    y_m = body.foot_y - 0.975 * L
-    mover = first
+    (xF, _), (xB, _) = feet(body, x0, face, spread0)
+    pos = {"F": xF, "B": xB}
+    mover = "F" if d * xF < d * xB else "B"            # 落在后面的那只脚先迈
+    stance = "B" if mover == "F" else "F"
+    s = d * (x1 - pos[stance]) / (n - 0.5) if n > 0.5 else 0.0
     for i in range(n):
         tm, te = t0 + (i + 0.5) * dur, t0 + (i + 1) * dur
-        pm, pe = x0 + stride * (i + 0.5), x0 + stride * (i + 1)
+        land = pos[stance] + d * s
+        pe = (land + pos[stance]) / 2
+        gap = abs(land - pos[stance]) / 2
+        y_c = body.foot_y - math.sqrt(max(L * L - gap * gap, (0.6 * L) ** 2)) + (8 if heavy else 4)
+        y_m = body.foot_y - 0.975 * L
         sw = swing if (mover == "F") == (d == face) else -swing
         arm_c = dict(aF=-sw, fF=-sw * 0.4 + 12, aB=sw, fB=sw * 0.6 + 12) if arms is None else ARMS[arms]
         arm_m = dict(aF=4, fF=16, aB=4, fB=16) if arms is None else ARMS[arms]
-        keys.append(K(tm, "linear", face=face, lift=0, x=pm, y=y_m, lean=lean, head=head,
-                      **{"foot" + mover: (pm + d * 0.04 * L, body.foot_y - lift * L)}, **arm_m))
+        keys.append(K(tm, "linear", face=face, lift=0, x=pos[stance], y=y_m, lean=lean, head=head,
+                      **{"foot" + mover: (pos[stance] + d * 0.04 * L, body.foot_y - lift * L)}, **arm_m))
         keys.append(K(te, "out2" if heavy else "linear", face=face, lift=0, x=pe, y=y_c, lean=lean, head=head,
-                      **{"foot" + mover: (pe + d * reach, body.foot_y)}, **arm_c))
-        mover = "B" if mover == "F" else "F"
+                      **{"foot" + mover: (land, body.foot_y)}, **arm_c))
+        pos[mover] = land
+        mover, stance = stance, mover
     return keys
 
 
-def run(body, face, t0, x0, x1, durs, first="F", lean=16.0, head=0.0, arms_swing=50.0, fly=14.0):
-    """跑：每步一个"落脚"关键帧（一只脚着地在前、另一只在后面抬起）和一个"腾空"关键帧。durs 是每步的时长"""
+def run(body, face, t0, x0, x1, durs, first="F", lean=16.0, head=0.0, arms_swing=50.0, fly=14.0, accel=1.4):
+    """跑：每步一个"落脚"关键帧（一只脚着地在前、另一只在后面抬起）和一个"腾空"关键帧。durs 是每步的时长。
+    位移按时间的 accel 次方分配：1 是匀速，越大起步越慢、最后越快（冲锋）"""
     keys = []
     L = leg(body)
     d = 1 if x1 >= x0 else -1
@@ -121,8 +129,8 @@ def run(body, face, t0, x0, x1, durs, first="F", lean=16.0, head=0.0, arms_swing
         a = sum(durs[:i]) / total
         b = sum(durs[:i + 1]) / total
         # 位移按时间的二次方分配：越跑越快
-        pm = x0 + (x1 - x0) * ((a + b) / 2) ** 1.4
-        pe = x0 + (x1 - x0) * b ** 1.4
+        pm = x0 + (x1 - x0) * ((a + b) / 2) ** accel
+        pe = x0 + (x1 - x0) * b ** accel
         other = "B" if mover == "F" else "F"
         sw = arms_swing if (mover == "F") == (d == face) else -arms_swing
         keys.append(K(t + du * 0.5, "linear", face=face, lift=0, x=pm, y=y0 - fly, lean=lean, head=head,
@@ -222,8 +230,8 @@ def kick_hit(i):
 
 
 def kick_push(i):
-    """一掌推在胸口：约 4.5 m/s，比第一次飞得远"""
-    back = {2: 940, 1: 920, 3: 900, 4: 900, 5: 900, 6: 900, 0: 760, 7: 580, 9: 580, 8: 440, 10: 440}
+    """一掌推在胸口：约 3 m/s，人往后飞、往上抛得更高"""
+    back = {2: 640, 1: 620, 3: 600, 4: 600, 5: 600, 6: 600, 0: 520, 7: 400, 9: 400, 8: 320, 10: 320}
     up = {2: 560, 1: 560, 3: 560, 4: 560, 5: 560, 6: 560, 0: 420, 7: 260, 9: 260, 8: 140, 10: 140}
     return -back[i], -up[i]
 
@@ -301,11 +309,13 @@ def hero_after_push(tg):
                    handF=(xt + 175, 790), handB=(xt + 185, 798))]
         land, hx = tg["land"], tg["help_x"]
         keys += [P(land + 0.9, b, xt + 10, f, spread=0.30, bend=16, lean=24, head=14, arms="low"),
-                 P(land + 1.9, b, xt + 10, f, spread=0.28, bend=6, lean=3, head=16, arms="relax"),
-                 P(land + 8.0, b, xt + 10, f, spread=0.28, bend=6, lean=3, head=14, arms="relax")]
-        keys += walk(b, f, land + 8.0, xt + 10, hx, 1, 0.6, lean=4, head=16)
+                 P(land + 1.9, b, xt + 10, f, spread=0.28, bend=6, lean=3, head=16, arms="relax")]
+        # 退半步，低头看着他（给他翻身留出地方）
+        keys += walk(b, f, land + 2.6, xt + 10, xt - 60, 1, 0.7, lean=0, head=18)
+        keys.append(P(land + 8.9, b, xt - 60, f, spread=0.28, bend=6, lean=3, head=14, arms="relax"))
+        keys += walk(b, f, land + 8.9, xt - 60, hx, 1, 0.55, lean=4, head=16)        # 等他跪起来了，才上前一步
         c0, c1, c2 = tg["clasp0"], tg["clasp1"], tg["clasp2"]
-        keys += [K(land + 9.1, "inout", face=f, lean=22, head=22, handF=c0, aB=-12, fB=6),
+        keys += [K(land + 9.6, "inout", face=f, lean=22, head=22, handF=c0, aB=-12, fB=6),
                  K(land + 9.9, "linear", face=f, lean=24, head=22, handF=c0),
                  K(land + 10.45, "inout", face=f, lean=-4, y=hip(b, 0.30, 14), head=6, handF=c1),   # 身体往后一仰
                  K(land + 11.3, "out", face=f, lean=-16, y=hip(b, 0.30, 16), head=-4, handF=c2),
@@ -342,13 +352,13 @@ def big_base(tg):
         return {"x": hit, "y": breath, "head": -0.5 * hit}
 
     keys = [P(-0.5, b, 1930, f, spread=0.25, bend=8, lean=5, head=6)]
-    keys += walk(b, f, -0.5, 1930, 1262, 4, 1.0, first="F", heavy=True, swing=22, lean=5, head=6)
+    keys += walk(b, f, -0.5, 1930, 1262, 4, 1.0, spread0=0.25, heavy=True, swing=22, lean=5, head=6)
     keys += [P(4.4, b, 1262, f, spread=0.26, bend=8, lean=3, head=10),                  # 站定，低头看金
              P(8.3, b, 1262, f, spread=0.26, bend=8, lean=3, head=10),
              P(9.2, b, 1264, f, spread=0.32, bend=10, lean=10, head=6, arms="guard"),    # 摆架势
              P(12.0, b, 1264, f, spread=0.32, bend=10, lean=10, head=6, arms="guard"),
              P(12.7, b, 1280, f, spread=0.33, bend=22, lean=18, head=4, arms="guard")]   # 蓄力：重心下沉
-    keys += walk(b, f, 12.7, 1280, 1000, 2, 0.9, first="F", heavy=True, swing=30, lean=18, head=2, arms="guard")
+    keys += walk(b, f, 12.7, 1280, 1000, 2, 0.9, spread0=0.33, heavy=True, swing=30, lean=18, head=2, arms="guard")
     bx, by = tg["block"]
     keys += [K(15.4, "inout", face=f, x=985, lean=20, head=2, aF=-24, fF=70, aB=22, fB=160),        # 拳头往后收
              K(A_HIT, "snap", face=f, x=958, y=hip(b, 0.34, 18), lean=22, head=0, handF=(bx, by), aB=26, fB=160,
@@ -401,10 +411,10 @@ def big_base(tg):
     # 晃：两脚撑着，重心在前脚上前后晃，两臂乱划；最后一下越过前脚
     xt = x0 - 330
     for tt, ln, aF, aB in ((60.9, 18, 160, 20), (61.45, 30, 30, 170), (61.95, 20, 170, 40),
-                           (62.5, 33, 20, 160), (63.0, 24, 175, 30), (63.6, 36, 40, 175)):
+                           (62.5, 33, 20, 160), (63.0, 24, 175, 30), (63.6, 36, 160, 30)):
         keys.append(K(tt, "inout", face=f, lean=ln, x=xt - (ln - 18) * tg["teeter_k"], aF=aF, fF=aF + 30,
                       aB=aB, fB=aB + 30))
-    keys.append(K(A_TOPPLE, "in", face=f, lean=46, x=xt - 40, aF=150, fF=170, aB=140, fB=160))
+    keys.append(K(A_TOPPLE, "linear", face=f, lean=42, x=xt - 36, aF=166, fF=196, aB=36, fB=66))
     return Track(keys, face=f, body=b, extra=extra)
 
 
@@ -424,7 +434,7 @@ def big_after_fall(tg):
         keys += [P(t + 0.4, b, x_up, 1, spread=0.30, bend=10, lean=8, head=6, arms="guard"),     # 转身
                  P(t + 2.2, b, x_up, 1, spread=0.30, bend=12, lean=10, head=4, arms="guard")]
         xb = tg["charge_x0"]
-        keys += walk(b, 1, t + 2.4, x_up, xb, 4, 0.5, first="B", heavy=True, swing=10, lean=10, head=4, arms="guard")
+        keys += walk(b, 1, t + 2.4, x_up, xb, 4, 0.5, spread0=0.30, heavy=True, swing=10, lean=10, head=4, arms="guard")
         t2 = t + 4.4
         keys += [P(t2 + 0.4, b, xb, 1, spread=0.34, bend=30, lean=32, head=22, aF=-30, fF=20, aB=-40, fB=10),
                  K(t2 + 0.8, "inout", face=1, footB=(xb - 0.34 * L - 60, b.foot_y), lift=10),     # 后脚刨地
@@ -432,16 +442,51 @@ def big_after_fall(tg):
                  K(t2 + 1.5, "inout", face=1, footB=(xb - 0.34 * L - 60, b.foot_y), lift=10),
                  K(t2 + 1.8, "inout", face=1, footB=(xb - 0.34 * L, b.foot_y), lift=10)]
         durs = [0.42, 0.36, 0.32, 0.29, 0.27, 0.25, 0.24]
-        keys += run(b, 1, A_GRAB - sum(durs), xb, tg["grab_x"] - 20, durs, lean=24, head=6)
+        keys += run(b, 1, A_GRAB - sum(durs), xb, tg["grab_x"] - 20, durs, lean=24, head=6, accel=2.0)
         keys.append(K(A_GRAB, "linear", face=1, x=tg["grab_x"], lean=22, head=0, handF=tg["reach"], aB=-40, fB=20))
         return keys
     return then
 
 
-def kick_throw(i):
-    """髋部顶在他重心下面：腿被往上掀，上身被手臂拽着往下——整个人绕着支点翻过去"""
-    return {0: (0, -380), 1: (0, 120), 2: (0, 200), 3: (0, 0), 4: (0, 0), 5: (0, 60), 6: (0, 60),
-            7: (0, -650), 9: (0, -650), 8: (0, -760), 10: (0, -760)}[i]
+T_REL = 0.7           # 抓住以后多久交给布偶（动作秒）：这时他已经翻过金的后背、平躺着往地上砸
+THROW_DEG = 255.0     # 绕自己的重心一共转多少度（顺时针）：从直立转到仰面、头朝金
+
+
+def throw_lead(pivot):
+    """过肩摔的前 0.7 秒（脚本动作，之后交给布偶）。
+
+    他冲过来的动量被支点（金的髋部）挡住，变成绕支点的转动：
+    重心先压到支点上（离它约 80 px，肚子贴着金的髋部和后背），绕着它顺时针翻过去，翻过顶以后越转越往外，
+    最后被甩到金的前面；同时整个人绕自己的重心转 255°（开头和结尾慢、中间快）。
+    交给布偶时他已经平躺在空中、头朝金、往下砸，转动刚好停住——所以是整个后背平拍在地上。"""
+    def factory(track):
+        J_ref = track.joints(A_GRAB)[0]
+        c0 = com(J_ref)
+        p0 = pivot(A_GRAB)
+        a0 = math.atan2(c0[1] - p0[1], c0[0] - p0[0])
+        a1 = math.radians(20.0)
+        while a1 < a0:
+            a1 += 2 * math.pi
+        r0 = math.hypot(c0[0] - p0[0], c0[1] - p0[1])
+
+        def radius(u):
+            if u < 0.4:
+                return 80 + (r0 - 80) * (1 - u / 0.4) ** 2
+            return 80 + 190 * ((u - 0.4) / 0.6) ** 2
+
+        def fn(ta):
+            u = max(0.0, min(1.0, (ta - A_GRAB) / T_REL))
+            g = u * u * (3 - 2 * u)
+            al = a0 + (a1 - a0) * (0.6 * u + 0.4 * u * u)
+            pv = pivot(ta)
+            r = radius(u)
+            cx, cy = pv[0] + r * math.cos(al), pv[1] + r * math.sin(al)
+            bt = math.radians(THROW_DEG * g)
+            cb, sb = math.cos(bt), math.sin(bt)
+            return [(cx + (x - c0[0]) * cb - (y - c0[1]) * sb, cy + (x - c0[0]) * sb + (y - c0[1]) * cb)
+                    for x, y in J_ref]
+        return fn
+    return factory
 
 
 def big_after_throw(tg):
@@ -497,11 +542,11 @@ def air_around_hand(x, y, hx, hy, hvx, hvy):
 
 
 def feather_sim(big_track, t0, t1, x0, y0):
-    """动作时间 t0 → t1 的羽毛轨迹：dv/dt = (空气速度 - v)/τ + g'，静止空气里匀速下落 82 px/s（0.43 m/s）"""
+    """动作时间 t0 → t1 的羽毛轨迹：dv/dt = (空气速度 - v)/τ + g'，静止空气里匀速下落 110 px/s（0.58 m/s）"""
     dt = 1.0 / 240
     tau = 0.05
-    g_eff = 82.0 / tau
-    x, y, vx, vy = x0, y0, 0.0, 82.0
+    g_eff = 110.0 / tau
+    x, y, vx, vy = x0, y0, 0.0, 110.0
     out = []
     t = t0
     prev = big_track.joints(t - dt)[0][4]
@@ -555,8 +600,9 @@ def replay_clock(t):
     return a0 + (t - r0) * k if r0 <= t < r1 else None
 
 
-def first_impact(ep, after, min_speed=420):
-    hits = [e for e in sorted(ep.events) if e[0] >= after and e[2] >= min_speed]
+def first_impact(ep, after, min_speed=420, parts=None):
+    """after 之后第一次够重的落地；parts 只看哪些关节（躯干和头 = 0、1、2，判断"整个人砸到地上"用）"""
+    hits = [e for e in sorted(ep.events) if e[0] >= after and e[2] >= min_speed and (parts is None or e[3] in parts)]
     return hits[0][0] if hits else None
 
 
@@ -566,17 +612,15 @@ def make(tg):
     hero.ragdoll(A_HIT, kick=kick_hit, until=21.0, then=hero_after_hit(tg))
     hero.ragdoll(A_PUSH, kick=kick_push, until=34.6, then=hero_after_push(tg), extra=hero_breath(tg))
     big = Figure("cyan", big_base(tg), CYAN, core="#e9fffb", mass=M_BIG)
-    big.ragdoll(A_TOPPLE, kick=kick_topple, until=tg["fall"] + 2.1, then=big_after_fall(tg), friction=0.1)
+    big.ragdoll(A_TOPPLE, kick=kick_topple, until=tg["fall"] + 2.1, then=big_after_fall(tg), friction=0.3)
 
     def pivot(ta):
         J = hero.joints(ta)
         p, n = J[0], J[1]
         return p[0] + (n[0] - p[0]) * 0.22 - 14, p[1] + (n[1] - p[1]) * 0.22 - 6   # 腰后侧：支点
 
-    big.ragdoll(A_GRAB, kick=kick_throw, until=tg["land"] + 8.15, then=big_after_throw(tg), friction=0.12,
-                bounce=0.16,
-                pins=[{"i": 4, "t0": A_GRAB, "t1": A_GRAB + 0.55, "k": 0.5, "target": lambda ta: hero.joints(ta)[4]}],
-                obstacles=[{"t0": A_GRAB, "t1": A_GRAB + 0.5, "r": 34, "only": [0, 1, 7, 9], "center": pivot}])
+    big.ragdoll(A_GRAB + T_REL, until=tg["land"] + 8.15, then=big_after_throw(tg), friction=0.12, bounce=0.16,
+                lead=(A_GRAB, throw_lead(pivot)))
     hero.prepare(FPS, A_END)
     big.prepare(FPS, A_END)
     return hero, big, pivot
@@ -603,23 +647,23 @@ def measure(hero, big, tg):
     Jb = big.joints(A_PARRY)
     t["parry"] = (mid(Jb[3], Jb[4], 0.55)[0], mid(Jb[3], Jb[4], 0.55)[1] + 10)
     ep_fall, ep_throw = big.episodes
-    fall = first_impact(ep_fall, A_TOPPLE + 0.3)
+    fall = big.touchdown(ep_fall, joints=(1, 2), margin=30)
     if fall:
         t["fall"] = fall
     x_up = big.joints(t["fall"] + 2.1)[0][0] - 30
-    t["charge_x0"] = x_up - 480
+    t["charge_x0"] = x_up - 560
     t["throw_x"] = 640.0
     t["grab_x"] = t["throw_x"] - 150
     Jg = big.joints(A_GRAB - 0.2)
     t["reach"] = (t["grab_x"] + 150, Jg[1][1] + 26)
     t["wrist"] = big.joints(A_GRAB)[4]
-    land = first_impact(ep_throw, A_GRAB + 0.3, 500)
+    land = big.touchdown(ep_throw, joints=(0, 1), margin=30)
     if land:
         t["land"] = land
     Jl = big.joints(t["land"] + 7.0)
     head_x = Jl[2][0]
-    t["kneel_x"] = head_x + 70
-    t["help_x"] = t["kneel_x"] - 215
+    t["kneel_x"] = head_x + 90
+    t["help_x"] = t["kneel_x"] - 220
     m = (t["help_x"] + t["kneel_x"]) / 2
     t["clasp0"], t["clasp1"], t["clasp2"] = (m + 6, 700), (m - 4, 650), (m - 14, 628)
     return t
@@ -652,11 +696,11 @@ def build():
     hand_target = big.track.joints(target_t)[0][4]
     x0, y0 = hand_target[0] + 30, 170.0
     for _ in range(3):
-        path = feather_sim(big.track, 40.4, target_t, x0, y0)
+        path = feather_sim(big.track, 40.0, target_t, x0, y0)
         _, fx, fy, _ = path[-1]
         x0 += hand_target[0] - 6 - fx
         y0 += hand_target[1] + 14 - fy
-    path = feather_sim(big.track, 40.4, 54.0, x0, y0)
+    path = feather_sim(big.track, 40.0, 54.0, x0, y0)
 
     def feather_at(t_real):
         ta = replay_clock(t_real)
@@ -681,13 +725,13 @@ def overlays(sc, hero, big, tg, pivot):
     a = sc.anim
     # S02：质量
     hx, bx = hero.joints(6.0)[0][0], big.joints(6.0)[0][0]
-    sc.label(4.8, 12.3, hx, GROUND + 60, "60 kg", size=34, color=GOLD)
-    sc.label(4.8, 12.3, bx, GROUND + 60, "120 kg", size=34, color=CYAN)
+    sc.label(4.8, 12.3, hx, GROUND + 64, "60 kg", size=40, color=GOLD)
+    sc.label(4.8, 12.3, bx, GROUND + 64, "120 kg", size=40, color=CYAN)
     # S05：撞上的一瞬，两支一样长、方向相反的力
     cx, cy = tg["block"]
     sc.arrow(17.0, 22.0, (cx - 4, cy - 16, -170, 0), GOLD, width=7, grow=12)
     sc.arrow(17.0, 22.0, (cx + 4, cy + 16, 170, 0), CYAN, width=7, grow=12)
-    sc.label(18.0, 22.0, cx, cy - 96, "两边受的力一样大", size=44, color=WHITE)
+    sc.label(18.0, 22.0, cx, cy - 150, "两边受的力一样大", size=44, color=WHITE)
     # S12：手掌推开的气流（示意）
     s0, s1 = tg["swat0"], tg["swat1"]
     dx, dy = s1[0] - s0[0], s1[1] - s0[1]
@@ -717,13 +761,15 @@ def overlays(sc, hero, big, tg, pivot):
         return (fx - ux * L, fy - uy * L, ux * L, uy * L)
     sc.arrow(64.0, 72.0, momentum, CYAN, width=7, grow=10)
     sc.arrow(67.5, 72.0, (fx0 - p_len - 12, fy0 - 6, p_len, 0), WHITE, width=7, grow=14)       # 挡：等长、反向
-    sc.label(67.9, 72.0, fx0 - p_len / 2 - 12, fy0 - 52, "挡住它，要这么多", size=36, color=WHITE)
+    # 两句字都放在金左边的空地上、上下排，颜色对应各自的箭头（白 = 挡，金 = 拨），不压在两个人身上
+    sc.label(67.9, 72.0, fx0 - 84, fy0 - 44, "挡住它，要这么多", size=36, color=WHITE, anchor="end")
     short = p_len * 2 * math.sin(math.radians(5))                                              # ≈ 0.17
     sc.arrow(69.3, 72.0, (fx0 + 2, fy0 + short + 18, 0, -short), GOLD, width=7, grow=10)        # 拨：垂直、很短
-    sc.label(69.6, 72.0, fx0 + 10, fy0 + short + 70, "拨开它，只要这么点", size=36, color=GOLD)
-    sc.label(69.0, 72.0, fx0 + 230, fy0 + short + 70, "示意", size=24, color="#9fb0c8")
+    sc.label(69.6, 72.0, fx0 - 84, fy0 + 66, "拨开它，只要这么点", size=36, color=GOLD, anchor="end")
+    sc.label(69.0, 72.0, fx0 - 84, fy0 + 104, "示意", size=24, color="#9fb0c8", anchor="end")
     ang = math.radians(10)
     sc.layers["paths"].append({"color": GOLD, "f0": round(69.9 * FPS), "f1": round(70.5 * FPS), "opacity": 0.75,
+                               "end": round(72.0 * FPS),
                                "pts": [[round(fx0 - 300 * i / 20 * math.cos(ang), 1),
                                         round(fy0 - 300 * i / 20 * math.sin(ang), 1)] for i in range(21)]})
     # S17：重心和两脚之间的支撑面
@@ -739,10 +785,8 @@ def overlays(sc, hero, big, tg, pivot):
         if com_at(t)[0] < base_at(t)[0] - 1:
             t_cross = t
             break
-    sc.dot(77.2, 80.3, com_at, WHITE, r=10)
+    sc.dot(77.2, 80.3, com_at, WHITE, r=10, label="重心", lsize=34, lx=24, ly=-24)
     sc.bar(77.2, 80.3, base_at, WHITE, alt=RED, t_alt=t_cross or 78.4)
-    c77 = com_at(77.6)
-    sc.label(77.6, 80.3, c77[0] + 70, c77[1] - 40, "重心", size=34, color=WHITE)
     sc.label(78.0, 82.3, 960, 1000, "重心出了两脚之间，就会倒", size=42, color=WHITE, screen=True)
     sc.t_cross = t_cross
     # S19：冲过来的动量越来越大
@@ -783,10 +827,10 @@ def effects(sc, hero, big, tg):
         sc.burst(t, J[8][0], GROUND, "dust", n=8, speed=170, angle=-90, spread=160, life=20, size=9, color=dust)
     sc.sfx(15.62, "whoosh", 0.55, dur=0.38, f0=260, f1=1500)
     bx, by = tg["block"]
-    sc.burst(A_HIT, bx, by, "spark", n=26, speed=950, angle=180, spread=160, life=16, size=4.5, color=GOLD)
-    sc.burst(A_HIT, bx, by, "spark", n=16, speed=820, angle=0, spread=140, life=14, size=3.6, color=CYAN, seed=4242)
-    sc.burst(A_HIT, bx, by, "ring", size=12, speed=170, life=14, color="#fff2cf")
-    sc.burst(A_HIT, bx, by, "flare", size=70, life=8, color=GOLD)
+    sc.burst(A_HIT - 0.05, bx, by, "spark", n=26, speed=950, angle=180, spread=160, life=16, size=4.5, color=GOLD)
+    sc.burst(A_HIT - 0.05, bx, by, "spark", n=16, speed=820, angle=0, spread=140, life=14, size=3.6, color=CYAN, seed=4242)
+    sc.burst(A_HIT - 0.04, bx, by, "ring", size=12, speed=170, life=14, color="#fff2cf")
+    sc.burst(A_HIT - 0.12, bx, by, "flare", size=70, life=8, color=GOLD)     # 定格时只剩一团柔光，不挡箭头
     sc.sfx(A_HIT, "block", 1.0)
     sc.sfx(A_HIT, "punch", 0.8)
     sc.sfx(A_HIT, "impact", 0.45)
@@ -896,7 +940,9 @@ def effects(sc, hero, big, tg):
 
 
 def camera(sc, hero, big, tg, pivot):
-    """每一镜一个取景意图（跟着人走、推近、拉远），镜内平滑、镜间硬切"""
+    """机位：每一镜一个取景意图，镜内平滑、镜间（和镜内标出的切点）硬切。
+    S01 每一步重脚步切一次（脚 → 腿 → 全身 → 两个人），飞出去、跑、踉跄、冲锋都跟着拍，安静的镜头慢推慢拉。
+    顺带给出主光的位置（两个人中间、平滑跟随）和背景雾。"""
     n = round(TOTAL * FPS)
     H, B = [], []
     for f in range(n):
@@ -908,75 +954,106 @@ def camera(sc, hero, big, tg, pivot):
     sw = mid(tg["swat0"], tg["swat1"], 0.6)
     fist = tg["fist_at"]
     pv = pivot(A_GRAB)
-    cuts = [0.0, 4.0, 8.0, 12.0, 16.0, 22.0, 27.0, 32.0, 37.0, 42.0, 47.0, 52.0, 55.6, 57.0, 62.0, 67.0, 72.0,
-            77.0, 82.0, 87.0, 93.0, 98.0, 103.0, 108.0, 112.0, 120.0]
+    fe = sc.layers["feathers"][0]["p"] if sc.layers["feathers"] else None
+    cuts = [0.0, 1.5, 2.5, 3.5, 4.0, 8.0, 12.0, 16.0, 22.0, 27.0, 32.0, 37.0, 42.0, 47.0, 52.0, 55.6, 57.0, 62.0,
+            67.0, 72.0, 77.0, 82.0, 87.0, 89.0, 91.0, 93.0, 98.0, 103.0, 108.0, 112.0, 120.0]
+
+    def lerp(a, b, u):
+        return a + (b - a) * max(0.0, min(1.0, u))
 
     def want(f):
         t = f / FPS
-        hx, bx = H[f][0][0], B[f][0][0]
+        h0, b0 = H[f][0], B[f][0]
+        hx, bx = h0[0], b0[0]
         mx = (hx + bx) / 2
         gap = abs(bx - hx)
         fit = max(0.95, min(1.45, 1300.0 / (gap + 650.0)))
-        if t < 4.0:
-            u = t / 4.0
-            return 1120 + 60 * u, 612, 1.0 + 0.05 * u
-        if t < 8.0:
-            return mx, 615, 1.14 + 0.04 * (t - 4.0) / 4.0
-        if t < 12.0:
-            return mx, 612, 1.2 + 0.1 * (t - 8.0) / 4.0
-        if t < 16.0:
-            return mx, 600, 1.3 + 0.12 * (t - 12.0) / 4.0
-        if t < 22.0:
+        if t < 1.5:                                   # S01 第一步：只看那只脚砸下来
+            J = B[round(0.52 * FPS)]
+            return J[8][0] + 30, GROUND - 70, 2.7 - 0.15 * t
+        if t < 2.5:                                   # 第二步：腿
+            return bx + 20, GROUND - 150, 1.95
+        if t < 3.5:                                   # 第三步：整个人，低机位
+            return bx - 40, 600, 1.35
+        if t < 4.0:                                   # 第四步：拉开，两个人
+            return mx, 615, 1.08
+        if t < 8.0:                                   # S02 从大块头摇到两人
+            u = ease((t - 4.0) / 3.2)
+            return lerp(bx - 60, mx, u), lerp(560, 615, u), lerp(1.4, 1.14, u)
+        if t < 12.0:                                  # S03 慢推
+            return mx, 612, 1.16 + 0.22 * ease((t - 8.0) / 4.0)
+        if t < 16.0:                                  # S04 跟着冲锋
+            return lerp(mx, (hx + 2 * bx) / 3, (t - 12.0) / 4.0), 600, 1.3 + 0.15 * (t - 12.0) / 4.0
+        if t < 22.0:                                  # S05 定格里推近
             u = ease((t - 16.0) / 6.0)
             cx, cy = tg["block"]
-            return mx + (cx - mx) * u, 600 + (cy - 600) * u, 1.42 + 0.48 * u
-        if t < 27.0:
-            return mx, 625, fit
-        if t < 32.0:
-            return mx, 618, max(1.15, fit)
-        if t < 37.0:
-            return mx, 600, 1.45
-        if t < 42.0:
-            return mx, 622, fit
-        if t < 47.0:
-            u = (t - 42.0) / 5.0
-            return hx + 60, 760, 1.55 + 0.12 * u
-        if t < 52.0:
-            return bx - 70, 520, 1.42
-        if t < 55.6:
-            return sw[0], sw[1] + 10, 2.1 + 0.15 * (t - 52.0) / 3.6
-        if t < 57.0:
-            return hx + 40, 770, 1.8
-        if t < 62.0:
-            return mx, 622, 1.28
-        if t < 67.0:
+            return lerp(mx, cx, u), lerp(600, cy, u), 1.42 + 0.48 * u
+        if t < 27.0:                                  # S06 跟着飞出去的人
+            u = ease((t - 24.2) / 2.0)
+            return lerp(hx + 80, mx, u), lerp(700, 625, u), lerp(1.3, fit, u)
+        if t < 32.0:                                  # S07 爬起来（近）→ 冲回去（跟拍）
+            if t < 29.6:
+                return hx + 20, 700, 1.55
+            u = ease((t - 29.6) / 2.2)
+            return lerp(hx + 60, mx, u), lerp(660, 610, u), lerp(1.4, 1.35, u)
+        if t < 37.0:                                  # S08 连打四拳
+            return mx, 598, 1.55
+        if t < 42.0:                                  # S09 推飞 → 跟着飞 → 落地
+            if t < 38.0:
+                return mx, 605, 1.35
+            u = ease((t - 38.0) / 2.0)
+            return lerp(mx, hx + 120, u), lerp(605, 690, u), lerp(1.35, 1.2, u)
+        if t < 47.0:                                  # S10 慢推，从脚边摇到脸
+            u = ease((t - 42.0) / 5.0)
+            return hx + lerp(160, 30, u), 770, 1.35 + 0.4 * u
+        if t < 52.0:                                  # S11 跟着羽毛摇下来
+            if fe and fe[f]:
+                fx_, fy_ = fe[f][0], fe[f][1]
+                return (fx_ + bx) / 2 - 20, min(560, fy_ + 120), 1.5
+            return bx - 70, 520, 1.45
+        if t < 55.6:                                  # S12 慢镜头重放：手和羽毛
+            return sw[0] + 10 * (t - 52.0), sw[1] + 10, 2.1 + 0.15 * (t - 52.0) / 3.6
+        if t < 57.0:                                  # 切到金：躺着转过头
+            return hx + 40, 770, 1.85
+        if t < 62.0:                                  # S13 站起来：近 → 拉开
+            u = ease((t - 58.6) / 2.6)
+            return lerp(hx + 20, mx, u), lerp(700, 622, u), lerp(1.65, 1.28, u)
+        if t < 67.0:                                  # S14 推向拳头
             u = ease((t - 62.0) / 5.0)
-            return mx + (fist[0] - mx) * u * 0.5, 600 - 20 * u, 1.28 + 0.32 * u
-        if t < 72.0:
-            return fist[0] - 40, fist[1] + 30, 1.85
-        if t < 77.0:
-            return mx, 615, fit
-        if t < 82.0:
-            return bx - 50, 640, 1.32
-        if t < 87.0:
-            return mx, 622, fit
-        if t < 93.0:
-            u = ease((t - 90.6) / 2.9)
-            return mx, 615, fit + 0.25 * u
-        if t < 98.0:
+            return lerp(mx, fist[0] - 20, u * 0.6), 600 - 20 * u, 1.28 + 0.34 * u
+        if t < 72.0:                                  # S15 定格里再推一点
+            u = (t - 67.0) / 5.0
+            return fist[0] - 40 - 20 * u, fist[1] + 30, 1.8 + 0.12 * u
+        if t < 77.0:                                  # S16 跟着他踉跄过去
+            u = ease((t - 72.0) / 2.5)
+            return lerp(mx, bx - 60, u), 615, lerp(1.35, 1.25, u)
+        if t < 82.0:                                  # S17 晃 → 倒（慢推）
+            u = (t - 77.0) / 3.0
+            return bx - 50, 645, 1.3 + 0.18 * min(1.0, u)
+        if t < 87.0:                                  # S18 爬起来 → 带上金
+            u = ease((t - 84.5) / 2.0)
+            return lerp(bx, mx, u), lerp(660, 622, u), lerp(1.4, fit, u)
+        if t < 89.0:                                  # S19 往后退（跟着）
+            return bx + 120, 620, 1.2
+        if t < 91.0:                                  # 斗牛：低机位近景，刨地
+            return bx + 60, 700, 1.55
+        if t < 93.0:                                  # 冲锋：大远景跟拍，最后金进画
+            u = ease((t - 91.0) / 2.0)
+            return lerp(bx + 300, mx, u), 610, lerp(1.0, 1.3, u)
+        if t < 98.0:                                  # S20 极慢的抓、扛
             u = (t - 93.0) / 5.0
-            return pv[0] - 10, pv[1] - 70, 1.62 + 0.12 * u
-        if t < 103.0:
+            return pv[0] - 10 + 30 * u, pv[1] - 70, 1.62 + 0.12 * u
+        if t < 103.0:                                 # S21 跟着翻 → 砸地 → 稳住
             if t < 100.0:
                 c = chest(B[f])
                 return (c[0] + pv[0]) / 2, (c[1] + pv[1]) / 2 - 40, 1.45
-            return mx, 640, 1.08
-        if t < 108.0:
-            return mx, 640, 1.12 + 0.06 * (t - 103.0) / 5.0
-        if t < 112.0:
-            return mx, 632, 1.32
-        u = (t - 112.0) / 8.0
-        return mx, 560, 0.98 - 0.05 * u
+            return mx, 640, 1.12
+        if t < 108.0:                                 # S22 慢推
+            return mx, 640, 1.08 + 0.2 * ease((t - 103.0) / 5.0)
+        if t < 112.0:                                 # S23 拉起来
+            return mx, 632, 1.35 + 0.05 * (t - 108.0) / 4.0
+        u = ease((t - 112.0) / 8.0)                   # S24 慢慢拉远，给落点字留出上面的空
+        return mx, lerp(600, 560, u), lerp(1.02, 0.88, u)
 
     raw = [want(f) for f in range(n)]
     cam = []
@@ -988,3 +1065,12 @@ def camera(sc, hero, big, tg, pivot):
         vals = raw[k0:k1 + 1]
         cam.append(tuple(sum(v[i] for v in vals) / len(vals) for i in range(3)))
     sc.camera_fn = lambda t: cam[min(n - 1, max(0, round(t * FPS)))]
+
+    # 主光：两人中间（躺着、翻滚时跟着主角），1 秒平滑；定格时略暗
+    mids = [(H[f][0][0] + B[f][0][0]) / 2 for f in range(n)]
+    spot = []
+    for f in range(n):
+        k0, k1 = max(0, f - 15), min(n - 1, f + 15)
+        spot.append(sum(mids[k0:k1 + 1]) / (k1 - k0 + 1))
+    sc.spot_fn = lambda t: (spot[min(n - 1, max(0, round(t * FPS)))], 1.0)
+    sc.haze = True

@@ -1,0 +1,182 @@
+{
+  "id": "009-redirect",
+  "title": "他比我重一倍，我借了他的力",
+  "mode": "grid",
+  "fps": 30,
+  "aspect": "landscape",
+  "grid": {
+    "bpm": 120.0,
+    "beat": 0.5,
+    "lead": 0.0
+  },
+  "scenes": [
+    {
+      "id": "S01",
+      "text": "",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S02",
+      "text": "",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S03",
+      "text": "",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S04",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S05",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S06",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S07",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S08",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S09",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S10",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S11",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S12",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S13",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S14",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S15",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S16",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S17",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S18",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S19",
+      "text": "",
+      "hold": 12,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S20",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S21",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S22",
+      "text": "",
+      "hold": 10,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S23",
+      "text": "",
+      "hold": 8,
+      "sub_in": null,
+      "sub_out": null
+    },
+    {
+      "id": "S24",
+      "text": "",
+      "hold": 16,
+      "sub_in": null,
+      "sub_out": null
+    }
+  ]
+}

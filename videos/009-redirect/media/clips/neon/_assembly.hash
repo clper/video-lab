@@ -1,0 +1,520 @@
+0516c24d322c0fcc|e5195b46f2635946|45429a2b4b14a79c|2d7212f11c3784d7|32873d292c277ce4|c2b58b4835d62589|bbe2ef822dae121e|e3df2b5cbfdfe9bc|cd6b97d3dbb6732b|cec4eec50c24ac65|8a0478f11a8f93fa|01ad45659ba43c19|3e9b412b09f70cf3|0fbbed008d98243e|acc850649b44ae61|6a3e8a48b8cb747b|e75154c5f3def68a|97feb8c12689947b|7a458c7fee9fb574|58566c1cf95b64a8|0cee5490e5dbec61|6df147664bb2b664|b3bd56d13fae2f90|5662d6bc03724316|{"grain": 0, "vignette": 0.0}|{"lufs": -14, "music": false, "sfx_db": 0, "sfx_file": "build/009-redirect/sfx_events.json"}|9388bbaa37f89b59|[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Source Han Sans CN,56,&H00FFFFFF,&H00FFFFFF,&H00101114,&H64000000,-1,0,0,0,100,100,2,0,1,5,2,2,200,200,70,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+|[
+ {
+  "t": 0.5,
+  "kind": "stomp",
+  "gain": 0.95
+ },
+ {
+  "t": 1.5,
+  "kind": "stomp",
+  "gain": 0.95
+ },
+ {
+  "t": 2.5,
+  "kind": "stomp",
+  "gain": 0.95
+ },
+ {
+  "t": 2.9,
+  "kind": "step",
+  "gain": 0.25
+ },
+ {
+  "t": 3.5,
+  "kind": "stomp",
+  "gain": 0.95
+ },
+ {
+  "t": 13.6,
+  "kind": "stomp",
+  "gain": 0.8
+ },
+ {
+  "t": 14.5,
+  "kind": "stomp",
+  "gain": 0.8
+ },
+ {
+  "t": 15.62,
+  "kind": "whoosh",
+  "gain": 0.55,
+  "args": {
+   "dur": 0.38,
+   "f0": 260,
+   "f1": 1500
+  }
+ },
+ {
+  "t": 16.0,
+  "kind": "block",
+  "gain": 1.0
+ },
+ {
+  "t": 16.0,
+  "kind": "punch",
+  "gain": 0.8
+ },
+ {
+  "t": 16.0,
+  "kind": "impact",
+  "gain": 0.45
+ },
+ {
+  "t": 16.15,
+  "kind": "hum",
+  "gain": 0.42,
+  "args": {
+   "dur": 5.9,
+   "f": 98.0
+  }
+ },
+ {
+  "t": 22.7542,
+  "kind": "thud",
+  "gain": 0.5770373926348581
+ },
+ {
+  "t": 22.8042,
+  "kind": "scrape",
+  "gain": 0.5,
+  "args": {
+   "dur": 0.7
+  }
+ },
+ {
+  "t": 30.32,
+  "kind": "step",
+  "gain": 0.4
+ },
+ {
+  "t": 30.68,
+  "kind": "step",
+  "gain": 0.4
+ },
+ {
+  "t": 31.01,
+  "kind": "step",
+  "gain": 0.4
+ },
+ {
+  "t": 31.31,
+  "kind": "step",
+  "gain": 0.4
+ },
+ {
+  "t": 32.0,
+  "kind": "punch",
+  "gain": 0.42
+ },
+ {
+  "t": 32.5,
+  "kind": "punch",
+  "gain": 0.42
+ },
+ {
+  "t": 33.0,
+  "kind": "punch",
+  "gain": 0.42
+ },
+ {
+  "t": 33.5,
+  "kind": "punch",
+  "gain": 0.42
+ },
+ {
+  "t": 34.5,
+  "kind": "slap",
+  "gain": 0.22
+ },
+ {
+  "t": 34.75,
+  "kind": "slap",
+  "gain": 0.22
+ },
+ {
+  "t": 35.0,
+  "kind": "slap",
+  "gain": 0.22
+ },
+ {
+  "t": 35.25,
+  "kind": "slap",
+  "gain": 0.22
+ },
+ {
+  "t": 37.7,
+  "kind": "whoosh",
+  "gain": 0.5,
+  "args": {
+   "dur": 0.32,
+   "f0": 300,
+   "f1": 1700
+  }
+ },
+ {
+  "t": 38.0,
+  "kind": "punch",
+  "gain": 0.95
+ },
+ {
+  "t": 38.0,
+  "kind": "impact",
+  "gain": 0.4
+ },
+ {
+  "t": 38.75,
+  "kind": "scrape",
+  "gain": 0.55,
+  "args": {
+   "dur": 0.8
+  }
+ },
+ {
+  "t": 42.8,
+  "kind": "pulse",
+  "gain": 0.32
+ },
+ {
+  "t": 44.3,
+  "kind": "pulse",
+  "gain": 0.32
+ },
+ {
+  "t": 45.9,
+  "kind": "pulse",
+  "gain": 0.32
+ },
+ {
+  "t": 47.2,
+  "kind": "wind",
+  "gain": 0.22,
+  "args": {
+   "dur": 3.0,
+   "f0": 600,
+   "f1": 900
+  }
+ },
+ {
+  "t": 49.9,
+  "kind": "whoosh",
+  "gain": 0.7,
+  "args": {
+   "dur": 0.32,
+   "f0": 420,
+   "f1": 2200
+  }
+ },
+ {
+  "t": 52.2,
+  "kind": "wind",
+  "gain": 0.45,
+  "args": {
+   "dur": 4.6,
+   "f0": 180,
+   "f1": 420
+  }
+ },
+ {
+  "t": 52.9,
+  "kind": "whoosh",
+  "gain": 0.4,
+  "args": {
+   "dur": 2.6,
+   "f0": 90,
+   "f1": 420
+  }
+ },
+ {
+  "t": 61.55,
+  "kind": "stomp",
+  "gain": 0.55
+ },
+ {
+  "t": 62.3,
+  "kind": "stomp",
+  "gain": 0.55
+ },
+ {
+  "t": 64.0,
+  "kind": "whoosh",
+  "gain": 0.5,
+  "args": {
+   "dur": 2.8,
+   "f0": 80,
+   "f1": 380
+  }
+ },
+ {
+  "t": 67.1,
+  "kind": "hum",
+  "gain": 0.38,
+  "args": {
+   "dur": 4.9,
+   "f": 82.0
+  }
+ },
+ {
+  "t": 72.12,
+  "kind": "slap",
+  "gain": 0.85
+ },
+ {
+  "t": 72.16,
+  "kind": "whoosh",
+  "gain": 0.55,
+  "args": {
+   "dur": 0.3,
+   "f0": 500,
+   "f1": 2400
+  }
+ },
+ {
+  "t": 72.7,
+  "kind": "stomp",
+  "gain": 0.45
+ },
+ {
+  "t": 73.02,
+  "kind": "stomp",
+  "gain": 0.45
+ },
+ {
+  "t": 73.38,
+  "kind": "stomp",
+  "gain": 0.45
+ },
+ {
+  "t": 73.8,
+  "kind": "stomp",
+  "gain": 0.45
+ },
+ {
+  "t": 74.3,
+  "kind": "whoosh",
+  "gain": 0.18,
+  "args": {
+   "dur": 0.4,
+   "f0": 200,
+   "f1": 700
+  }
+ },
+ {
+  "t": 75.35,
+  "kind": "whoosh",
+  "gain": 0.18,
+  "args": {
+   "dur": 0.4,
+   "f0": 200,
+   "f1": 700
+  }
+ },
+ {
+  "t": 76.4,
+  "kind": "whoosh",
+  "gain": 0.18,
+  "args": {
+   "dur": 0.4,
+   "f0": 200,
+   "f1": 700
+  }
+ },
+ {
+  "t": 80.0,
+  "kind": "impact",
+  "gain": 0.5
+ },
+ {
+  "t": 80.166,
+  "kind": "thud",
+  "gain": 0.5395506246032655
+ },
+ {
+  "t": 84.5527,
+  "kind": "rumble",
+  "gain": 0.6,
+  "args": {
+   "dur": 2.0
+  }
+ },
+ {
+  "t": 86.829,
+  "kind": "stomp",
+  "gain": 0.4
+ },
+ {
+  "t": 87.3033,
+  "kind": "stomp",
+  "gain": 0.4
+ },
+ {
+  "t": 87.7775,
+  "kind": "stomp",
+  "gain": 0.4
+ },
+ {
+  "t": 88.2518,
+  "kind": "stomp",
+  "gain": 0.4
+ },
+ {
+  "t": 89.0105,
+  "kind": "scrape",
+  "gain": 0.4,
+  "args": {
+   "dur": 0.3
+  }
+ },
+ {
+  "t": 89.6745,
+  "kind": "scrape",
+  "gain": 0.4,
+  "args": {
+   "dur": 0.3
+  }
+ },
+ {
+  "t": 90.6,
+  "kind": "riser",
+  "gain": 0.35,
+  "args": {
+   "dur": 2.9
+  }
+ },
+ {
+  "t": 91.8591,
+  "kind": "stomp",
+  "gain": 0.55
+ },
+ {
+  "t": 92.2006,
+  "kind": "stomp",
+  "gain": 0.6100000000000001
+ },
+ {
+  "t": 92.5041,
+  "kind": "stomp",
+  "gain": 0.67
+ },
+ {
+  "t": 92.7792,
+  "kind": "stomp",
+  "gain": 0.73
+ },
+ {
+  "t": 93.0352,
+  "kind": "stomp",
+  "gain": 0.79
+ },
+ {
+  "t": 93.2724,
+  "kind": "stomp",
+  "gain": 0.8500000000000001
+ },
+ {
+  "t": 93.5,
+  "kind": "stomp",
+  "gain": 0.91
+ },
+ {
+  "t": 93.5,
+  "kind": "slap",
+  "gain": 0.95
+ },
+ {
+  "t": 93.6,
+  "kind": "hum",
+  "gain": 0.32,
+  "args": {
+   "dur": 4.3,
+   "f": 66.0
+  }
+ },
+ {
+  "t": 94.4,
+  "kind": "whoosh",
+  "gain": 0.5,
+  "args": {
+   "dur": 3.6,
+   "f0": 70,
+   "f1": 420
+  }
+ },
+ {
+  "t": 98.0,
+  "kind": "whoosh",
+  "gain": 0.55,
+  "args": {
+   "dur": 1.5,
+   "f0": 120,
+   "f1": 900
+  }
+ },
+ {
+  "t": 100.0,
+  "kind": "crash",
+  "gain": 1.0
+ },
+ {
+  "t": 100.0583,
+  "kind": "thud",
+  "gain": 0.5
+ },
+ {
+  "t": 101.2,
+  "kind": "wind",
+  "gain": 0.2,
+  "args": {
+   "dur": 3.0,
+   "f0": 300,
+   "f1": 500
+  }
+ },
+ {
+  "t": 103.6,
+  "kind": "pulse",
+  "gain": 0.25
+ },
+ {
+  "t": 105.4,
+  "kind": "pulse",
+  "gain": 0.25
+ },
+ {
+  "t": 108.6,
+  "kind": "step",
+  "gain": 0.35
+ },
+ {
+  "t": 109.9,
+  "kind": "slap",
+  "gain": 0.6
+ },
+ {
+  "t": 110.3,
+  "kind": "whoosh",
+  "gain": 0.3,
+  "args": {
+   "dur": 0.6,
+   "f0": 200,
+   "f1": 700
+  }
+ },
+ {
+  "t": 111.3,
+  "kind": "step",
+  "gain": 0.4
+ }
+]
