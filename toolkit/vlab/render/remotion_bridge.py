@@ -12,6 +12,8 @@ Remotion 渲染桥：把「一张镜头卡 + 一组参数」渲染成一个 mp4�
         --out media/remotion/S1.mp4 --param n=640 --param birth=true
 """
 
+import functools
+import hashlib
 import json
 import os
 import re
@@ -23,7 +25,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REMOTION_DIR = HERE / "remotion"
-REGISTRY = REMOTION_DIR / "src" / "cards" / "registry.ts"
+SRC = REMOTION_DIR / "src"
+REGISTRY = SRC / "cards" / "registry.ts"
 COMPOSITION = "Shot"
 W, H = 1080, 1920
 DEFAULT_FPS = 30
@@ -44,6 +47,81 @@ def card_names() -> list[str]:
         return []
     body = block[1].split("};", 1)[0]
     return re.findall(r"^\s{2}(\w+):", body, flags=re.M)
+
+
+# from "./x"（import / export，可跨行）、import "./x"、import("./x")：只认相对路径，npm 包不算。
+# 宁可多认（注释里的 from "./x" 也算），漏认一个就会"画面变了指纹没变"
+_IMPORT = re.compile(r"""(?:\bfrom|\bimport)\s*\(?\s*["'](\.{1,2}/[^"']+)["']""")
+
+
+def _imports(text: str) -> list[str]:
+    return _IMPORT.findall(text.lstrip("﻿"))
+
+
+def _text(f: Path) -> bytes:
+    """算指纹用的内容：换行统一成 LF。core.autocrlf 下同一份文件克隆出来是 CRLF、工具写出来是 LF，不能算成两样。"""
+    return f.read_bytes().replace(b"\r\n", b"\n")
+
+
+def _resolve(base: Path, spec: str) -> Path | None:
+    p = (base.parent / spec).resolve()
+    for c in (p, p.with_name(p.name + ".ts"), p.with_name(p.name + ".tsx"), p / "index.ts", p / "index.tsx"):
+        if c.is_file():
+            return c
+    return None
+
+
+def card_code_files(card: str) -> list[Path]:
+    """渲染这张卡会用到的源文件：从入口 index.ts 顺着 import 走，
+    注册表只走这张卡、compositions/ 只走单镜容器 Shot。别的卡改了，这张卡的镜头不用重渲。"""
+    text = REGISTRY.read_text(encoding="utf-8")
+    body = text.split("export const CARDS", 1)[-1].split("};", 1)[0]
+    m = re.search(rf"^\s{{2}}{re.escape(card)}:\s*(\w+)", body, flags=re.M)
+    if not m:
+        raise RemotionError(f"没有镜头卡「{card}」，可选：{', '.join(card_names())}")
+    imp = re.search(rf"import\s*\{{[^}}]*\b{m.group(1)}\b[^}}]*\}}\s*from\s*[\"'](\.[^\"']+)[\"']", text)
+    card_file = _resolve(REGISTRY, imp.group(1)) if imp else None
+    if not card_file:
+        raise RemotionError(f"registry.ts 里找不到 {m.group(1)} 的 import")
+    seen, stack = set(), [SRC / "index.ts"]
+    while stack:
+        f = stack.pop()
+        if f in seen:
+            continue
+        seen.add(f)
+        if f.suffix not in (".ts", ".tsx"):
+            continue
+        for spec in _imports(f.read_text(encoding="utf-8-sig")):
+            t = _resolve(f, spec)
+            if t is None or (f == REGISTRY and t != card_file):
+                continue
+            if t.parent.name == "compositions" and t.name != "Shot.tsx":
+                continue
+            stack.append(t)
+    # 注册表本身不算：加一张新卡就会让所有镜头失效。它对这张卡的影响只有"卡名 → 组件"那一行，在 card_code_hash 里单算
+    return sorted(seen - {REGISTRY})
+
+
+def card_hash_inputs(card: str) -> list[Path]:
+    """一张卡的指纹算哪些文件：桥本身（像素格式、帧数算法）+ 依赖闭包 + Remotion 版本和配置 + 项目字体。
+    字体按入库的 vlab/assets/fonts 算，不算 public/：那里的副本由 npm 脚本生成、不入库，没装 node 的机器上就没有。"""
+    from vlab import fonts
+    return ([Path(__file__)] + card_code_files(card)
+            + [REMOTION_DIR / "package-lock.json", REMOTION_DIR / "remotion.config.ts"]
+            + sorted(p for p in fonts.DIR.iterdir() if p.suffix == ".otf"))
+
+
+@functools.lru_cache(maxsize=None)
+def card_code_hash(card: str) -> str:
+    files = card_code_files(card)
+    h = hashlib.sha1(f"{card} -> {next(f.stem for f in files if f.parent.name == 'cards')}".encode("utf-8"))
+    for f in card_hash_inputs(card):
+        h.update(f.relative_to(HERE.parent).as_posix().encode("utf-8"))
+        if f.suffix == ".otf":            # 字体十几 MB：按名字和大小算就够
+            h.update(str(f.stat().st_size).encode("utf-8"))
+        else:
+            h.update(_text(f) if f.exists() else b"missing")
+    return h.hexdigest()
 
 
 def _npx() -> str:

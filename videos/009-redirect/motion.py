@@ -1,12 +1,14 @@
-"""009 的动作数据：算动作（choreo.py）→ 按镜头切成 build/009-redirect/shots/<镜头>.json → 音效事件表。
+"""009 的动作数据：算动作（choreo.py）→ 按时间轴切成 build/009-redirect/shots/<镜头>.json → 音效事件表。
 
-    uv run python videos/009-redirect/motion.py                     # 算动作、切镜头、出音效事件表
-    uv run python videos/009-redirect/motion.py --sheet 16,22.5,38  # 另出一张骨架拼图（真实秒），几秒出图，改动作时用
-    然后：uv run vlab-build videos/009-redirect/project.yaml
+vlab-build 会自动跑它（project.yaml 的 precompute；choreo.py 或 toolkit/vlab/stick 改了才重跑），
+镜头用 params_files 把这一镜的数据交给镜头卡 stickScene。单独跑只在改动作、要看骨架拼图时用：
+
+    uv run python videos/009-redirect/motion.py --sheet 16,22.5,38  # 另出一张骨架拼图（真实秒），几秒出图
 
 切出来的数据内容不变就不重写，vlab-build 按文件内容算指纹，没变的镜头直接复用。
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -24,19 +26,22 @@ def main():
     sc, info = choreo.build()
     data, sfx = sc.export()
     P = Project(HERE / "project.yaml")
-    beat = 60.0 / float(P.grid["bpm"])
+    # 镜头的起止以 vlab-build 生成的时间轴为准（和渲染、帧数校验同一套取整）
+    tl = Path(os.environ.get("VLAB_TIMELINE") or P.timeline_path)
+    if not tl.exists():
+        sys.exit(f"没有时间轴 {tl}：先跑 uv run vlab-build {HERE / 'project.yaml'}")
+    spans = [(s["id"], s["start"], s["end"]) for s in json.loads(tl.read_text(encoding="utf-8"))["scenes"]]
     out = HERE / "build" / P.id / "shots"
     out.mkdir(parents=True, exist_ok=True)
-    t, changed = 0.0, []
-    for s in P.scenes:
-        start, end = t, t + float(s["hold"]) * beat
+    changed = []
+    for sid, start, end in spans:
         f0, f1 = round(start * choreo.FPS), round(end * choreo.FPS)
         txt = json.dumps(slice_data(data, f0, f1), ensure_ascii=False, separators=(",", ":"))
-        path = out / f"{s['id']}.json"
+        path = out / f"{sid}.json"
         if not path.exists() or path.read_text(encoding="utf-8") != txt:
             path.write_text(txt, encoding="utf-8")
-            changed.append(s["id"])
-        t = end
+            changed.append(sid)
+    t = spans[-1][2]
     (HERE / "build" / P.id / "sfx_events.json").write_text(json.dumps(sfx, ensure_ascii=False, indent=1),
                                                            encoding="utf-8")
     print(f"动作：{data['frames']} 帧 / {t:.1f} 秒，{len(sfx)} 个音效事件；变了的镜头：{', '.join(changed) or '无'}")

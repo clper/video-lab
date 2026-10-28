@@ -17,7 +17,8 @@
 - **剧本闸门（不可逾越）**：视频的所有文字由项目负责人逐条审核、和 AI 讨论打磨，负责人明确说"确认剧本完善"后，
   才能配音、渲染。确认记录写在项目 `SCRIPT.md` 开头；没有这一行，`vlab-tts` 和 `vlab-build` 拒绝执行。
   流程见 [process/SCRIPT-REVIEW.md](../process/SCRIPT-REVIEW.md)。
-- **输入和成片都入库**：配音和配乐 wav、时间轴、字幕、分镜片段入库，正在做的片子的成片也入库；归档以后成片不再入库（见 [process/REPO.md](../process/REPO.md)）。
+- **输入和成片入库**：配音和配乐 wav、时间轴、字幕、预计算数据、着色器分镜片段入库，正在做的片子的成片也入库；
+  能用代码重出的分镜片段（remotion、manim、custom）不入库，缺了 `vlab-build` 自动重渲（2026-10-28）；归档以后成片不再入库（见 [process/REPO.md](../process/REPO.md)）。
 
 ## 目录结构
 

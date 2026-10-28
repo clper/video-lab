@@ -127,13 +127,27 @@ texture: {vignette: 0.3, grain: 6}      # 后期质感，拼接时用 ffmpeg 统
 ## 六、构建与增量渲染
 
 ```
-project.yaml ─► 校验 ─► 配音（旁白没变就跳过）─► 逐镜头渲染（指纹没变就跳过）─► 帧数校验 ─► 拼接 + 质感 ─► 合配音字幕
+project.yaml ─► 校验 ─► 配音 / 拍格时间轴（没变就跳过）─► 预计算（输入没变就跳过）─► 逐镜头渲染（指纹没变就跳过）
+             ─► 帧数校验 ─► 剪辑时刻表 ─► 拼接 + 质感 ─► 合配音字幕 ─► 音效 + 响度
 ```
 - **校验**（渲染前）：模板存在、必填参数齐全、cue 绑定的词在旁白里、颜色名在风格里。错误一次全列出来。
 - **镜头指纹** = 该镜头的工程内容 + 风格 + 它在时间轴上的起止和词 + 模板代码的哈希。
   指纹没变就复用上次的片段；改一个镜头的数字，只有这个镜头重渲染。
 - **帧数**：每个镜头的帧数 = round(结束×fps) − round(开始×fps)，拼起来正好等于配音长度（沿用 003 的做法）。
 - 风格不同的片段分目录缓存，两种风格可以并存、来回切换不用重渲染。
+- **预计算**（可选，工程顶层 `precompute: {script, inputs}`）：先算数据、再按镜头画的片子用（009 的火柴人动作、模拟类）。
+  在时间轴之后、渲染之前跑，环境变量给 `VLAB_PROJECT`、`VLAB_TIMELINE`、`VLAB_FPS`；脚本、`inputs`、时间轴都没变就不跑
+  （印记在 `build/<id>/precompute.hash`）。脚本按时间轴把数据切成每镜一份 JSON，内容没变的文件最好不重写。
+- **数据文件**（镜头的 `params_files: {参数名: 相对项目目录的 .json}`，remotion / custom 镜头可用）：
+  构建时读出来并进 `params`，文件内容进镜头指纹。大块数据放文件里，不往 project.yaml 里塞。
+  数据是逐帧播放的（JSON 里写了 `frames`，可选 `offset` 前情帧数），渲染前核对 `frames − offset` 等于镜头帧数，
+  对不上就报错（时间轴改了没重算，或者用了 `PREVIEW=1` 低帧率预览）。
+- **指纹里的文件一律按"换行统一成 LF"算**：`core.autocrlf` 下同一份文件克隆出来是 CRLF、工具写出来是 LF，
+  按原始字节算的话换台机器克隆就全片重渲。Remotion 的字体按入库的 `vlab/assets/fonts` 算，不算 `public/` 里生成的副本。
+- **不进指纹的说明字段**：`beats`、`component`（给体检看）、`note`（镜头内容说明，进剪辑时刻表）。
+- **剪辑时刻表**：配乐在剪辑时从曲库加（2026-10-27 定），每次构建都写 `renders/<id>_cues.md` 和 `.srt`：
+  镜头起止和内容、旁白区间、重音效，加上工程顶层 `music_cues: [{t, to, picture, sound}]` 的配乐提示。
+- **体检破例**：工程顶层 `review: {waive: {key: 理由}}` 或 `{key: {镜头: 理由}}`，key 见 `vlab/tools/review.py` 的 HARD 注释。
 
 ### 渲染器分派
 
@@ -151,8 +165,10 @@ JSON 里有 `out`（必须写出的 mp4）、`frames`（用它，不要自己按
 `width`/`height`、`start`/`end`、`params`、`words`；退出码非 0 或没写出 `out` 都算失败。
 例子见 `research/visual/14-custom-renderer/`。
 
-指纹按渲染器分别算：manim 看模板文件，glsl 看 `.frag`，remotion 看整个 `src/` 加桥脚本，
-custom 看脚本本身加 `args`。所以改一张卡会让所有 remotion 镜头失效，改一个 `.frag` 只影响用到它的镜头。
+指纹按渲染器分别算：manim 看模板文件，glsl 看 `.frag`，remotion 看这张卡的依赖闭包（从入口顺着 import 走，
+注册表只算"卡名 → 组件"那一行、`compositions/` 只走单镜容器 Shot，加上桥脚本、Remotion 版本和配置），
+custom 看脚本本身加 `args`、`deps`。所以改一张卡只让用它的镜头失效，改 `common/`、`fx/` 这类公共代码才会连带一片；
+加一张新卡不影响任何已有镜头。指纹算法换代时用 `vlab-build --adopt` 认领帧数对得上的现有片段（不重渲）。
 
 ## 七、AI 在这套结构里怎么工作
 

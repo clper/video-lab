@@ -75,7 +75,7 @@
 | `research/` | **开发测试** | 试验和调研，结论不一定稳定：`visual/` 画面技术、`audio/` 音频、`frontier/` 前沿视频生成、`content/` 创作内容（方向、平台、合规） |
 | `toolkit/` | **工具** | 所有项目共用：`vlab/` 公共代码包（`vlab-*` 命令）、`bin/` 本机可选的程序 |
 | `process/` | **流程** | 我们的流程和流程规则：内容路线、剧本审核、传播与节奏规范、发布清单、入库与提交；必须遵守，只由项目负责人改 |
-| `docs/` | **文档** | 参考资料：技术路线、视频类型纲要、TODO、设计文档 |
+| `docs/` | **文档** | 参考资料：技术路线、视频类型纲要、按片型做一条片子（WORKFLOW）、TODO、设计文档 |
 | `archive/` | **存档** | 不再开发的东西：000 参考项目，001–006 归档的探索作品 |
 
 ```
@@ -116,12 +116,14 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚
 
 AI 助手请先读根目录的 `AGENTS.md`（Claude Code 读 `CLAUDE.md`，内容相同）：里面写了重建步骤、哪些成果不要轻易重做、已知坑。
 
-重生成成片需要的输入都在仓库里，克隆下来不用重新配音、不用重渲染。`videos/` 下正在做的片子带着成片；`archive/` 和 `research/` 的成片不入库，有 ffmpeg 就能拼出来（规则见 [process/REPO.md](process/REPO.md)）：
+没法用代码重出的输入都在仓库里，克隆下来不用重新配音。`videos/` 下正在做的片子带着成片，直接能看；
+它们的分镜片段只入库了着色器渲染的，其余的（remotion、manim、custom）要改片子时 `vlab-build` 会按指纹自动重渲
+（要 Node 和 Remotion 依赖，2026-10-28 项目负责人定）。`archive/` 和 `research/` 的成片不入库，用各自的总装命令拼出来（规则见 [process/REPO.md](process/REPO.md)）：
 
 | 已在仓库里 | 位置 |
 |---|---|
-| 配音、配乐、词级时间轴、字幕 | 各项目 `build/<id>/`（narration.wav、music_*.wav、timeline.json、subs.ass/srt） |
-| 分镜片段（拼接成片用） | 各项目 `media/clips/`、`media/videos/`（带 `.hash` 指纹的，增量构建直接复用） |
+| 配音、配乐、词级时间轴、字幕、预计算数据 | 各项目 `build/<id>/`（narration.wav、music_*.wav、timeline.json、subs.ass/srt、shots/） |
+| 分镜片段：`archive/` 的全部、`videos/` 和 `research/` 里着色器渲染的 | 各项目 `media/clips/`、`media/videos/`（`.hash` 指纹全部入库，增量构建按它判断要不要重渲） |
 | 项目字体 | `toolkit/vlab/assets/fonts/`（思源黑体） |
 
 需要一条命令重建的（和机器绑定，或者是成片，没有入库）：
@@ -144,12 +146,12 @@ AI 助手请先读根目录的 `AGENTS.md`（Claude Code 读 `CLAUDE.md`，内�
 | `uv run vlab-tts <项目>/content/<稿子>.json` | 稿子 → 配音 + 词级时间轴 + 字幕（写到该项目的 `build/<id>/`） |
 | `uv run vlab-finalize <无声画面.mp4> <项目>/build/<id> <输出.mp4>` | 合配音、烧字幕 → 成片 |
 | `uv run vlab-preview <视频> --timeline <timeline.json>` | 每个分镜的结尾画面拼成一张图，看图检查 |
-| `uv run vlab-build <project.yaml> [--style ...] [--check]` | 视频工程 → 成片（增量渲染） |
-| `uv run vlab-review <project.yaml> [--loudness]` | 成片体检：节奏硬指标 + 逐帧质检 + 响度（标准见 `process/STYLE-RHYTHM.md`） |
+| `uv run vlab-build <project.yaml> [--style ...] [--check]` | 视频工程 → 成片（增量渲染），同时写剪辑时刻表 `renders/<id>_cues.md` / `.srt` |
+| `uv run vlab-review <project.yaml> [--loudness]` | 成片体检：节奏硬指标 + 逐帧质检 + 画面运动量 + 响度（标准见 `process/STYLE-RHYTHM.md`、`STYLE-IMPACT.md`） |
 | `uv run vlab-ab <成片1> <成片2> … --out <png>` | 几条成片并排 A/B 对照图 |
 | `uv run vlab-cards --out <png>` | 卡库一览：把每张镜头卡渲一段抽帧拼图 |
 | `uv run vlab-style <参考视频> <输出目录>` | 分析参考视频风格 → 草稿风格文件 |
-| `uv run vlab-check` | 环境自检 |
+| `uv run vlab-check` | 环境自检 + 冒烟测试（只跑冒烟测试：`uv run python -m vlab.tools.smoke [--tsc]`） |
 
 ### 重新生成成片
 
@@ -175,11 +177,14 @@ cd archive/004-green-star; uv run python build.py
 1. 建项目目录 `videos/三位编号-英文名/`，写 `SCRIPT.md`：全部文字按镜号列出，事实和数字标来源，开头写"剧本确认：待审"
 2. 项目负责人逐条审核，和 AI 讨论修改，直到负责人明确确认
 3. 写 `project.yaml`：每个镜头用哪个渲染器（manim、remotion、glsl、custom）、哪张卡、传什么参数；
-   设计见 [docs/design/DESIGN-video-project.md](docs/design/DESIGN-video-project.md)，例子见 `videos/007-regression/`
-4. 构建：`uv run vlab-build videos/xxx/project.yaml`（先配音，再按镜头渲染、拼接、混音；增量缓存）
+   按片型怎么做（有旁白讲解、无旁白动作、数据驱动模拟、历史讲解）见 [docs/WORKFLOW.md](docs/WORKFLOW.md)，
+   字段见 [docs/design/DESIGN-video-project.md](docs/design/DESIGN-video-project.md)，例子见 `videos/008-cumulative/`（有旁白）、`videos/009-redirect/`（无旁白）
+4. 构建：`uv run vlab-build videos/xxx/project.yaml`（先配音或按拍格出时间轴，再预计算、按镜头渲染、拼接、混音；增量缓存）
 5. 体检：`uv run vlab-review videos/xxx/project.yaml --loudness`，看图：`uv run vlab-preview <成片> --timeline <timeline.json>`
+6. 剪辑配乐：按 `renders/<id>_cues.md` 对拍，曲库授权按 `process/PUBLISH.md` 第 4 条
 
-`build/`（配音、时间轴、字幕、配乐）、`media/clips/`（分镜片段）和 `renders/` 的成片都入库；片子归档后成片不再入库，见 [process/REPO.md](process/REPO.md)。
+`build/`（配音、时间轴、字幕、配乐、预计算数据）和 `renders/` 的成片入库；分镜片段只入库着色器渲染的，
+能用代码重出的（remotion、manim、custom）不入库，克隆后 `vlab-build` 会按指纹自动重渲；片子归档后成片不再入库。见 [process/REPO.md](process/REPO.md)。
 
 ---
 

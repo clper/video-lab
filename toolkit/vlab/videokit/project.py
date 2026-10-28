@@ -19,8 +19,8 @@ HERE = Path(__file__).resolve().parent
 #   glsl      —— 项目内的 .frag，适合粒子/场，走 render/glsl.py
 #   custom    —— 项目自带的 .py 脚本，适合一次性特殊镜头（接口见 build.py 的 custom 分支）
 RENDERERS = {"manim", "remotion", "glsl", "custom"}
-# 只给 vlab-review 看的申报字段：不进镜头指纹
-REVIEW_ONLY = ("beats", "component")
+# 不影响画面的申报字段，不进镜头指纹：beats / component 给 vlab-review 看，note 是镜头内容说明（进剪辑时刻表）
+REVIEW_ONLY = ("beats", "component", "note")
 
 # 模板需要的参数（校验用）。模板代码在 manim_templates.py
 TEMPLATE_PARAMS = {
@@ -117,6 +117,14 @@ class Project:
         else:
             pre = []
         errs = list(pre)
+        pc = self.data.get("precompute")
+        if pc is not None:
+            if not isinstance(pc, dict) or not pc.get("script"):
+                errs.append("precompute 要写成 {script: 相对项目目录的 .py, inputs: [改了要重算的文件或目录]}")
+            else:
+                for p in [pc["script"], *(pc.get("inputs") or [])]:
+                    if not (self.dir / p).exists():
+                        errs.append(f"precompute 的 {p} 不存在")
         ids = [s.get("id") for s in self.scenes]
         if len(ids) != len(set(ids)):
             errs.append(f"镜头 id 重复：{ids}")
@@ -127,6 +135,12 @@ class Project:
                 errs.append(f"[{sid}] 渲染器「{renderer}」不认识，可选：{sorted(RENDERERS)}")
                 continue
             params = s.get("params") or {}
+            pf = s.get("params_files")
+            if pf is not None:
+                if renderer not in ("remotion", "custom") or not isinstance(pf, dict):
+                    errs.append(f"[{sid}] params_files 只给 remotion / custom 镜头用，写成 {{参数名: 相对项目目录的 .json}}")
+                elif not pc:          # 有 precompute 时数据文件由它生成，构建时才会有
+                    errs += [f"[{sid}] 数据文件 {p} 不存在" for p in pf.values() if not (self.dir / p).exists()]
             if renderer == "manim":
                 tpl = s.get("template")
                 if tpl not in TEMPLATE_PARAMS:
@@ -221,6 +235,23 @@ class Project:
     def narration_hash(self) -> str:
         return _sha(self.content_json())
 
+    # ----- 预计算和数据文件：先算数据、再按镜头画（火柴人动作、模拟） -----
+    def precompute_hash(self) -> str:
+        """预计算脚本 + 它声明的输入 + 时间轴：任何一项变了就重算（时间轴变了，按镜头切的数据也要重切）。"""
+        pc = self.data["precompute"]
+        h = hashlib.sha1()
+        _hash_paths(h, self.dir, [pc["script"], *(pc.get("inputs") or [])])
+        h.update(_file_bytes(self.timeline_path) if self.timeline_path.exists() else b"no-timeline")
+        return h.hexdigest()[:16]
+
+    def scene_params(self, scene: dict) -> dict:
+        """镜头参数 = params + params_files 里每个文件读出来的 JSON（参数名 → 文件）。
+        大块数据（一镜的动作、一段模拟结果）放文件里，不往 project.yaml 里塞。"""
+        out = dict(scene.get("params") or {})
+        for k, p in (scene.get("params_files") or {}).items():
+            out[k] = json.loads((self.dir / p).read_text(encoding="utf-8"))
+        return out
+
     # ----- 镜头指纹：内容 + 风格 + 时间轴上的位置 + 渲染器代码，任何一项变了就重渲染 -----
     def scene_hash(self, scene: dict, tl_scene: dict) -> str:
         style = {k: v for k, v in self.style.items() if k not in ("source", "note")}   # 只算影响画面的字段，备注和来源路径变了不必重渲染
@@ -230,7 +261,12 @@ class Project:
         fx = {"_default": self.data.get("fx_default") or {}, **(scene.get("fx") or {})}
         # 只给体检看的申报字段（beats 动作数、component 用的哪张卡）不影响画面，改了不必重渲
         scene = {k: v for k, v in scene.items() if k not in REVIEW_ONLY}
+        files = {}                       # 数据文件按内容算：路径没变、内容变了也要重渲
+        for k, p in (scene.get("params_files") or {}).items():
+            f = self.dir / p
+            files[k] = hashlib.sha1(_file_bytes(f)).hexdigest() if f.exists() else "missing"
         return _sha({"scene": scene, "style": style, "fx": fx, "start": tl_scene["start"], "end": tl_scene["end"],
+                     **({"files": files} if files else {}),
                      "words": tl_scene["words"], "code": _code_hash(self.dir, scene, renderer), "fps": self.fps,
                      "preview": os.environ.get("PREVIEW") == "1"})
 
@@ -238,34 +274,38 @@ class Project:
 def _code_hash(project_dir: Path, scene: dict, renderer: str) -> str:
     """把渲染器代码也算进指纹：改了模板/卡片/着色器，相关镜头才会重渲染。"""
     if renderer == "manim":
-        return hashlib.sha1((HERE / "manim_templates.py").read_bytes()).hexdigest()
+        return hashlib.sha1(_file_bytes(HERE / "manim_templates.py")).hexdigest()
     if renderer == "glsl":
         frag = project_dir / (scene.get("frag") or "")
-        return hashlib.sha1(frag.read_bytes()).hexdigest() if frag.exists() else "missing"
+        return hashlib.sha1(_file_bytes(frag)).hexdigest() if frag.exists() else "missing"
     if renderer == "custom":
         script = project_dir / (scene.get("script") or "")
-        h = hashlib.sha1(script.read_bytes() if script.exists() else b"missing")
+        h = hashlib.sha1(_file_bytes(script) if script.exists() else b"missing")
         h.update(json.dumps(scene.get("args") or [], ensure_ascii=False).encode("utf-8"))
-        # deps：脚本之外还影响画面的文件或目录（这一镜的动作数据、脚本调用的镜头卡代码……），
+        # deps：脚本之外还影响画面的文件或目录（脚本读的素材、调用的公共代码……），
         # 一起算进指纹，改了才重渲；目录按里面所有文件算
-        for dep in scene.get("deps") or []:
-            p = project_dir / dep
-            files = sorted(f for f in p.rglob("*") if f.is_file()) if p.is_dir() else [p]
-            for f in files:
-                h.update(f.name.encode("utf-8"))
-                h.update(f.read_bytes() if f.exists() else b"missing")
+        _hash_paths(h, project_dir, scene.get("deps") or [])
         return h.hexdigest()
-    # remotion：把 src 下所有 ts/tsx 一起算，改任何一张卡都会让 remotion 镜头失效；
-    # 桥本身（像素格式、帧数算法）也会影响产物，一起算进去
-    root = HERE.parent / "render" / "remotion" / "src"
-    h = hashlib.sha1()
-    bridge = HERE.parent / "render" / "remotion_bridge.py"
-    if bridge.exists():
-        h.update(bridge.read_bytes())
-    for f in sorted(root.rglob("*.ts*")):
-        h.update(f.name.encode("utf-8"))
-        h.update(f.read_bytes())
-    return h.hexdigest()
+    # remotion：只算这张卡的依赖闭包（卡本身、它 import 的公共代码、单镜容器和特效栈、桥）。
+    # 以前是整个 src 一起算，改任何一张卡，所有片子的 remotion 镜头都要重渲
+    from vlab.render.remotion_bridge import card_code_hash
+    return card_code_hash(scene.get("card") or "")
+
+
+def _file_bytes(f: Path) -> bytes:
+    """算指纹用的文件内容：换行统一成 LF。core.autocrlf 下同一份文件克隆出来是 CRLF、
+    工具写出来是 LF，按原始字节算的话，换一台机器克隆，全片的镜头都会被判成"变了"。"""
+    return f.read_bytes().replace(b"\r\n", b"\n")
+
+
+def _hash_paths(h, base: Path, paths):
+    """文件按内容、目录按里面所有文件（跳过 __pycache__）一起算进 h。"""
+    for rel in paths:
+        p = base / rel
+        files = sorted(f for f in p.rglob("*") if f.is_file() and "__pycache__" not in f.parts) if p.is_dir() else [p]
+        for f in files:
+            h.update(f.name.encode("utf-8"))
+            h.update(_file_bytes(f) if f.exists() else b"missing")
 
 
 _CARDS: list[str] | None = None

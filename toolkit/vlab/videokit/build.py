@@ -55,6 +55,52 @@ def ensure_narration(P: Project, force: bool):
     hash_file.write_text(h)
 
 
+def run_precompute(P: Project, force: bool = False) -> bool:
+    """跑工程的预计算脚本（project.yaml 的 precompute），返回这次有没有真的跑。
+    在时间轴之后、渲染之前：脚本按时间轴把数据切成每镜一份，镜头用 params_files 读。
+    脚本拿到的环境变量：VLAB_PROJECT（project.yaml）、VLAB_TIMELINE（timeline.json）、VLAB_FPS。
+    脚本、inputs、时间轴都没变就不跑；数据文件内容没变的话，脚本最好别重写它（镜头指纹按内容算，重写也不会误判重渲）。"""
+    if not P.data.get("precompute"):
+        return False
+    stamp = P.build_dir / "precompute.hash"
+    h = P.precompute_hash()
+    # 它该写出的文件（镜头的数据文件、音效事件表）缺了一个也要重跑：印记对得上不代表输出还在
+    audio = P.data.get("audio") if isinstance(P.data.get("audio"), dict) else {}
+    outputs = [p for s in P.scenes for p in (s.get("params_files") or {}).values()] + \
+              ([audio["sfx_file"]] if audio.get("sfx_file") else [])
+    missing = [p for p in outputs if not (P.dir / p).exists()]
+    if not force and not missing and stamp.exists() and stamp.read_text() == h:
+        print("预计算：输入没变，复用")
+        return False
+    script = P.data["precompute"]["script"]
+    print(f"预计算：{script}…")
+    env = dict(os.environ, VLAB_PROJECT=str(P.path), VLAB_TIMELINE=str(P.timeline_path), VLAB_FPS=str(P.fps),
+               PYTHONIOENCODING="utf-8")
+    r = subprocess.run([sys.executable, str(P.dir / script)], cwd=str(P.dir), env=env,
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        raise RuntimeError(f"预计算 {script} 失败：\n{r.stdout[-1500:]}\n{r.stderr[-2000:]}")
+    for ln in (r.stdout or "").strip().splitlines()[-6:]:
+        print("  " + ln)
+    P.build_dir.mkdir(parents=True, exist_ok=True)
+    stamp.write_text(h)
+    return True
+
+
+def data_frame_error(P: Project, scene: dict, want: int) -> str | None:
+    """数据文件里写了 frames（和可选的 offset，前情帧数）的，核对 frames − offset 等于这一镜要渲的帧数。
+    数据按帧逐格播放，对不上就会快放、慢放或截断，而且不报错，所以渲染前先查。"""
+    for k, p in (scene.get("params_files") or {}).items():
+        d = json.loads((P.dir / p).read_text(encoding="utf-8"))
+        if isinstance(d, dict) and isinstance(d.get("frames"), int):
+            have = d["frames"] - int(d.get("offset") or 0)
+            if have != want:
+                return (f"镜头 {scene['id']} 的数据 {p} 是 {have} 帧，镜头要 {want} 帧。时间轴改过的话重跑预计算"
+                        f"（vlab-build --force，或删掉 build/{P.id}/precompute.hash）；PREVIEW=1 低帧率预览时数据仍按"
+                        f" {P.fps} fps 算，这类片子不能用 PREVIEW")
+    return None
+
+
 def check_cue_words(P: Project, tl: dict) -> list[str]:
     errs = []
     tls = {s["id"]: s for s in tl["scenes"]}
@@ -85,13 +131,16 @@ def render_scene(P: Project, scene: dict, tl_scene: dict, style_arg, force: bool
     # 帧数以 timeline 的毫秒级时间为准：先分别取整再相减，和帧数校验用同一套算法
     want = max(1, round(tl_scene["end"] * fps) - round(tl_scene["start"] * fps))
     size = (tl_scene.get("width") or 1080, tl_scene.get("height") or 1920)
+    err = data_frame_error(P, scene, want)
+    if err:
+        raise RuntimeError(err)
 
     if renderer == "remotion":
         from vlab.render.remotion_bridge import render_shot
         # 全局特效默认值（project.yaml 的 fx_default）+ 本镜覆盖：
         # 切点白闪默认关，章节切换用 dip；t0 让背景相位跨镜连续
         fx = {**(P.data.get("fx_default") or {}), **(scene.get("fx") or {})}
-        render_shot(scene["card"], clip, secs, params=scene.get("params") or {}, fps=fps, frames=want,
+        render_shot(scene["card"], clip, secs, params=P.scene_params(scene), fps=fps, frames=want,
                     fx=fx or None, t0=round(tl_scene["start"] * fps), brand=P.data.get("brand"), slug=P.id,
                     width=size[0], height=size[1])
     elif renderer == "glsl":
@@ -125,7 +174,7 @@ def render_scene(P: Project, scene: dict, tl_scene: dict, style_arg, force: bool
         spec = {"out": str(clip.resolve()), "frames": want, "fps": fps, "seconds": round(secs, 3),
                 "width": tl_scene.get("width", 1080), "height": tl_scene.get("height", 1920),
                 "start": tl_scene["start"], "end": tl_scene["end"],
-                "params": scene.get("params") or {}, "words": tl_scene.get("words") or []}
+                "params": P.scene_params(scene), "words": tl_scene.get("words") or []}
         fd, spec_path = tempfile.mkstemp(suffix=".json", prefix="vlab_custom_")
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(spec, f, ensure_ascii=False)
@@ -156,6 +205,31 @@ def render_scene(P: Project, scene: dict, tl_scene: dict, style_arg, force: bool
     return f"  渲染 {sid}（{renderer}）"
 
 
+def adopt(P: Project):
+    """指纹算法换代（比如 remotion 镜头从"整个 src"改成"按卡算"）以后，旧片段的指纹全对不上，
+    下次构建会把画面没变的镜头也重渲一遍。确认画面代码没变时，用这个把现有片段认领下来。
+    不配音、不渲染、不拼接；旁白改过（配音指纹对不上）就拒绝，免得认领一份和配音错位的片段。"""
+    hash_file = P.build_dir / "narration.hash"
+    if not P.timeline_path.exists() or not hash_file.exists() or hash_file.read_text() != P.narration_hash():
+        sys.exit("认领：时间轴不存在或旁白/拍格改过，先正常跑一遍 vlab-build")
+    tls = {s["id"]: s for s in json.loads(P.timeline_path.read_text(encoding="utf-8"))["scenes"]}
+    fps = 15 if os.environ.get("PREVIEW") == "1" else P.fps
+    took, skipped = [], []
+    for s in P.scenes:
+        clip = P.clip_dir() / f"{s['id']}.mp4"
+        want = round(tls[s["id"]]["end"] * fps) - round(tls[s["id"]]["start"] * fps)
+        if not clip.exists():
+            skipped.append(f"{s['id']}（没有片段）")
+            continue
+        got = frames(clip)
+        if got != want:
+            skipped.append(f"{s['id']}（{got} 帧，应为 {want}）")
+            continue
+        clip.with_suffix(".hash").write_text(P.scene_hash(s, tls[s["id"]]))
+        took.append(s["id"])
+    print(f"认领 {len(took)} 个镜头" + (f"；没认领：{'、'.join(skipped)}（下次构建会重渲）" if skipped else ""))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("project")
@@ -163,6 +237,8 @@ def main():
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--jobs", type=int, default=3)
+    ap.add_argument("--adopt", action="store_true",
+                    help="认领现有片段：帧数对得上的镜头直接记下新指纹，不重渲。只在指纹算法换代、确认画面代码没变时用")
     args = ap.parse_args()
 
     P = Project(args.project, args.style)
@@ -176,6 +252,9 @@ def main():
     # 剧本闸门：videos/ 下的正式视频，剧本没被项目负责人确认之前不许配音和渲染（process/SCRIPT-REVIEW.md）
     from vlab.tools import script_gate
     script_gate.require_confirmed(args.project, "配音和渲染")
+    if args.adopt:
+        adopt(P)
+        return
 
     ensure_narration(P, args.force)
     tl = json.loads(P.timeline_path.read_text(encoding="utf-8"))
@@ -183,6 +262,11 @@ def main():
     if errs:
         sys.exit("配音后校验没通过：\n  " + "\n  ".join(errs))
     tls = {s["id"]: s for s in tl["scenes"]}
+    run_precompute(P, args.force)
+    missing = [f"{s['id']}: {p}" for s in P.scenes for p in (s.get("params_files") or {}).values()
+               if not (P.dir / p).exists()]
+    if missing:
+        sys.exit("数据文件不存在（预计算脚本没写出来？）：\n  " + "\n  ".join(missing))
 
     fps = 15 if os.environ.get("PREVIEW") == "1" else P.fps
     # glsl 渲染器在一个进程里共用一个 OpenGL 上下文，必须串行；remotion 在 Windows 上并发降到 2
@@ -208,13 +292,22 @@ def main():
         sys.exit("帧数不对（会和配音错位）：\n  " + "\n  ".join(bad))
     print(f"帧数校验：{len(clips)} 个镜头全部对齐")
 
+    # 音效：直接写事件表（秒 / kind / gain），渲染成一条轨，mix 时按 sfx_db 合入。
+    # 事件多、由程序算出来的（比如火柴人片子里每一次落地），写 sfx_file：相对项目目录的 JSON 事件表
+    audio_cfg = P.data.get("audio") if isinstance(P.data.get("audio"), dict) else {}
+    sfx_cfg = list(audio_cfg.get("sfx") or [])
+    if audio_cfg.get("sfx_file"):
+        sfx_cfg += json.loads((P.dir / audio_cfg["sfx_file"]).read_text(encoding="utf-8"))
+    # 剪辑时刻表：配乐在剪辑时从曲库加，按这张表对拍（便宜，每次都写，内容没变不动文件）
+    from vlab.videokit import cues
+    print("剪辑时刻表 → " + "、".join(p.name for p in cues.write(P, tl, sfx_cfg) if p))
+
     final = P.dir / "renders" / f"{P.id}_{P.style['name']}.mp4"
     tex = P.style.get("texture", {})
     # 总装指纹：所有镜头指纹 + 质感 + 配音；都没变且成片还在，就不用重新拼接编码
     # subs.ass 也要算：字幕样式/分行变了要重新烧，否则会沿用旧成片
     subs = P.build_dir / "subs.ass"
-    _audio = P.data.get("audio") if isinstance(P.data.get("audio"), dict) else {}
-    _sfx_file = P.dir / _audio["sfx_file"] if _audio.get("sfx_file") else None
+    _sfx_file = P.dir / audio_cfg["sfx_file"] if audio_cfg.get("sfx_file") else None
     asm_hash = "|".join([c.with_suffix(".hash").read_text() for c in clips]
                         + [json.dumps(tex, sort_keys=True), json.dumps(P.data.get("audio") or {}, sort_keys=True),
                            P.narration_hash(), subs.read_text(encoding="utf-8-sig") if subs.exists() else "",
@@ -256,7 +349,6 @@ def main():
     print("合配音 + 烧字幕…")
     subprocess.run([sys.executable, "-m", "vlab.pipeline.finalize", str(silent), str(P.build_dir), str(pre)], check=True)
     silent.unlink()                      # 无声中间文件只是合配音前的过渡，体积大，用完就删
-    audio_cfg = P.data.get("audio") if isinstance(P.data.get("audio"), dict) else {}
     from vlab.audio import mix as _mix
     music_path = None
     if audio_cfg.get("music"):
@@ -274,12 +366,7 @@ def main():
                 kw["segs"] = [(float(a), float(b), dict(c or {})) for a, b, c in audio_cfg["music_segs"]]
             _music.write_wav(music_path, fn(tl["duration"] + 0.5, bpm=int(audio_cfg.get("bpm", 88)),
                                             seed=int(audio_cfg.get("seed", 7)), **kw))
-    # 音效：直接写事件表（秒 / kind / gain），渲染成一条轨，mix 时按 sfx_db 合入。
-    # 事件多、由程序算出来的（比如火柴人片子里每一次落地），写 sfx_file：相对项目目录的 JSON 事件表
     sfx_path = None
-    sfx_cfg = list(audio_cfg.get("sfx") or [])
-    if audio_cfg.get("sfx_file"):
-        sfx_cfg += json.loads((P.dir / audio_cfg["sfx_file"]).read_text(encoding="utf-8"))
     if sfx_cfg:
         from vlab.audio import sfx as _sfx
         sfx_path = P.build_dir / "sfx.wav"
@@ -289,7 +376,7 @@ def main():
             print(f"音效：{len(sfx_cfg)} 个事件…")
             _sfx.write_wav(sfx_path, _sfx.render([dict(e) for e in sfx_cfg], tl["duration"]))
             side.write_text(fp)
-    print(f"配乐 + 响度（{audio_cfg.get('music_db', -18)} dB / {audio_cfg.get('lufs', -14)} LUFS）…")
+    print((f"配乐 {audio_cfg.get('music_db', -18)} dB + " if music_path else "") + f"响度 {audio_cfg.get('lufs', -14)} LUFS…")
     # 没有旁白时整条音轨就是音乐：不再用配音做 sidechain 避让，音乐走满电平
     voice = P.build_dir / "narration.wav"
     has_voice = voice.exists()

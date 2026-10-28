@@ -1,7 +1,7 @@
 # AGENTS.md：给 AI 编程助手的说明
 
 这是一个"用代码画科普视频"的仓库：Manim、GLSL 着色器、程序化画面渲染画面，Edge TTS 配音，代码合成音效和配乐，FFmpeg 混音合成。
-人类读的总览见 `README.md`；**流程和规则见 `process/`（必须遵守）**；技术选型见 `docs/TECHNOLOGY.md`；选题时的风格和内容组合见 `docs/VIDEO-TYPES.md`；进度见 `docs/TODO.md`；设计文档在 `docs/design/`。
+人类读的总览见 `README.md`；**流程和规则见 `process/`（必须遵守）**；技术选型见 `docs/TECHNOLOGY.md`；选题时的风格和内容组合见 `docs/VIDEO-TYPES.md`；**开新片按片型怎么做见 `docs/WORKFLOW.md`**；进度见 `docs/TODO.md`；设计文档在 `docs/design/`。
 
 ## 剧本闸门（不可逾越）
 
@@ -17,9 +17,10 @@
 ## 内容路线（按路线走）
 
 每条视频都必须属于一条已定的路线，路线定义在 `process/ROUTES.md`（2026-10-26 项目负责人定）。
-现在有两条：**主线**（硬知识 + 人生落点，和比特新语正面比）、**科学史**（人类是怎么知道的）。
+现在有三条：**主线**（硬知识 + 人生落点，和比特新语正面比）、**科学史**（人类是怎么知道的）、
+**历史**（2026-10-28 项目负责人定为今后的主要方向，做法和候选题待细化；地图不画边界和疆域）。
 另有 8 条候选路线：7 条在提案阶段（模拟实验室、尺度与量级、科技原理、「为什么」身边的科学、数学之美、节气与天象、前沿解读），
-「火柴人 VS 物理」2026-10-27 定了试水（下一条视频）。提案在 `research/content/route-*.md`，名单和状态见 `process/ROUTES.md` 第 4 节末尾；**没拍板试水之前，不能按它们开做**。
+「火柴人 VS 物理」2026-10-27 定了试水（009）。提案在 `research/content/route-*.md`，名单和状态见 `process/ROUTES.md` 第 4 节末尾；**没拍板试水之前，不能按它们开做**。
 
 - 选题只从已定路线里出；路线外的题材，先按 `process/ROUTES.md` 第 4 节写提案、试水、复盘，由项目负责人拍板。
 - AI 不能自行开新路线，也不能把路线外的题材塞进现有路线；可以往候选题里补充，写明理由。
@@ -28,7 +29,7 @@
 
 ```powershell
 uv sync              # 按 uv.lock 重建 .venv（没入库，和机器绑定），同时把 vlab 包装成命令
-uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必需项不过会返回非 0
+uv run vlab-check    # 环境自检 + 冒烟测试：缺什么、怎么补一次列清楚；必需项不过会返回非 0
 ```
 
 按自检输出补齐后再跑一次，直到"必需项全部通过"。之后所有 Python 命令都用 `uv run ...`，不要用系统 Python。
@@ -44,7 +45,7 @@ uv run vlab-check    # 环境自检：缺什么、怎么补一次列清楚；必
 | 支持 OpenGL 3.3 的显卡 | 硬件 | 只在重渲染着色器镜头时（003 的 hook/noon/sunset、research/visual/07） |
 | 联网 | — | 只在重新配音时（Edge TTS 是在线服务） |
 | 各片成片 | 用各片子的总装命令从入库的输入重新拼出（命令见 README「重新生成成片」） | 想看成片时 |
-| `toolkit/vlab/render/remotion/node_modules/` | 在该目录 `npm.cmd install` | 只在重渲 remotion 镜头时（007 在用） |
+| `toolkit/vlab/render/remotion/node_modules/` | 在该目录 `npm.cmd install` | 只在重渲 remotion 镜头时（007、008、009 在用） |
 
 ## 目录和依赖方向
 
@@ -55,7 +56,7 @@ videos/      【项目结果】正在做的正式视频（现在是 009；007、
 research/    【开发测试】visual/ 画面技术（01–12）、audio/ 音频研究、frontier/ 前沿视频生成、content/ 创作内容研究（内容方向、平台、合规）；实验目录都是 NN-主题/
 toolkit/     【工具】vlab/ 公共代码包（pipeline 配音合成、audio 音效配乐混音、fonts 项目字体、render 渲染器、scenes 可复用画面、stick 火柴人动作（骨架、布偶物理）、videokit 视频工程、tools 工具）；bin/ 本机可选的程序
 process/     【流程】我们的流程和流程规则：内容路线、剧本审核、传播与节奏规范、发布清单、入库与提交（必须遵守，只由项目负责人改）
-docs/        【文档】参考资料：TECHNOLOGY.md、VIDEO-TYPES.md、TODO.md、design/
+docs/        【文档】参考资料：TECHNOLOGY.md、VIDEO-TYPES.md、WORKFLOW.md（按片型做一条片子）、TODO.md、design/
 archive/     【存档】000 参考项目的只读快照（不要改，它自带的 shared/ 和环境配置只属于它自己）；
              001–006 是开发过程中的探索作品，2026-10-26 归档，不再是主力视频
 ```
@@ -66,21 +67,31 @@ archive/     【存档】000 参考项目的只读快照（不要改，它自带
 - **公共代码只有一份**：不要把 `toolkit/vlab/` 里的文件复制到项目里。Python 里照常 `import vlab`。
 - **密钥和模型权重不入库**：API Key 只放本地 `.env`（可以入库不含真实值的 `.env.example`）；模型权重放在 `weights/` 目录或系统缓存里，`.gitignore` 已忽略，在实验 README 里写清下载方式。
 - 项目内部按技术分子目录：`manim/`、`shader/`、`hyperframes/`、`landscape/`；`content/` 稿子、`build/` 配音时间轴字幕、`renders/` 成片。
-- **镜头卡是公共资产**：`toolkit/vlab/render/remotion/src/cards/` 里的 15 张卡（粒子聚字、科技卡、鸟群、生命游戏、量级卡…）跨片子复用，项目里只在 `project.yaml` 写「用哪张卡 + 传什么参数」，不要在项目里复制一份（复制就会漂移）。项目里的 `remotion/` 只放 README 说明。
+- **镜头卡是公共资产**：`toolkit/vlab/render/remotion/src/cards/` 里的 39 张卡（粒子聚字、科技卡、鸟群、生命游戏、量级卡、街景、火柴人场景…）跨片子复用，项目里只在 `project.yaml` 写「用哪张卡 + 传什么参数」，不要在项目里复制一份（复制就会漂移）。项目里的 `remotion/` 只放 README 说明。
 
 ## 仓库里的成果：输入都在，只有正在做的片子带成片
 
-重生成成片需要的配音和配乐 wav、时间轴、字幕、分镜片段都在仓库里。`videos/` 下正在做的片子，成片也入库；`archive/` 和 `research/` 的成片不入库，有 ffmpeg 就能用各自的总装命令重新拼出来，结果和原成片一致（命令见 README「重新生成成片」，规则见 `process/REPO.md`）。
+重生成成片需要、又没法用代码重出的输入都在仓库里：配音和配乐 wav、时间轴、字幕、预计算的数据、着色器分镜片段。`videos/` 下正在做的片子，成片也入库；`archive/` 和 `research/` 的成片不入库，用各自的总装命令重新拼出来（命令见 README「重新生成成片」，规则见 `process/REPO.md`）。
+
+- **能用代码重出的分镜片段不入库**（remotion、manim、custom，`videos/` 和 `research/`；2026-10-28 项目负责人定）：
+  克隆后片段是缺的，`vlab-build` 按镜头指纹自动重渲（要 Node 和 Remotion 依赖；009 约 15 分钟，008 更久），
+  重渲和原片段肉眼一致。镜头指纹 `.hash` 照常入库，所以重渲完不会把入库的成片重新拼一遍。
+  着色器片段要显卡才能重渲，仍入库，新的用 `git add -f` 加。`archive/` 是冻结的快照，片段照旧入库。
 
 - **不要随手重跑配音**（`vlab-tts`）。Edge TTS 每次生成的语速和词时间点可能不同，
   `build/<id>/timeline.json` 一变，整条视频的画面就要全部重渲染才能对齐。只有旁白文字改了才重跑。
 - **003 的着色器片段要显卡才能重渲染**，平时直接用 `archive/003-sunset-red/media/clips/` 里的现成片段，
   `uv run python build.py` 会跳过已有片段、只做拼接。
 - **视频工程（videokit）有缓存**：`media/clips/<风格>/*.hash` 是镜头指纹，指纹没变就复用，不要删。
-  指纹按渲染器算：`manim` 算模板文件、`glsl` 算 frag、`remotion` 算整个 `src/**/*.ts*`（改任何一张卡，用卡的镜头都会重渲）。
+  指纹按渲染器算：`manim` 算模板文件、`glsl` 算 frag、`remotion` 只算这张卡的依赖闭包（卡本身 + 它 import 的公共代码 +
+  单镜容器和特效栈 + 桥；改一张卡只重渲用它的镜头，改 `common/`、`fx/` 这类公共代码才会连带一片）。
+  指纹算法换代、确认画面代码没变时，`vlab-build <工程> --adopt` 把现有片段按新指纹认领下来，不重渲。
 - **镜头按渲染器分派**：`renderer: manim|remotion|glsl|custom`。glsl 共用一个 OpenGL 上下文必须串行；remotion 在 Windows 上默认并发封顶 4（`cpu//2` 会开到十几个，偶发 node/chrome 卡死），超时重试自动降到 2。
   `custom` 是逃生口：项目内写一个 `.py`，`vlab-build` 以 `python <script> --scene <临时json>` 调它，
   JSON 里有 `out`/`frames`/`fps`/`params`/`words`，脚本必须写出 `out`（例子见 `research/visual/14-custom-renderer/`）。
+- **先算数据、再按镜头画**（火柴人动作、模拟）：工程顶层写 `precompute: {script, inputs}`，`vlab-build` 在时间轴之后、
+  渲染之前跑它（脚本、inputs、时间轴都没变就不跑），脚本按时间轴把数据切成每镜一份 JSON；镜头用
+  `params_files: {参数名: 文件}` 交给公共卡，文件内容进镜头指纹。不要为这个每个项目写一个 custom 套壳脚本（例子见 009）。
   帧数统一由 `timeline` 算：`round(end*fps) - round(start*fps)`，渲染器和帧数校验用同一套算法（以前各算各的会让帧差 1，最终和配音错位）。
 
 ## 常用命令（任意目录可用）
@@ -91,13 +102,13 @@ archive/     【存档】000 参考项目的只读快照（不要改，它自带
 | 合配音、烧字幕 | `uv run vlab-finalize <无声画面.mp4> <项目>/build/<id> <输出.mp4>` |
 | 看渲染结果 | `uv run vlab-preview <视频> --timeline <timeline.json>` → 每个分镜的结尾画面拼成一张图 |
 | 视频工程构建 | `uv run vlab-build research/visual/08-video-spec/project.yaml [--style ...] [--check] [--force]` |
-| 节奏/逐帧/响度体检 | `uv run vlab-review <项目>/project.yaml [--loudness]`（硬指标见 `process/STYLE-RHYTHM.md`） |
+| 节奏/逐帧/运动量/响度体检 | `uv run vlab-review <项目>/project.yaml [--loudness]`（硬指标见 `process/STYLE-RHYTHM.md`、STYLE-IMPACT 规矩 3） |
 | 几条片子 A/B | `uv run vlab-ab <成片1> <成片2> <成片3> --out <输出.png>`（每条一行，同列是同一叙事位置） |
 | 看有哪些镜头卡 | `uv run python -m vlab.render.remotion_bridge --list` |
 | 看每张卡长什么样 | `uv run vlab-cards --out <输出.png>`（每张卡渲 3.2s 抽一帧拼图） |
 | 单独渲染一张卡 | `uv run python -m vlab.render.remotion_bridge <卡名> <输出.mp4> --seconds 4 --params '{"title":"…"}'` |
 | 分析参考视频的风格 | `uv run vlab-style <视频> <输出目录>` |
-| 环境自检 | `uv run vlab-check` |
+| 环境自检 + 冒烟测试 | `uv run vlab-check`；只跑冒烟测试：`uv run python -m vlab.tools.smoke [--tsc]`（改了公共代码就跑一遍） |
 | 003 重新拼成片 | `cd archive/003-sunset-red; uv run python build.py`（`--force` 全部重渲染） |
 | 001 / 002 重渲染 | `cd videos/00x-...; uv run python -m manim render manim/scene.py <场景类> --format mp4`，再 `uv run vlab-finalize ...`（见 README） |
 | 低清快速预览 | 先设 `$env:PREVIEW='1'`（竖屏 540×960、横屏 960×540，15fps） |
@@ -110,6 +121,8 @@ archive/     【存档】000 参考项目的只读快照（不要改，它自带
 - **画面跟着配音走**：画面元素绑定到配音里的"词"（`timeline.json` 的 words），不要写死秒数。
 - **声音按规范混**：有配乐或音效的成片用 `vlab.audio.mix.mux` 混音（说话时配乐自动压低，成片 -14 LUFS），不要另写 ffmpeg 混音参数；音效由画面的事件清单触发（`vlab.audio.sfx.render`，例子见 research/visual/12）。
 - **发布前过发布清单**（`process/PUBLISH.md`，依据在 `research/content/08-compliance/README.md`）：用了 TTS 配音，发布时在平台勾选 AI 声明、必选标签选「含有AI生成内容」（视频画面内不加文字声明，项目负责人定）；配乐和音效要么自己合成，要么用授权明确覆盖多平台商用的曲库。配乐以后用曲库、剪辑时加（项目负责人定，2026-10-27）；抖音、剪映自带的曲库只限站内非商业。
+  所以新片 `audio.music` 写 `false`；`vlab-build` 每次都会写 `renders/<id>_cues.md` 和 `.srt`（剪辑时刻表：镜头起止、
+  旁白区间、重音效，加上 project.yaml 的 `music_cues` 配乐提示；srt 导入剪映就是一条标记轨），剪配乐时按它对拍。
 - **字体统一用 `vlab.fonts`**（思源黑体，随仓库入库，SIL OFL 1.1 可商用）：Manim 用 `fonts.register_manim()` 返回的族名，Pillow 用 `fonts.pil(字号, bold)`，不要再写 `C:/Windows/Fonts/...` 的路径。微软雅黑不能用于商业发布。
 - **传播优先，但不牺牲质量**：项目的目标是做出比对标账号（比特新语，见 `process/STYLE-IMPACT.md`）更受欢迎的知识短片。
   写稿、定稿、出片都按 `process/STYLE-IMPACT.md` 的五条硬规矩过：情绪落点、人声优先、光影优先、情绪句标题、130–170 秒密度。
@@ -119,11 +132,13 @@ archive/     【存档】000 参考项目的只读快照（不要改，它自带
   文案、数据、颜色、出场时机写在 `project.yaml` 里，常规镜头走模板；只有特殊镜头才写定制代码。
 - **片长 2–6 分钟（120–360 秒），时长服从内容**：不做固定 3 分钟，也不为凑时长注水。
   区间内**观感是第一优先级**：`vlab-review` 的硬指标为观感服务，两者冲突时以观感为准，
-  并在项目 `SCRIPT.md` 里写明破了哪一条、为什么。镜头数随片长走（≥ max(13, ⌈片长/5.2⌉)）。
+  并在项目 `SCRIPT.md` 里写明破了哪一条、为什么；同样的理由写进 `project.yaml` 的 `review.waive`
+  （按体检项的 key，或按镜头），`vlab-review` 会把它列为"破例（已说明）"、不算没过，没写理由的照样算没过。
+  镜头数随片长走（≥ max(13, ⌈片长/5.2⌉)）。
   口径见 `process/STYLE-RHYTHM.md`「片长与优先级」。
 - **切点不许发亮**：remotion 工程保持 `fx_default: {flash: false}`，章节标点用压暗（`dipIn`/`dipOut`），
   亮场切暗场给亮镜末尾加 `dipOut`。细则和验收脚本见 `process/STYLE-RHYTHM.md`「特效栈的边界」。
-- **入库原则**（`process/REPO.md`）：重生成成片需要的输入（配音和配乐 wav、时间轴、字幕、分镜片段）全部入库；成片只有 `videos/` 下正在做的片子入库，`archive/` 和 `research/` 的不入库；「其他AI推进」这类合并来源目录、环境和缓存碎片不入库。新增产物类型时先看 `process/REPO.md` 和 `.gitignore`。
+- **入库原则**（`process/REPO.md`）：重生成成片需要、又没法用代码重出的输入（配音和配乐 wav、时间轴、字幕、着色器片段）入库；能用代码重出的分镜片段不入库（`archive/` 除外）；成片只有 `videos/` 下正在做的片子入库，`archive/` 和 `research/` 的不入库；合并其他来源时的临时副本目录、环境和缓存碎片不入库。新增产物类型时先看 `process/REPO.md` 和 `.gitignore`。
 - **没有用户明确说"提交"/"推送"，不要 `git commit` / `git push`**。改完列出改动文件，等用户指令。
 
 ## 已知坑

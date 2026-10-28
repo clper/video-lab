@@ -151,7 +151,21 @@
 - [ ] 提升视频质量：已讨论出三处差距，按影响排是配音、配乐、画面质感；配乐来源已定（曲库，剪辑时加），配音服务的方向待项目负责人拍板
 - [x] 火柴人样片（`research/visual/15-stickfigure/`，2026-10-27）：A 踢球（抛物线、频闪残影、反弹）、B 两人对打（顿帧、火花、布偶物理）✅。动作在 Python 算，画面用新镜头卡 `stickScene`；音效库加了出拳、踢球、格挡、脚步、倒地、撞墙、落地弹起 7 种
 - [ ] 火柴人第一条（试水，2026-10-27 项目负责人定）：路线提案 `research/content/route-stickfigure.md` ✅ → 选题：四两拨千斤，无旁白、正好 120 秒 ✅ → 剧本 v0.2 确认 ✅（`videos/009-redirect/SCRIPT.md`，2026-10-27）→ 第一版完成 ✅（2026-10-27，`videos/009-redirect/renders/009-redirect_neon.mp4`，只有音效）：动作代码提升为 `toolkit/vlab/stick/`，全片 120 秒按 120 BPM 拍格编排；体检 4 项破例和 motion 基线 1.03 的理由写在 project.yaml 开头
-- [ ] 009 后续：项目负责人看第一版 → 改 → 剪辑时从曲库配乐（关键点时刻表见 `videos/009-redirect/README.md`；曲库授权按 PUBLISH 第 4 条）→ 封面（「60 kg vs 120 kg」）→ 发布前过 PUBLISH 清单 → 发布 72 小时后按 ROUTES 第 4 节复盘
+- [ ] 009 后续：项目负责人看第一版 → 改 → 剪辑时从曲库配乐（剪辑时刻表 `videos/009-redirect/renders/009-redirect_cues.md`，`.srt` 可导入剪映；曲库授权按 PUBLISH 第 4 条）→ 封面（「60 kg vs 120 kg」）→ 发布前过 PUBLISH 清单 → 发布 72 小时后按 ROUTES 第 4 节复盘
+- [x] 架构整理（2026-10-28，项目负责人同意）✅：
+  ①remotion 镜头指纹按卡的依赖闭包算，改一张卡不再连带所有片子重渲；`vlab-build --adopt` 认领指纹换代后的现有片段（007 以外的片子已认领）；
+  ②"先算数据、再按镜头画"成为正式流程：`precompute` + `params_files`，009 迁过去了（删掉套壳脚本，成片逐字节不变）；
+  ③每次构建写剪辑时刻表 `renders/<id>_cues.md` / `.srt`（镜头、旁白区间、重音效、`music_cues` 配乐提示）；
+  ④体检：破例写成 `review.waive` 数据；motion 基线、10 秒段、静止段、无主体段接进 `vlab-review`（STYLE-IMPACT 规矩 3）；
+  ⑤冒烟测试 `vlab.tools.smoke`（13 项、十几秒），`vlab-check` 末尾自动跑，`--tsc` 另跑 Remotion 类型检查；
+  ⑥文档：`docs/WORKFLOW.md` 按片型讲怎么做一条片子，AGENTS / README / 设计文档同步
+- [x] 仓库体积（项目负责人定，2026-10-28）：能用代码重出的分镜片段不入库 ✅。`videos/`、`research/` 的 remotion、manim、custom 片段（122 个，约 220 MB）取消跟踪，着色器片段（008 的 D5、D6）和全部 `.hash` 指纹照旧入库，`archive/` 不动；`process/REPO.md`、`.gitignore`、AGENTS、README 已改，`vlab-check` 会提示缺几个片段。已入库的旧片段还在 git 历史里，仓库打包不会变小；要变小得改写历史并强制推送，要项目负责人另外同意
+- [x] 根目录 `其他AI推进/` 项目负责人已删（2026-10-28），`.gitignore` 里的那条和 REPO / AGENTS 里的提法一并去掉 ✅
+- [ ] 架构整理留下的、要项目负责人定的：③STYLE-IMPACT 规矩 3 的运动量门槛要不要按片型分（线条画在黑底上的片子天然偏低）；④`process/STYLE-IMPACT.md` 末尾"motion 基线和死帧待接入 vlab-review"已经接入，那句话要不要改；⑤`process/STYLE-RHYTHM.md` 写"破例理由写进 SCRIPT.md"，要不要改成写进 project.yaml 的 `review.waive`（现在两处都写）
+- [ ] 007 的 project.yaml 过不了校验：配乐函数 fold_score 没写段落表 music_segs（冒烟测试里登记为已知问题）。007 暂停中，恢复时补段落表或改成曲库配乐，再 `vlab-build --adopt` 认领现有片段
+- [ ] 发布要的工具（009 发布前做）：封面工具；竖屏版（火柴人这类数据驱动的片子可以换竖屏机位直接重渲）
+- [x] 历史可以做，定为今后的主要方向（项目负责人定，2026-10-28）：写进 ROUTES 第 1 节，"纯历史暂不做"作废 ✅
+- [ ] 历史线第一条：细化做法、定候选题（每个题先查一手史料能不能拿到原文）→ 项目负责人选题。开做前补公共能力：思源宋体（OFL；PUBLISH 第 5 条现在只写了思源黑体，要项目负责人改）、大字标题和关键词高亮、档案卷轴和印章、不画边界的示意线路图、扁平插画场景、数据阶梯图
 
 ### 视频技术探讨第一阶段小结（2026-10-20 至 2026-10-21，已结束）
 

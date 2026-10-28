@@ -6,12 +6,12 @@
 ## 怎么重出
 
 ```powershell
-uv run python videos/009-redirect/motion.py          # 算动作（关键帧 + 布偶物理）→ 按镜头切数据 → 音效事件表
 uv run vlab-build videos/009-redirect/project.yaml --jobs 2
 ```
 
-- `motion.py --sheet 16,38,100 --name=xxx`：只出骨架拼图（几秒），改动作时先看这个。
-- 动作数据切成 `build/009-redirect/shots/<镜头>.json`，内容不变的镜头 `vlab-build` 直接复用。
+- 动作由 `vlab-build` 自动算（project.yaml 的 `precompute` 跑 `motion.py`）：`choreo.py` 或 `toolkit/vlab/stick/` 改了才重算，
+  按时间轴切成 `build/009-redirect/shots/<镜头>.json`，每镜用 `params_files` 交给镜头卡 `stickScene`；数据没变的镜头直接复用。
+- `uv run python videos/009-redirect/motion.py --sheet 16,38,100 --name=xxx`：只出骨架拼图（几秒），改动作时先看这个。
 - 成片：`renders/009-redirect_neon.mp4`（只有音效）；单独的音效轨：`build/009-redirect/sfx.wav`。
 
 ## 文件
@@ -19,38 +19,18 @@ uv run vlab-build videos/009-redirect/project.yaml --jobs 2
 | 文件 | 内容 |
 |---|---|
 | `choreo.py` | 全片的动作编排：两个人的关键帧、四段布偶（被打飞两次、扑倒、过肩摔）、羽毛、物理标注、相机、粒子和音效事件 |
-| `motion.py` | 跑 `choreo.py`，切镜头数据，写音效事件表 |
-| `shots/stick.py` | videokit 的 custom 渲染器：把一镜的数据交给镜头卡 `stickScene` |
-| `project.yaml` | 24 镜的拍数（合计 240 拍），每镜依赖自己的数据文件和镜头卡代码 |
+| `motion.py` | 预计算：跑 `choreo.py`，按时间轴切镜头数据，写音效事件表 |
+| `project.yaml` | 24 镜的拍数（合计 240 拍）和内容说明（note）、配乐提示（music_cues）、体检破例 |
 | `styles/neon.yaml` | 配色：金 = 小个子，青 = 大块头 |
 
 公共代码在 `toolkit/vlab/stick/`（骨架、布偶物理、场景导出）和镜头卡 `toolkit/vlab/render/remotion/src/cards/StickScene.tsx`。
 
 ## 关键点时刻表（剪配乐用）
 
-画面按 120 BPM 编排：每拍 0.5 秒、每小节 2 秒。选 120 BPM 左右的曲子，第一拍对齐片头，下面这些点就落在拍上。
+`vlab-build` 生成：[renders/009-redirect_cues.md](renders/009-redirect_cues.md)。
+同名的 `.srt` 可以导入剪映当字幕轨，每一条就是一个标记。要改提示，改 project.yaml 的 `music_cues`。
 
-| 时刻（秒） | 画面 | 声音建议 |
-|---|---|---|
-| 0.5 / 1.5 / 2.5 / 3.5 | 大块头的四步重脚步 | 脚步就是节拍 |
-| 16.0 | 拳头打在交叉的小臂上，定格 6 秒（两支力箭头） | 重拍，然后音乐收住、只剩嗡鸣 |
-| 22.0 | 解除定格，小个子被打飞 | 音乐回来 |
-| 32.0–33.5 | 连打四拳（每半拍一拳） | 四下鼓点 |
-| 38.0 | 一掌推飞 | 重拍 |
-| 42.0 | 小个子躺在地上 | **音乐停**（42–57 几乎无声） |
-| 47.0 | 羽毛飘下来 | |
-| 50.0 | 一巴掌扇空 | |
-| 52–57 | 慢镜头重放：气流绕开手掌 | |
-| 57.0 | 小个子站起来 | **新的音乐起**：冷静、有决心 |
-| 64–67 / 67–72 | 拳头逼近放慢 / 定格（挡和拨的箭头） | 收住 |
-| 72.1 | 轻轻一拨 | 重新起 |
-| 80.0 | 大块头自己扑倒 | 重拍 |
-| 87–93 | 往后退、刨地、全速冲锋（90.6 起越来越快） | 推到最高 |
-| 93.5–100 | 抓住、扛上后背、翻过去（慢镜头） | |
-| 99.6–100.0 | 落地前 | **留一拍静音** |
-| 100.0 | 平拍在地上 | 最重的一拍 |
-| 108–112 | 伸手、拉起来 | 收、温暖 |
-| 112.6–120 | 落点字幕 | 收尾 |
+画面按 120 BPM 编排：每拍 0.5 秒、每小节 2 秒。选 120 BPM 左右的曲子，第一拍对齐片头，关键动作就落在拍上。
 
 ## 体检（第一版，2026-10-27）
 

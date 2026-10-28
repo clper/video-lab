@@ -95,7 +95,7 @@ def main() -> None:
     node = shutil.which("node")
     check("按需", "Node.js（Remotion 镜头、000 的 HyperFrames 版）", bool(node),
           subprocess.run(["node", "--version"], capture_output=True, text=True).stdout.strip() if node
-          else "没装；重渲 remotion 镜头（007 在用）要它，Windows 可 `winget install OpenJS.NodeJS.LTS`")
+          else "没装；重渲 remotion 镜头（007、008、009 在用）要它，Windows 可 `winget install OpenJS.NodeJS.LTS`")
     rm = ROOT / "toolkit" / "vlab" / "render" / "remotion"
     check("按需", "Remotion 的 node_modules（重渲 remotion 镜头）", (rm / "node_modules").exists(),
           "已安装" if (rm / "node_modules").exists()
@@ -118,6 +118,20 @@ def main() -> None:
     check("必需", "重生成成片需要的配音和分镜片段", not missing,
           "齐全" if not missing else f"缺：{missing}（克隆不完整，或用了 Git LFS 但没 `git lfs pull`）")
 
+    # videos/ 里能用代码重出的分镜片段不入库（2026-10-28）：克隆后是缺的，改片子、体检之前 vlab-build 会重渲
+    try:
+        from vlab.videokit.project import Project
+        short = []
+        for y in sorted((ROOT / "videos").glob("*/project.yaml")):
+            P = Project(y)
+            n = sum(1 for s in P.scenes if not (P.clip_dir() / f"{s['id']}.mp4").exists())
+            if n:
+                short.append(f"{y.parent.name} 缺 {n} 个")
+        check("按需", "videos/ 的分镜片段（改片子、体检时要）", not short,
+              "齐全" if not short else "；".join(short) + "：不入库，vlab-build 会按指纹自动重渲（要 Node 和 Remotion 依赖）")
+    except Exception as e:  # noqa: BLE001
+        check("按需", "videos/ 的分镜片段（改片子、体检时要）", False, f"读工程失败：{e}")
+
     # ---------- 输出 ----------
     yes, no = _marks()
     width = max(len(r[2]) for r in results)
@@ -129,6 +143,13 @@ def main() -> None:
                 continue
             print(f"  {yes if ok else no} {name.ljust(width)}  {detail}")
             bad_required |= (lv == "必需" and not ok)
+    # ---------- 冒烟测试：公共代码有没有被改坏（十几秒） ----------
+    if "--no-smoke" not in sys.argv and not bad_required:
+        print("\n【冒烟测试】（跳过：--no-smoke；单独跑：uv run python -m vlab.tools.smoke）")
+        from vlab.tools import smoke
+        if smoke.run():
+            bad_required = True
+            print("  冒烟测试没过：公共代码可能被改坏了，先看上面 NG 的那几条")
     print("\n结论：" + ("必需项有缺失，按上面的提示补齐后再跑一次" if bad_required else "必需项全部通过，可以构建"))
     sys.exit(1 if bad_required else 0)
 
